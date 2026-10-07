@@ -52,7 +52,7 @@
   <!-- ===== Первый экран: меню + слайдер + поиск + мини-список «Популярное» ===== -->
   <div class="container hero-layout">
     <div class="hero-layout__nav">
-    <!-- ===== Шапка: логотип, меню (3 колонки на десктопе), тема, корзина, бургер ===== -->
+    <!-- ===== Шапка: логотип, меню (4 колонки на десктопе), тема, бургер ===== -->
     <header class="header">
       <nav class="header__nav" aria-label="Главное меню">
         <a class="logo" href="index.html" aria-label="BestGames — на главную">
@@ -83,7 +83,6 @@
           <button class="icon-btn icon-btn--bordered header__theme" type="button" data-theme-toggle aria-label="Сменить тему">
             <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
           </button>
-          <a class="header__cart" href="cart.html" aria-label="Корзина: 0 товаров" data-cart-count>0</a>
           <button class="icon-btn header__burger" type="button" data-drawer-open="menu-drawer" aria-controls="menu-drawer" aria-expanded="false" aria-label="Открыть меню">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
           </button>
@@ -108,7 +107,6 @@
           <li><a class="drawer__link story-link" href="catalog.html">Каталог игр</a></li>
           <li><a class="drawer__link story-link" href="index.html#search">Поиск</a></li>
           <li><a class="drawer__link story-link" href="profile.html">Личный кабинет</a></li>
-          <li><a class="drawer__link story-link" href="cart.html">Корзина</a></li>
           <li><a class="drawer__link story-link" href="index.html#new">Новинки</a></li>
           <li><a class="drawer__link story-link" href="login.html">Войти</a></li>
           <li><a class="drawer__link story-link" href="register.html">Регистрация</a></li>
@@ -285,7 +283,7 @@
       </div>
       <div class="popular__grid">
           <!-- Карточка: Starfall Legion -->
-          <article class="game-card" data-genre="Стратегия" data-title="Starfall Legion" data-developer="Nova Forge" data-price="1499" data-image="img/starfall-legion-card.webp">
+          <article class="game-card">
             <div class="game-card__media">
               <img class="game-card__image" src="img/starfall-legion-card.webp" alt="Обложка игры Starfall Legion" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Стратегия</span>
@@ -296,15 +294,12 @@
               <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 499 ₽</span>
-                <div class="game-card__actions">
-                  <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
-                  <button class="btn btn--outline btn--sm game-card__cart-btn" type="button" data-cart-add>В корзину</button>
-                </div>
+                <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
               </div>
             </div>
           </article>
           <!-- Карточка: Hollow Pines -->
-          <article class="game-card" data-genre="Хоррор" data-title="Hollow Pines" data-developer="Ember Lab" data-price="899" data-image="img/hollow-pines-card.webp">
+          <article class="game-card">
             <div class="game-card__media">
               <img class="game-card__image" src="img/hollow-pines-card.webp" alt="Обложка игры Hollow Pines" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Хоррор</span>
@@ -315,15 +310,12 @@
               <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">899 ₽</span>
-                <div class="game-card__actions">
-                  <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
-                  <button class="btn btn--outline btn--sm game-card__cart-btn" type="button" data-cart-add>В корзину</button>
-                </div>
+                <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
               </div>
             </div>
           </article>
           <!-- Карточка: Apex Rally -->
-          <article class="game-card" data-genre="Гонки" data-title="Apex Rally" data-developer="Drift Works" data-price="1299" data-image="img/apex-rally-card.webp">
+          <article class="game-card">
             <div class="game-card__media">
               <img class="game-card__image" src="img/apex-rally-card.webp" alt="Обложка игры Apex Rally" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Гонки</span>
@@ -334,15 +326,12 @@
               <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 299 ₽</span>
-                <div class="game-card__actions">
-                  <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
-                  <button class="btn btn--outline btn--sm game-card__cart-btn" type="button" data-cart-add>В корзину</button>
-                </div>
+                <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
               </div>
             </div>
           </article>
           <!-- Карточка: Runebound -->
-          <article class="game-card" data-genre="RPG" data-title="Runebound" data-developer="North Hall" data-price="1999" data-image="img/runebound-card.webp">
+          <article class="game-card">
             <div class="game-card__media">
               <img class="game-card__image" src="img/runebound-card.webp" alt="Обложка игры Runebound" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">RPG</span>
@@ -353,15 +342,12 @@
               <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 999 ₽</span>
-                <div class="game-card__actions">
-                  <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
-                  <button class="btn btn--outline btn--sm game-card__cart-btn" type="button" data-cart-add>В корзину</button>
-                </div>
+                <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
               </div>
             </div>
           </article>
           <!-- Карточка: Pixel Siege -->
-          <article class="game-card" data-genre="Инди" data-title="Pixel Siege" data-developer="Tiny Keep" data-price="499" data-image="img/pixel-siege-card.webp">
+          <article class="game-card">
             <div class="game-card__media">
               <img class="game-card__image" src="img/pixel-siege-card.webp" alt="Обложка игры Pixel Siege" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Инди</span>
@@ -372,10 +358,7 @@
               <p class="stars game-card__rating" role="img" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">499 ₽</span>
-                <div class="game-card__actions">
-                  <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
-                  <button class="btn btn--outline btn--sm game-card__cart-btn" type="button" data-cart-add>В корзину</button>
-                </div>
+                <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
               </div>
             </div>
           </article>
@@ -440,7 +423,6 @@
           <li><a class="story-link" href="register.html">Регистрация</a></li>
           <li><a class="story-link" href="login.html">Авторизация</a></li>
           <li><a class="story-link" href="profile.html">Личный кабинет</a></li>
-          <li><a class="story-link" href="cart.html">Корзина</a></li>
           <li><a class="story-link" href="index.html#search">Поиск</a></li>
           <li><a class="story-link" href="admin.html">Админ-панель</a></li>
         </ul>
