@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <!--
-  BestGames — profile.html
-  Личный кабинет: данные, история покупок, настройки (тема, смена пароля).
+  BestGames — cart.html
+  Корзина: список игр из localStorage (ключ bg-cart), итог, оформление заказа, пустое состояние.
   Чистые HTML + CSS (БЭМ) + небольшой vanilla JS. Стили: public/css/, скрипты: public/js/.
 -->
 <html lang="ru" class="theme-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет — BestGames</title>
-    <meta name="description" content="Личный кабинет BestGames: данные пользователя, история покупок, настройки.">
+    <title>Корзина — BestGames</title>
+    <meta name="description" content="Корзина BestGames: выбранные игры, сумма заказа и оформление покупки.">
     <meta name="author" content="BestGames">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <meta property="og:title" content="Личный кабинет — BestGames">
-    <meta property="og:description" content="Личный кабинет BestGames: данные пользователя, история покупок, настройки.">
+    <meta property="og:title" content="Корзина — BestGames">
+    <meta property="og:description" content="Корзина BestGames: выбранные игры, сумма заказа и оформление покупки.">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -66,7 +66,7 @@
           <a class="header__link story-link" href="index.html#search">Поиск</a>
         </div>
         <div class="header__group">
-          <a class="header__link header__link--active story-link" href="profile.html" aria-current="page">Личный кабинет</a>
+          <a class="header__link story-link" href="profile.html">Личный кабинет</a>
           <a class="header__link story-link" href="index.html#new">Новинки</a>
         </div>
         <div class="header__group">
@@ -77,7 +77,7 @@
           <button class="icon-btn icon-btn--bordered header__theme" type="button" data-theme-toggle aria-label="Сменить тему">
             <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
           </button>
-          <a class="header__cart" href="cart.html" aria-label="Корзина: 0 товаров" data-cart-count>0</a>
+          <a class="header__cart" href="cart.html" aria-label="Корзина: 0 товаров" aria-current="page" data-cart-count>0</a>
           <button class="icon-btn header__burger" type="button" data-drawer-open="menu-drawer" aria-controls="menu-drawer" aria-expanded="false" aria-label="Открыть меню">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
           </button>
@@ -114,101 +114,59 @@
 
   <main class="container page-main">
     <div class="page-head">
-      <h1 class="page-head__title">Личный кабинет</h1>
-        <p class="page-head__subtitle">Иван, добро пожаловать обратно.</p>
+      <h1 class="page-head__title">Корзина</h1>
+      <p class="page-head__subtitle" data-cart-subtitle>Выбранные игры</p>
     </div>
     <div class="page-body">
-      <div class="profile">
-        <!-- ===== Данные пользователя ===== -->
-        <section class="card profile__info" aria-labelledby="u-title">
-          <div class="profile__user">
-            <span class="profile__avatar" aria-hidden="true">ИП</span>
-            <h2 class="profile__name" id="u-title">Иван Петров</h2>
-          </div>
-          <dl class="profile__data">
-            <div class="profile__data-row">
-              <dt class="profile__data-label">E-mail</dt>
-              <dd class="profile__data-value">ivan.petrov@games.ru</dd>
-            </div>
-            <div class="profile__data-row">
-              <dt class="profile__data-label">Фамилия</dt>
-              <dd class="profile__data-value">Петров</dd>
-            </div>
-            <div class="profile__data-row">
-              <dt class="profile__data-label">Имя</dt>
-              <dd class="profile__data-value">Иван</dd>
-            </div>
-            <div class="profile__data-row">
-              <dt class="profile__data-label">Дата рождения</dt>
-              <dd class="profile__data-value">14.03.2001</dd>
-            </div>
-            <div class="profile__data-row">
-              <dt class="profile__data-label">Телефон</dt>
-              <dd class="profile__data-value">+7 912 345-67-89</dd>
-            </div>
-          </dl>
-        </section>
+      <!-- ===== Корзина: список игр + итог (заполняется скриптом из localStorage) ===== -->
+      <div class="cart" data-cart>
+        <noscript>
+          <p class="cart__noscript">Для работы корзины включите JavaScript в браузере.</p>
+        </noscript>
 
-        <!-- ===== История покупок ===== -->
-        <section class="card profile__history" aria-labelledby="h-title">
-          <h2 class="card__title" id="h-title">История покупок</h2>
-          <div class="purchases">
-            <table class="purchases__table">
-              <thead>
-                <tr>
-                  <th scope="col">Дата</th>
-                  <th scope="col">Игра / предмет</th>
-                  <th scope="col" class="purchases__price">Стоимость</th>
-                </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-10-02">02.10.2026</time></td>
-                <td>Cyber Drift 2077</td>
-                <td class="purchases__price">2 499 ₽</td>
-              </tr>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-09-21">21.09.2026</time></td>
-                <td>Набор скинов «Неон» — Apex Rally</td>
-                <td class="purchases__price">349 ₽</td>
-              </tr>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-09-05">05.09.2026</time></td>
-                <td>Runebound</td>
-                <td class="purchases__price">1 999 ₽</td>
-              </tr>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-08-18">18.08.2026</time></td>
-                <td>Сезонный пропуск — Starfall Legion</td>
-                <td class="purchases__price">599 ₽</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <div class="cart__content" hidden>
+          <!-- Список выбранных игр -->
+          <section class="cart__items" aria-labelledby="cart-list-title">
+            <h2 class="visually-hidden" id="cart-list-title">Игры в корзине</h2>
+            <ul class="cart__list"></ul>
+          </section>
 
-        <!-- ===== Настройки профиля ===== -->
-        <section class="card profile__settings" aria-labelledby="s-title">
-          <h2 class="card__title" id="s-title">Настройки профиля</h2>
-          <div class="settings__grid">
-          <label class="settings__row">
-            <span class="settings__label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg> Тёмная тема</span>
-            <input class="switch" type="checkbox" role="switch" data-theme-switch checked>
-          </label>
-          <label class="settings__row">
-            <span class="settings__label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> Уведомления о покупках</span>
-            <input class="switch" type="checkbox" role="switch" checked>
-          </label>
-          <label class="settings__row">
-            <span class="settings__label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg> Рассылка об акциях</span>
-            <input class="switch" type="checkbox" role="switch">
-          </label>
-            <div class="settings__row">
-              <span class="settings__label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg> Пароль</span>
-              <button class="btn btn--primary btn--sm" type="button" data-modal-open="password-modal">Сменить пароль</button>
+          <!-- Итог заказа (на десктопе — липкая колонка справа) -->
+          <aside class="cart__summary" aria-labelledby="cart-summary-title">
+            <h2 class="cart__summary-title" id="cart-summary-title">Ваш заказ</h2>
+            <dl class="cart__rows">
+              <div class="cart__row">
+                <dt>Товаров</dt>
+                <dd data-cart-items>0 товаров</dd>
+              </div>
+              <div class="cart__row">
+                <dt>Сумма</dt>
+                <dd data-cart-sum>0 ₽</dd>
+              </div>
+              <div class="cart__row">
+                <dt>Скидка</dt>
+                <dd>0 ₽</dd>
+              </div>
+              <div class="cart__row cart__total">
+                <dt>Итого</dt>
+                <dd data-cart-total>0 ₽</dd>
+              </div>
+            </dl>
+            <div class="cart__actions">
+              <button class="btn btn--primary btn--block" type="button" data-cart-checkout>Оформить заказ</button>
+              <button class="btn btn--outline btn--block" type="button" data-cart-clear>Очистить корзину</button>
             </div>
-          </div>
-        </section>
+            <p class="cart__note">Ключи активации придут на почту сразу после оплаты.</p>
+          </aside>
+        </div>
+
+        <!-- Пустое состояние -->
+        <div class="cart__empty" hidden>
+          <svg class="icon cart__empty-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <p class="cart__empty-title">Корзина пуста</p>
+          <p class="cart__empty-text">Загляните в каталог — там много отличных игр.</p>
+          <a class="btn btn--primary btn--md" href="catalog.html">Перейти в каталог</a>
+        </div>
       </div>
     </div>
   </main>
@@ -258,23 +216,6 @@
     </div>
   </footer>
 </div>
-
-<!-- ===== Модальное окно смены пароля ===== -->
-<dialog class="modal" id="password-modal" aria-labelledby="password-title">
-  <button class="modal__close" type="button" data-modal-close aria-label="Закрыть"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-  <div class="modal__header">
-    <h2 class="modal__title" id="password-title">Смена пароля</h2>
-  </div>
-  <form class="modal__form" id="password-form" novalidate>
-    <label class="visually-hidden" for="pw-old">Текущий пароль</label>
-    <input class="field__input" id="pw-old" name="old" type="password" placeholder="Текущий пароль" autocomplete="current-password" required>
-    <label class="visually-hidden" for="pw-next">Новый пароль</label>
-    <input class="field__input" id="pw-next" name="next" type="password" placeholder="Новый пароль" autocomplete="new-password" required minlength="6">
-    <label class="visually-hidden" for="pw-repeat">Повторите пароль</label>
-    <input class="field__input" id="pw-repeat" name="repeat" type="password" placeholder="Повторите пароль" autocomplete="new-password" required>
-    <button class="btn btn--primary btn--block" type="submit">Сохранить</button>
-  </form>
-</dialog>
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">

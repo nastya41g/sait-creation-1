@@ -2,7 +2,8 @@
    BestGames — общий скрипт всех страниц (vanilla JS, без модулей).
    Каждый модуль запускается, только если на странице есть нужная разметка.
    Содержание:
-     1. Утилиты (уведомления, форматирование цены)
+     1. Утилиты (уведомления, форматирование цены, склонение)
+   1.1. Корзина: localStorage, счётчик в шапке, кнопки «В корзину»
      2. Переключение темы
      3. Выезжающие панели (бургер-меню, фильтр каталога)
      4. Слайдер новинок
@@ -12,6 +13,7 @@
      8. Валидация форм: вход, регистрация, админ-панель
      9. Личный кабинет: тема, смена пароля
     10. Появление секций при прокрутке
+    11. Страница корзины: список, итог, оформление заказа
    ========================================================================== */
 (function () {
   'use strict';
@@ -73,6 +75,184 @@
       if (e.target.matches('.field__input, .checkbox__input')) setFieldError(e.target, '');
     });
   }
+
+  /** Русское склонение: plural(3, ['товар', 'товара', 'товаров']) → «товара» */
+  function plural(n, forms) {
+    var n10 = n % 10;
+    var n100 = n % 100;
+    if (n10 === 1 && n100 !== 11) return forms[0];
+    if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return forms[1];
+    return forms[2];
+  }
+
+  /* ---------- 1.1 Корзина: хранение в localStorage, счётчик в шапке ----------
+     Формат: массив {id, title, price, image, genre, developer}.
+     Каждая игра добавляется один раз (ключ — копия игры), без количества. */
+  var cart = (function () {
+    var KEY = 'bg-cart';
+    var ITEM_FORMS = ['товар', 'товара', 'товаров'];
+    var listeners = [];
+
+    /** «Cyber Drift 2077» → «cyber-drift-2077» */
+    function slug(title) {
+      return String(title || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9а-яё]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    /** Читает корзину; повреждённые данные считаем пустой корзиной */
+    function read() {
+      try {
+        var items = JSON.parse(localStorage.getItem(KEY) || '[]');
+        if (!Array.isArray(items)) return [];
+        return items.filter(function (it) {
+          return it && typeof it.id === 'string' && typeof it.title === 'string';
+        });
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function write(items) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(items));
+      } catch (e) {
+        toast('Не удалось сохранить корзину', true);
+      }
+      notify(true);
+    }
+
+    function has(id) {
+      return read().some(function (it) { return it.id === id; });
+    }
+
+    /** Добавляет игру; false — если она уже в корзине */
+    function add(item) {
+      var items = read();
+      if (items.some(function (it) { return it.id === item.id; })) return false;
+      items.push(item);
+      write(items);
+      return true;
+    }
+
+    function remove(id) {
+      write(read().filter(function (it) { return it.id !== id; }));
+    }
+
+    function clear() {
+      write([]);
+    }
+
+    function total(items) {
+      return items.reduce(function (sum, it) { return sum + (Number(it.price) || 0); }, 0);
+    }
+
+    function countLabel(n) {
+      return n + ' ' + plural(n, ITEM_FORMS);
+    }
+
+    /** Обновляет счётчик в шапке; bump — короткая анимация «подпрыгивания» */
+    function updateCounter(bump) {
+      var n = read().length;
+      document.querySelectorAll('[data-cart-count]').forEach(function (el) {
+        var changed = el.textContent !== String(n);
+        el.textContent = n;
+        el.setAttribute('aria-label', 'Корзина: ' + countLabel(n));
+        if (bump && changed) {
+          el.classList.remove('header__cart--bump');
+          void el.offsetWidth; // перезапуск анимации
+          el.classList.add('header__cart--bump');
+        }
+      });
+    }
+
+    /** Вид кнопки: «В корзину» или «В корзине ✓» */
+    function setButtonState(btn, inCart) {
+      if (!btn) return;
+      btn.classList.toggle('btn--added', inCart);
+      btn.textContent = inCart ? 'В корзине ✓' : 'В корзину';
+    }
+
+    /** Синхронизирует все кнопки «В корзину» на карточках */
+    function syncButtons() {
+      var ids = read().map(function (it) { return it.id; });
+      document.querySelectorAll('[data-cart-add]').forEach(function (btn) {
+        var card = btn.closest('[data-title]');
+        if (card) setButtonState(btn, ids.indexOf(slug(card.dataset.title)) !== -1);
+      });
+    }
+
+    /** Собирает товар из data-атрибутов карточки */
+    function itemFromCard(card) {
+      var d = card.dataset;
+      return {
+        id: slug(d.title),
+        title: d.title,
+        price: Number(d.price) || 0,
+        image: d.image || '',
+        genre: d.genre || '',
+        developer: d.developer || ''
+      };
+    }
+
+    function addFromCard(card, btn) {
+      var item = itemFromCard(card);
+      if (!add(item)) {
+        toast('Игра уже в корзине');
+      } else {
+        toast('Игра добавлена в корзину');
+      }
+      setButtonState(btn, true);
+    }
+
+    /** Подписка на изменения корзины (в этой и в других вкладках) */
+    function onChange(fn) {
+      listeners.push(fn);
+    }
+
+    function notify(bump) {
+      updateCounter(bump);
+      syncButtons();
+      listeners.forEach(function (fn) { fn(); });
+    }
+
+    // Изменения из других вкладок
+    window.addEventListener('storage', function (e) {
+      if (e.key === KEY || e.key === null) notify(true);
+    });
+
+    // Конец анимации — снимаем класс
+    document.addEventListener('animationend', function (e) {
+      if (e.target.classList && e.target.classList.contains('header__cart--bump')) {
+        e.target.classList.remove('header__cart--bump');
+      }
+    });
+
+    // Кнопки «В корзину» на карточках (каталог и главная)
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-cart-add]');
+      if (!btn) return;
+      var card = btn.closest('[data-title]');
+      if (card) addFromCard(card, btn);
+    });
+
+    updateCounter(false);
+    syncButtons();
+
+    return {
+      slug: slug,
+      read: read,
+      has: has,
+      remove: remove,
+      clear: clear,
+      total: total,
+      countLabel: countLabel,
+      setButtonState: setButtonState,
+      addFromCard: addFromCard,
+      onChange: onChange
+    };
+  })();
 
   /* ---------- 2. Переключение темы ---------- */
   var root = document.documentElement;
@@ -382,12 +562,14 @@
     if (!modal) return;
 
     var current = null;
+    var buy = modal.querySelector('.game-modal__buy');
 
     document.querySelectorAll('[data-game]').forEach(function (card) {
       function open(e) {
         if (e) e.preventDefault();
         var d = card.dataset;
-        current = d.title;
+        current = card;
+        cart.setButtonState(buy, cart.has(cart.slug(d.title)));
         modal.querySelector('.game-modal__image').src = d.image;
         modal.querySelector('.game-modal__image').alt = d.title;
         modal.querySelector('.game-modal__title').textContent = d.title;
@@ -404,9 +586,10 @@
       });
     });
 
-    modal.querySelector('.game-modal__buy').addEventListener('click', function () {
-      toast('«' + current + '» добавлена в корзину');
-      modal.close();
+    // Кнопка «В корзину» в окне добавляет игру, показанную сейчас
+    buy.addEventListener('click', function () {
+      if (!current) return;
+      cart.addFromCard(current, buy);
     });
   })();
 
@@ -585,5 +768,106 @@
       });
     }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
     items.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* ---------- 11. Страница корзины ---------- */
+  (function initCartPage() {
+    var page = document.querySelector('[data-cart]');
+    if (!page) return;
+
+    var content = page.querySelector('.cart__content');
+    var list = page.querySelector('.cart__list');
+    var empty = page.querySelector('.cart__empty');
+    var countEl = page.querySelector('[data-cart-items]');
+    var sumEl = page.querySelector('[data-cart-sum]');
+    var totalEl = page.querySelector('[data-cart-total]');
+    var subtitle = document.querySelector('[data-cart-subtitle]');
+    var REMOVE_ICON = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+
+    /** Создаёт элемент с классом и текстом (текст — через textContent, без HTML) */
+    function el(tag, className, text) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function renderItem(item) {
+      var li = el('li', 'cart__item');
+      li.setAttribute('data-id', item.id);
+
+      var img = el('img', 'cart__image');
+      img.src = item.image;
+      img.alt = 'Обложка игры ' + item.title;
+      img.width = 640;
+      img.height = 480;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+
+      var info = el('div', 'cart__info');
+      info.appendChild(el('h3', 'cart__title', item.title));
+      var meta = [item.genre, item.developer].filter(Boolean).join(' · ');
+      if (meta) info.appendChild(el('p', 'cart__meta', meta));
+
+      var price = el('p', 'cart__price', formatPrice(item.price));
+
+      var remove = el('button', 'icon-btn icon-btn--bordered cart__remove');
+      remove.type = 'button';
+      remove.setAttribute('aria-label', 'Удалить «' + item.title + '» из корзины');
+      remove.innerHTML = REMOVE_ICON;
+      remove.addEventListener('click', function () { removeItem(li, item); });
+
+      li.appendChild(img);
+      li.appendChild(info);
+      li.appendChild(price);
+      li.appendChild(remove);
+      return li;
+    }
+
+    /** Удаление с плавным исчезновением строки */
+    function removeItem(li, item) {
+      if (li.classList.contains('cart__item--removing')) return;
+      li.classList.add('cart__item--removing');
+      var done = false;
+      function finish() {
+        if (done) return;
+        done = true;
+        cart.remove(item.id);
+        toast('«' + item.title + '» удалена из корзины');
+      }
+      li.addEventListener('animationend', finish);
+      setTimeout(finish, 400); // запасной вариант, если анимация не сработала
+    }
+
+    function render() {
+      var items = cart.read();
+      var isEmpty = !items.length;
+      content.hidden = isEmpty;
+      empty.hidden = !isEmpty;
+      if (subtitle) {
+        subtitle.textContent = isEmpty ? 'Добавьте игры из каталога' : 'В корзине ' + cart.countLabel(items.length);
+      }
+      list.innerHTML = '';
+      items.forEach(function (item) { list.appendChild(renderItem(item)); });
+      var sum = cart.total(items);
+      countEl.textContent = cart.countLabel(items.length);
+      sumEl.textContent = formatPrice(sum);
+      totalEl.textContent = formatPrice(sum);
+    }
+
+    page.querySelector('[data-cart-checkout]').addEventListener('click', function () {
+      if (!cart.read().length) return;
+      cart.clear();
+      toast('Заказ оформлен! Ключи придут на почту');
+    });
+
+    page.querySelector('[data-cart-clear]').addEventListener('click', function () {
+      if (!cart.read().length) return;
+      cart.clear();
+      toast('Корзина очищена');
+    });
+
+    cart.onChange(render);
+    render();
   })();
 })();
