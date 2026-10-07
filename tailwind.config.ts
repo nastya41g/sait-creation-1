@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				head: ['Jost', 'sans-serif'],
-				body: ['Manrope', 'sans-serif']
+				head: ['Unbounded', 'sans-serif'],
+				body: ['Onest', 'sans-serif']
 			},
 			colors: {
 				star: 'hsl(var(--star))',
