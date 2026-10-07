@@ -170,7 +170,7 @@
       dots.forEach(function (dot, n) {
         var active = n === index;
         dot.classList.toggle('hero__dot--active', active);
-        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+        dot.setAttribute('aria-current', active ? 'true' : 'false');
       });
       var cur = images[index];
       tag.textContent = cur.dataset.tag;

@@ -3,12 +3,18 @@
    первый экран (.hero-layout), слайдер (.hero), поиск по жанрам
    (.genre-search), мини-список «Популярное» (.popular-list),
    преимущества (.advantages), популярные игры (.popular), партнёры (.partners).
+   Контрольные ширины по заданию: 360 → 768 → 1920.
+   Подход mobile-first: базовые стили — 360px; @media (min-width: 768px) —
+   планшет; @media (min-width: 1280px) — десктоп (макет рассчитан и проверен
+   до 1920px, ширина контейнера ограничена --container: 1920px).
    ========================================================================== */
 
 /* ---------- Сетка первого экрана ---------- */
 .hero-layout {
   display: grid;
-  grid-template-columns: 1fr;
+  /* minmax(0, 1fr) — колонка не растягивается по длинному содержимому
+     (иначе на 360px появлялась горизонтальная прокрутка) */
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   padding-top: 20px;
   padding-bottom: 32px;
@@ -341,7 +347,7 @@
 
 .popular-list__link {
   display: grid;
-  grid-template-columns: 52px 1fr auto;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
   align-items: center;
   gap: 14px;
   padding: 11px 0;
@@ -601,7 +607,7 @@
    (+ подвал 1 → 2 колонки, см. components.css) */
 @media (min-width: 768px) {
   .hero-layout {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 32px;
   }
 
@@ -672,7 +678,7 @@
    5) подвал: 2 колонки → 3 колонки (см. components.css). */
 @media (min-width: 1280px) {
   .hero-layout {
-    grid-template-columns: 1.55fr 1fr;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
     grid-template-rows: auto auto 1fr;
     grid-template-areas:
       "nav nav"

@@ -6,19 +6,19 @@
 -->
 <html lang="ru" class="theme-dark">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель — BestGames</title>
-    <meta name="description" content="Админ-панель BestGames: добавление новой игры в каталог."/>
-    <meta name="author" content="BestGames"/>
+    <meta name="description" content="Админ-панель BestGames: добавление новой игры в каталог.">
+    <meta name="author" content="BestGames">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta property="og:title" content="Админ-панель — BestGames">
     <meta property="og:description" content="Админ-панель BestGames: добавление новой игры в каталог.">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
-    <meta name="twitter:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+    <meta property="og:image" content="img/cyber-drift.webp">
+    <meta name="twitter:image" content="img/cyber-drift.webp">
 
     <!-- Шрифты: Unbounded (заголовки) и Onest (текст) -->
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,10 +161,10 @@
         <!-- ===== Загрузка изображения с превью ===== -->
         <div class="admin-form__side">
           <span class="field__label" id="image-label">Изображение</span>
-          <label class="upload" aria-labelledby="image-label">
+          <label class="upload" for="image">
             <span class="upload__placeholder"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg> Выбрать файл</span>
-            <img class="upload__preview" alt="Превью загруженного изображения" hidden>
-            <input class="visually-hidden" type="file" name="image" accept="image/*">
+            <img class="upload__preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Превью загруженного изображения" width="320" height="240" hidden>
+            <input class="visually-hidden" id="image" type="file" name="image" accept="image/*" required aria-labelledby="image-label">
           </label>
           <span class="field__error upload__error" data-image-error role="alert" hidden>Загрузите изображение</span>
           <button class="btn btn--primary btn--block admin-form__submit" type="submit">Добавить</button>
