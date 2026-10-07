@@ -1,63 +1,9 @@
 /* ==========================================================================
    BestGames — общие компоненты (БЭМ-блоки), используемые на всех страницах:
    .container, .story-link, .logo, .btn, .icon-btn, .header, .drawer,
-   .stars, .game-card, .footer, .field, .checkbox, .switch, .modal, .toast,
-   .chat.
-   Стиль «Неон / Киберпанк»:
-   — скошенные углы (clip-path) у кнопок, карточек, полей и панелей;
-   — неоновый градиент маджента → циан у основных кнопок и активных состояний;
-   — свечение (drop-shadow / text-shadow) при наведении;
-   — моноширинный JetBrains Mono для цен и служебных меток.
-   Приём «рамка-псевдоэлемент»: у кнопок и карточек скос рисует ::before,
-   а не сам элемент, — поэтому свечение filter: drop-shadow() повторяет
-   скошенную форму и не обрезается, а контур фокуса остаётся видимым.
+   .stars, .game-card, .footer, .field, .checkbox, .switch, .modal, .toast.
    Подход mobile-first: базовые стили — для 360px, далее min-width.
    ========================================================================== */
-
-/* ---------- Формы скоса (верхний левый и нижний правый углы) ---------- */
-:root {
-  --clip-sm: polygon(
-    6px 0,
-    100% 0,
-    100% calc(100% - 6px),
-    calc(100% - 6px) 100%,
-    0 100%,
-    0 6px
-  );
-  --clip-md: polygon(
-    12px 0,
-    100% 0,
-    100% calc(100% - 12px),
-    calc(100% - 12px) 100%,
-    0 100%,
-    0 12px
-  );
-  --clip-lg: polygon(
-    20px 0,
-    100% 0,
-    100% calc(100% - 20px),
-    calc(100% - 20px) 100%,
-    0 100%,
-    0 20px
-  );
-  /* те же формы, уменьшенные на 1px внутрь — «заливка» внутри рамки */
-  --clip-md-inner: polygon(
-    11.6px 0,
-    100% 0,
-    100% calc(100% - 11.6px),
-    calc(100% - 11.6px) 100%,
-    0 100%,
-    0 11.6px
-  );
-  --clip-lg-inner: polygon(
-    19.6px 0,
-    100% 0,
-    100% calc(100% - 19.6px),
-    calc(100% - 19.6px) 100%,
-    0 100%,
-    0 19.6px
-  );
-}
 
 /* ---------- Контейнер (ограничение ширины и боковые отступы) ---------- */
 .container {
@@ -68,24 +14,21 @@
   padding-right: 16px;
 }
 
-/* ---------- Ссылка с неоновым подчёркиванием ---------- */
+/* ---------- Ссылка с анимированным подчёркиванием ---------- */
 .story-link {
   position: relative;
   display: inline-block;
-  transition:
-    color 0.15s ease,
-    text-shadow 0.15s ease;
+  transition: color 0.15s ease;
 }
 
 .story-link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -1px;
+  bottom: 0;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  box-shadow: 0 0 6px hsl(var(--neon-2) / 0.8);
+  background: currentColor;
   transform: scaleX(0);
   transform-origin: bottom right;
   transition: transform 0.3s ease;
@@ -96,7 +39,7 @@
   transform-origin: bottom left;
 }
 
-/* ---------- Логотип: неоновый ромб с треугольником «play» ---------- */
+/* ---------- Логотип: ромб с треугольником «play» и золотой искрой ---------- */
 .logo {
   display: flex;
   align-items: center;
@@ -108,7 +51,6 @@
   height: 34px;
   flex-shrink: 0;
   overflow: visible;
-  filter: drop-shadow(0 0 6px hsl(var(--neon-1) / var(--glow-strength)));
 }
 
 /* Ромб (квадрат, повёрнутый на 45°) и треугольник плавно анимируются */
@@ -120,19 +62,17 @@
 }
 
 .logo__diamond {
-  fill: hsl(var(--neon-1) / 0.14);
-  stroke: hsl(var(--neon-1));
-  stroke-width: 2;
+  fill: hsl(var(--foreground));
   transform: rotate(45deg);
 }
 
 .logo__play {
-  fill: hsl(var(--neon-2));
+  fill: hsl(var(--background));
 }
 
 /* Искра — периодически «вспыхивает» */
 .logo__spark {
-  fill: hsl(var(--neon-2));
+  fill: hsl(var(--star));
   transform-box: fill-box;
   transform-origin: center;
   animation: logo-spark 3.2s ease-in-out infinite;
@@ -162,139 +102,103 @@
 
 .logo__text {
   font-family: var(--font-head);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   text-transform: uppercase;
   line-height: 1;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 
-/* «Games» — градиентом маджента → циан */
 .logo__text-light {
-  font-weight: 700;
-  background: linear-gradient(90deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-weight: 400;
+  color: hsl(var(--muted-foreground));
+  transition: color 0.15s ease;
 }
 
-/* ---------- Кнопки ----------
-   Фон и скос рисует ::before, свечение — filter на самой кнопке. */
+.logo:hover .logo__text-light {
+  color: hsl(var(--foreground));
+}
+
+/* ---------- Кнопки ---------- */
 .btn {
-  position: relative;
-  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: var(--font-head);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  border-radius: var(--radius);
+  font-weight: 500;
   white-space: nowrap;
   transition:
+    opacity 0.15s ease,
     transform 0.15s ease,
-    filter 0.2s ease,
-    color 0.15s ease;
+    border-color 0.15s ease;
 }
 
-.btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  clip-path: var(--clip-sm);
-  transition: opacity 0.2s ease;
-}
-
-/* Основная кнопка: неоновый градиент, тёмный текст (в светлой теме — белый) */
+/* Основная кнопка (светлая в тёмной теме, тёмная в светлой) */
 .btn--primary {
-  color: hsl(var(--on-neon));
-}
-
-.btn--primary::before {
-  background: linear-gradient(100deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
 }
 
 .btn--primary:hover {
-  transform: translateY(-1px);
-  filter: drop-shadow(0 0 10px hsl(var(--neon-1) / var(--glow-strength)))
-    drop-shadow(0 0 4px hsl(var(--neon-2) / var(--glow-strength)));
+  opacity: 0.9;
 }
 
-.btn--primary:active {
-  transform: translateY(0);
-}
-
-/* Обводка: неоновая рамка из двух слоёв (рамка + заливка фона) */
-.btn--outline::before {
-  background:
-    linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
-    linear-gradient(100deg, hsl(var(--neon-1)), hsl(var(--neon-2))) border-box;
-  border: 1px solid transparent;
+/* Обводка */
+.btn--outline {
+  border: 1px solid hsl(var(--border));
 }
 
 .btn--outline:hover {
-  color: hsl(var(--neon-2));
-  filter: drop-shadow(0 0 8px hsl(var(--neon-2) / var(--glow-strength)));
+  border-color: hsl(var(--muted-foreground));
 }
 
 /* Размеры */
 .btn--sm {
   padding: 8px 16px;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   line-height: 1.25rem;
 }
 
 .btn--md {
-  padding: 10px 22px;
-  font-size: 0.85rem;
+  padding: 10px 20px;
 }
 
 .btn--lg {
-  padding: 12px 26px;
-  font-size: 0.85rem;
+  padding: 11px 26px;
 }
 
-/* Кнопка на всю ширину формы, высота 46px */
+/* Кнопка на всю ширину формы, высота 44px */
 .btn--block {
   width: 100%;
-  height: 46px;
+  height: 44px;
 }
 
-/* Квадратная кнопка-иконка 34×34 (тема, бургер) */
+/* Квадратная кнопка-иконка 30×30 (тема, бургер) */
 .icon-btn {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   flex-shrink: 0;
   border-radius: var(--radius);
   color: hsl(var(--muted-foreground));
   transition:
     color 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.2s ease;
+    transform 0.15s ease;
 }
 
 .icon-btn:hover {
-  color: hsl(var(--neon-2));
+  color: hsl(var(--foreground));
 }
 
 .icon-btn--bordered {
   border: 1px solid hsl(var(--border));
 }
 
-.icon-btn--bordered:hover {
-  border-color: hsl(var(--neon-2));
-  box-shadow:
-    0 0 10px hsl(var(--neon-2) / 0.35),
-    inset 0 0 8px hsl(var(--neon-2) / 0.2);
-}
-
 .icon-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
 }
 
 /* Общий вид линейных SVG-иконок (lucide) */
@@ -307,34 +211,9 @@
   flex-shrink: 0;
 }
 
-/* ---------- Шапка: «стеклянная» панель с неоновой линией снизу ---------- */
+/* ---------- Шапка ---------- */
 .header {
-  position: relative;
-  z-index: 5;
-  padding: 10px 14px;
-  background: hsl(var(--background) / 0.55);
-  border: 1px solid hsl(var(--border) / 0.7);
-  border-bottom: 0;
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
   animation: fade-in 0.6s ease-out both;
-}
-
-/* Нижняя неоновая линия-градиент */
-.header::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    hsl(var(--neon-1)),
-    hsl(var(--neon-2)) 60%,
-    transparent
-  );
-  box-shadow: 0 0 12px hsl(var(--neon-1) / var(--glow-strength));
 }
 
 .header__nav {
@@ -342,29 +221,19 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  font-size: 0.8rem;
-  line-height: 1.45;
+  font-size: 0.88rem;
+  line-height: 1.35;
 }
 
 /* Колонки ссылок — скрыты на мобильных и планшетах (там бургер) */
 .header__group {
   display: none;
   color: hsl(var(--muted-foreground));
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 500;
 }
 
 .header__link:hover,
 .header__link--active {
-  color: hsl(var(--neon-2));
-  text-shadow: 0 0 10px hsl(var(--neon-2) / var(--glow-strength));
-}
-
-/* «Админ-панель» — моноширинной служебной меткой */
-.header__group--admin {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  color: hsl(var(--foreground));
 }
 
 .header__actions {
@@ -394,10 +263,6 @@
 
 /* Десктоп (≥1280px): бургер скрыт, ссылки — в четыре колонки по сетке */
 @media (min-width: 1280px) {
-  .header {
-    padding: 12px 20px;
-  }
-
   .header__nav {
     display: grid;
     /* Логотип, четыре группы ссылок (включая «Админ-панель») и кнопки */
@@ -430,9 +295,7 @@
 .drawer__overlay {
   position: absolute;
   inset: 0;
-  background: hsl(250 40% 3% / 0.8);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  background: rgb(0 0 0 / 0.8);
   animation: overlay-in 0.3s ease both;
 }
 
@@ -441,15 +304,13 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 290px;
+  width: 280px;
   max-width: 100%;
   overflow-y: auto;
   padding: 24px;
-  background:
-    linear-gradient(180deg, hsl(var(--neon-1) / 0.08), transparent 40%),
-    hsl(var(--popover));
-  border-left: 1px solid hsl(var(--neon-1) / 0.6);
-  box-shadow: -10px 0 40px -10px hsl(var(--neon-1) / 0.45);
+  background: hsl(var(--background));
+  border-left: 1px solid hsl(var(--border));
+  box-shadow: var(--shadow-lg);
   animation: slide-in-right 0.4s ease both;
 }
 
@@ -458,8 +319,7 @@
   right: auto;
   left: 0;
   border-left: 0;
-  border-right: 1px solid hsl(var(--neon-2) / 0.6);
-  box-shadow: 10px 0 40px -10px hsl(var(--neon-2) / 0.4);
+  border-right: 1px solid hsl(var(--border));
   animation-name: slide-in-left;
 }
 
@@ -467,20 +327,13 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border: 1px solid hsl(var(--border));
+  opacity: 0.7;
   color: hsl(var(--foreground));
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
 .drawer__close:hover {
-  color: hsl(var(--neon-1));
-  border-color: hsl(var(--neon-1));
+  opacity: 1;
 }
 
 .drawer__close svg {
@@ -492,91 +345,49 @@
   margin-bottom: 32px;
 }
 
-/* Пункты меню с номерами 01…07 (CSS-счётчик) */
 .drawer__list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   font-family: var(--font-head);
-  font-size: 1.05rem;
-  line-height: 1.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  counter-reset: drawer;
-}
-
-.drawer__list li {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  counter-increment: drawer;
-}
-
-.drawer__list li::before {
-  content: counter(drawer, decimal-leading-zero);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: hsl(var(--neon-2));
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .drawer__link:hover {
-  color: hsl(var(--neon-2));
-  text-shadow: 0 0 10px hsl(var(--neon-2) / var(--glow-strength));
+  color: hsl(var(--foreground));
 }
 
 /* ---------- Рейтинг звёздами ---------- */
 .stars {
   color: hsl(var(--star));
   letter-spacing: 1px;
-  text-shadow: 0 0 6px hsl(var(--star) / 0.45);
 }
 
 .stars__empty {
-  opacity: 0.25;
-  text-shadow: none;
+  opacity: 0.3;
 }
 
-/* ---------- Карточка игры ----------
-   ::before — неоновая рамка со скошенными углами; медиа и тело карточки
-   обрезаны той же формой (на 1px меньше), так что рамка видна по краю.
-   При наведении: рамка становится градиентной, картинка приближается,
-   вокруг карточки — неоновое свечение (drop-shadow повторяет скос). */
+/* ---------- Карточка игры ---------- */
 .game-card {
   position: relative;
-  isolation: isolate;
   display: flex;
   flex-direction: column;
-  padding: 1px;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow);
   cursor: pointer;
   transition:
     transform 0.3s ease,
-    filter 0.3s ease,
+    border-color 0.3s ease,
     opacity 0.3s ease;
-}
-
-.game-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  clip-path: var(--clip-md);
-  background: linear-gradient(
-    135deg,
-    hsl(var(--neon-1) / 0.55),
-    hsl(var(--border)) 35%,
-    hsl(var(--border)) 65%,
-    hsl(var(--neon-2) / 0.55)
-  );
-  transition: background 0.3s ease;
 }
 
 .game-card:hover {
   transform: translateY(-4px);
-  filter: drop-shadow(0 0 14px hsl(var(--neon-1) / var(--glow-strength)));
-}
-
-.game-card:hover::before {
-  background: linear-gradient(135deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
+  border-color: hsl(var(--muted-foreground) / 0.5);
 }
 
 /* Скрытая фильтром карточка */
@@ -589,58 +400,27 @@
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: hsl(var(--surface));
-  /* скошен только верхний левый угол */
-  clip-path: polygon(11.6px 0, 100% 0, 100% 100%, 0 100%, 0 11.6px);
-}
-
-/* Неоновая подсветка снизу картинки при наведении */
-.game-card__media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    hsl(var(--neon-1) / 0.35),
-    transparent 55%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.game-card:hover .game-card__media::after {
-  opacity: 1;
 }
 
 .game-card__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition:
-    transform 0.7s ease,
-    filter 0.7s ease;
+  transition: transform 0.7s ease;
 }
 
 .game-card:hover .game-card__image {
-  transform: scale(1.08);
-  filter: saturate(1.25) contrast(1.05);
+  transform: scale(1.05);
 }
 
-/* Метка жанра: моноширинный капс, скошенная плашка */
 .game-card__badge {
   position: absolute;
   top: 12px;
-  left: 14px;
-  padding: 4px 10px;
-  background: hsl(var(--background) / 0.75);
-  border-left: 2px solid hsl(var(--neon-2));
-  clip-path: polygon(0 0, 100% 0, 100% 70%, calc(100% - 6px) 100%, 0 100%);
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: hsl(var(--neon-2));
+  left: 12px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  background: hsl(var(--background) / 0.8);
+  font-size: 0.7rem;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
@@ -651,29 +431,12 @@
   flex-direction: column;
   gap: 4px;
   padding: 16px;
-  background: hsl(var(--card));
-  border-top: 1px solid hsl(var(--neon-1) / 0.35);
-  /* скошен только нижний правый угол */
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 11.6px),
-    calc(100% - 11.6px) 100%,
-    0 100%
-  );
 }
 
 .game-card__title {
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 500;
   line-height: 1.25;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  transition: text-shadow 0.3s ease;
-}
-
-.game-card:hover .game-card__title {
-  text-shadow: 0 0 12px hsl(var(--neon-1) / var(--glow-strength));
 }
 
 /* Ссылка в заголовке растянута на всю карточку — вся карточка кликабельна */
@@ -700,20 +463,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
   margin-top: auto;
   padding-top: 16px;
 }
 
-/* Цена — моноширинным шрифтом, неоновым циановым */
 .game-card__price {
-  font-family: var(--font-mono);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-family: var(--font-head);
+  font-size: 1.25rem;
   line-height: 1.75rem;
-  color: hsl(var(--neon-2));
-  text-shadow: 0 0 10px hsl(var(--neon-2) / calc(var(--glow-strength) * 0.8));
-  white-space: nowrap;
 }
 
 /* Кнопка поверх растянутой ссылки */
@@ -722,31 +479,9 @@
   z-index: 2;
 }
 
-/* ---------- Подвал: градиентная неоновая линия сверху ---------- */
+/* ---------- Подвал ---------- */
 .footer {
-  position: relative;
-  background: linear-gradient(
-    180deg,
-    hsl(var(--neon-1) / 0.06),
-    transparent 60%
-  );
-}
-
-.footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    hsl(var(--neon-1)) 20%,
-    hsl(var(--neon-2)) 80%,
-    transparent
-  );
-  box-shadow: 0 0 14px hsl(var(--neon-1) / var(--glow-strength));
+  border-top: 1px solid hsl(var(--border));
 }
 
 .footer__grid {
@@ -766,7 +501,7 @@
 .footer__text {
   max-width: 20rem;
   font-size: 0.875rem;
-  line-height: 1.35rem;
+  line-height: 1.25rem;
   color: hsl(var(--muted-foreground));
 }
 
@@ -781,55 +516,46 @@
   align-items: center;
   gap: 8px;
   transition:
-    color 0.15s ease,
-    text-shadow 0.15s ease;
+    opacity 0.15s ease,
+    color 0.15s ease;
 }
 
 .footer__contact svg {
   width: 16px;
   height: 16px;
-  color: hsl(var(--neon-1));
 }
 
-/* Телефон — моноширинным шрифтом, как «цифровое табло» */
 .footer__contact--phone {
-  font-family: var(--font-mono);
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-family: var(--font-head);
+  font-size: 1.25rem;
   line-height: 1.75rem;
-  letter-spacing: 0.04em;
 }
 
-.footer__contact--phone:hover,
-.footer__contact--mail:hover {
-  color: hsl(var(--neon-2));
-  text-shadow: 0 0 10px hsl(var(--neon-2) / var(--glow-strength));
+.footer__contact--phone:hover {
+  opacity: 0.8;
 }
 
 .footer__contact--mail {
   color: hsl(var(--muted-foreground));
 }
 
+.footer__contact--mail:hover {
+  color: hsl(var(--foreground));
+}
+
 .footer__title {
   margin-bottom: 16px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
+  font-size: 0.75rem;
   line-height: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: hsl(var(--neon-2));
+  letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground));
 }
 
 .footer__list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 0.92rem;
-}
-
-.footer__list a:hover {
-  color: hsl(var(--neon-2));
 }
 
 .footer__bottom {
@@ -839,84 +565,67 @@
   padding-top: 20px;
   padding-bottom: 20px;
   border-top: 1px solid hsl(var(--border));
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   line-height: 1rem;
-  letter-spacing: 0.06em;
   color: hsl(var(--muted-foreground));
 }
 
 .footer__bottom-link:hover {
-  color: hsl(var(--neon-2));
+  color: hsl(var(--foreground));
 }
 
-/* ---------- Поля форм: скошенные, неоновая подсветка при фокусе ---------- */
+/* ---------- Поля форм ---------- */
 .field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
-/* Подпись — моноширинный капс */
 .field__label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.875rem;
   font-weight: 500;
   line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
   color: hsl(var(--muted-foreground));
 }
 
 .field__input {
   width: 100%;
-  height: 46px;
-  padding: 8px 14px;
+  height: 44px;
+  padding: 8px 12px;
   border: 1px solid hsl(var(--input));
-  border-radius: 0;
-  background: hsl(var(--background) / 0.6);
+  border-radius: var(--radius);
+  background: transparent;
   font-size: 1rem;
-  clip-path: var(--clip-sm);
-  caret-color: hsl(var(--neon-2));
   transition:
     border-color 0.15s ease,
-    box-shadow 0.15s ease,
-    background-color 0.15s ease;
+    box-shadow 0.15s ease;
 }
 
 .field__input::placeholder {
-  color: hsl(var(--muted-foreground) / 0.8);
+  color: hsl(var(--muted-foreground));
 }
 
-.field__input:hover {
-  border-color: hsl(var(--neon-1) / 0.6);
-}
-
-/* Фокус: циановая рамка + внутреннее свечение (видно и при скосе) */
-.field__input:focus,
-.field__input:focus-visible {
+.field__input:focus {
   outline: none;
-  border-color: hsl(var(--ring));
-  background: hsl(var(--ring) / 0.05);
   box-shadow:
-    inset 0 0 0 1px hsl(var(--ring)),
-    inset 0 0 14px hsl(var(--ring) / 0.25);
+    0 0 0 2px hsl(var(--background)),
+    0 0 0 4px hsl(var(--ring));
 }
 
 /* Многострочное поле */
 .field__input--textarea {
   height: auto;
-  min-height: 90px;
+  min-height: 80px;
   resize: vertical;
 }
 
-/* Выпадающий список жанров (стрелка — неоновая) */
+/* Выпадающий список жанров */
 .field__input--select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   padding-right: 36px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300c8d6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8c90' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   cursor: pointer;
@@ -931,13 +640,11 @@
 .field--error .field__input,
 .field__input--error {
   border-color: hsl(var(--destructive));
-  box-shadow: inset 0 0 12px hsl(var(--destructive) / 0.2);
 }
 
 .field__error {
   display: none;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   line-height: 1rem;
   color: hsl(var(--destructive));
   animation: fade-in 0.6s ease-out both;
@@ -949,23 +656,18 @@
 
 @media (min-width: 768px) {
   .field__input {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
   }
 }
 
-/* ---------- Чекбокс (нативный, стилизованный, неоновый) ---------- */
+/* ---------- Чекбокс (нативный, стилизованный) ---------- */
 .checkbox {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.25rem;
   cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.checkbox:hover {
-  color: hsl(var(--neon-2));
 }
 
 .checkbox__input {
@@ -974,35 +676,22 @@
   appearance: none;
   display: grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
-  border: 1px solid hsl(var(--neon-1) / 0.8);
-  border-radius: 0;
+  border: 1px solid hsl(var(--primary));
+  border-radius: 2px;
   cursor: pointer;
-  transition:
-    box-shadow 0.15s ease,
-    background-color 0.15s ease;
-}
-
-.checkbox__input:hover {
-  box-shadow: 0 0 8px hsl(var(--neon-1) / var(--glow-strength));
 }
 
 .checkbox__input:checked {
-  border-color: transparent;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b0914' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
-      center / 12px no-repeat,
-    linear-gradient(135deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  box-shadow: 0 0 10px hsl(var(--neon-1) / var(--glow-strength));
+  background: hsl(var(--primary))
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23131316' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
 }
 
 .theme-light .checkbox__input:checked {
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
-      center / 12px no-repeat,
-    linear-gradient(135deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f2' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
 }
 
 .checkbox--top {
@@ -1015,108 +704,59 @@
 
 .checkbox__count {
   margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   line-height: 1rem;
   color: hsl(var(--muted-foreground));
 }
 
-/* ---------- Переключатель (switch): неоновая дорожка ---------- */
+/* ---------- Переключатель (switch) ---------- */
 .switch {
   position: relative;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 46px;
+  width: 44px;
   height: 24px;
   flex-shrink: 0;
-  border: 1px solid hsl(var(--input));
-  border-radius: 0;
-  background: hsl(var(--secondary));
-  clip-path: polygon(
-    5px 0,
-    100% 0,
-    100% calc(100% - 5px),
-    calc(100% - 5px) 100%,
-    0 100%,
-    0 5px
-  );
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background: hsl(var(--input));
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .switch::before {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 16px;
-  height: 16px;
-  background: hsl(var(--muted-foreground));
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: hsl(var(--background));
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s ease;
 }
 
 .switch:checked {
-  border-color: transparent;
-  background: linear-gradient(90deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
+  background: hsl(var(--primary));
 }
 
 .switch:checked::before {
-  background: hsl(var(--on-neon));
-  transform: translateX(22px);
+  transform: translateX(20px);
 }
 
-/* Скошенный переключатель: вместо контура фокуса — внутреннее кольцо */
-.switch:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 2px hsl(var(--ring));
-}
-
-/* ---------- Модальное окно (на основе <dialog>): HUD-панель ---------- */
+/* ---------- Модальное окно (на основе <dialog>) ---------- */
 .modal {
   width: calc(100% - 32px);
   max-width: 512px;
   margin: auto;
-  padding: 26px 24px 24px;
-  border: 1px solid hsl(var(--neon-1) / 0.6);
-  border-radius: 0;
-  background:
-    linear-gradient(
-      135deg,
-      hsl(var(--neon-1)) calc(14px * 0.7071 + 1px),
-      transparent 0
-    ),
-    linear-gradient(
-      -45deg,
-      hsl(var(--neon-2)) calc(14px * 0.7071 + 1px),
-      transparent 0
-    ),
-    linear-gradient(180deg, hsl(var(--neon-1) / 0.08), transparent 45%),
-    hsl(var(--popover));
+  padding: 24px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--background));
   color: hsl(var(--foreground));
-  clip-path: polygon(
-    14px 0,
-    100% 0,
-    100% calc(100% - 14px),
-    calc(100% - 14px) 100%,
-    0 100%,
-    0 14px
-  );
-}
-
-/* Неоновая полоса сверху модалки */
-.modal::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 30%;
-  left: 14px;
-  height: 2px;
-  background: linear-gradient(90deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
+  box-shadow: var(--shadow-lg);
 }
 
 .modal[open] {
@@ -1124,9 +764,7 @@
 }
 
 .modal::backdrop {
-  background: hsl(250 40% 3% / 0.82);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  background: rgb(0 0 0 / 0.8);
 }
 
 /* Модалка с картинкой во всю ширину (каталог) */
@@ -1139,20 +777,12 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid hsl(var(--border));
-  color: hsl(var(--foreground));
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
 }
 
 .modal__close:hover {
-  color: hsl(var(--neon-1));
-  border-color: hsl(var(--neon-1));
+  opacity: 1;
 }
 
 .modal__close svg {
@@ -1163,23 +793,21 @@
 .modal__header {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 18px;
-  padding-right: 32px;
-  text-align: left;
+  gap: 6px;
+  margin-bottom: 16px;
+  text-align: center;
 }
 
 .modal__title {
-  font-size: 1.15rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  line-height: 1;
+  letter-spacing: -0.025em;
 }
 
 .modal__text {
   font-size: 0.875rem;
-  line-height: 1.35rem;
+  line-height: 1.25rem;
   color: hsl(var(--muted-foreground));
 }
 
@@ -1189,7 +817,13 @@
   gap: 12px;
 }
 
-/* ---------- Всплывающее уведомление: неоновая полоска слева ---------- */
+@media (min-width: 640px) {
+  .modal__header {
+    text-align: left;
+  }
+}
+
+/* ---------- Всплывающее уведомление ---------- */
 .toast-region {
   position: fixed;
   right: 16px;
@@ -1209,29 +843,16 @@
   gap: 8px;
   width: 100%;
   max-width: 356px;
-  padding: 14px 16px 14px 18px;
-  border: 1px solid hsl(var(--neon-2) / 0.5);
-  border-left: 3px solid hsl(var(--neon-2));
-  background: hsl(var(--popover) / 0.95);
-  box-shadow:
-    var(--shadow-xl),
-    0 0 18px hsl(var(--neon-2) / calc(var(--glow-strength) * 0.5));
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 10px),
-    calc(100% - 10px) 100%,
-    0 100%
-  );
+  padding: 16px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--popover));
+  box-shadow: var(--shadow-xl);
   font-size: 0.875rem;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
   animation: fade-in 0.3s ease-out both;
 }
 
 .toast--error {
-  border-color: hsl(var(--destructive) / 0.6);
-  border-left-color: hsl(var(--destructive));
   color: hsl(var(--destructive));
 }
 
@@ -1267,9 +888,8 @@
 }
 
 /* ==========================================================================
-   Чат поддержки (блок .chat) — неоновый терминал
-   Плавающая кнопка-ромб с градиентом и свечением в правом нижнем углу
-   и окно переписки в виде HUD-панели со скошенными углами.
+   Чат поддержки (блок .chat)
+   Плавающая круглая кнопка в правом нижнем углу и окно переписки.
    360px: окно на всю ширину экрана над кнопкой.
    ≥768px: окно фиксированной ширины 380px, выровнено по правому краю.
    ========================================================================== */
@@ -1284,48 +904,33 @@
   gap: 12px;
 }
 
-/* Кнопка открытия: градиент маджента → циан, скошенные углы (::before),
-   неоновое свечение повторяет форму */
+/* Кнопка открытия */
 .chat__toggle {
   position: relative;
-  isolation: isolate;
   display: grid;
   place-items: center;
   width: 56px;
   height: 56px;
   border: 0;
-  background: transparent;
-  color: hsl(var(--on-neon));
+  border-radius: 50%;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: var(--shadow-xl);
   cursor: pointer;
-  filter: drop-shadow(0 0 10px hsl(var(--neon-1) / var(--glow-strength)));
-  transition:
-    transform 0.3s var(--ease-spring),
-    filter 0.3s ease;
-}
-
-.chat__toggle::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(135deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  clip-path: var(--clip-md);
+  transition: transform 0.3s var(--ease-spring);
 }
 
 .chat__toggle:hover {
   transform: scale(1.07);
-  filter: drop-shadow(0 0 16px hsl(var(--neon-1) / 0.8))
-    drop-shadow(0 0 6px hsl(var(--neon-2) / 0.6));
 }
 
-/* Неоновая «пульсация» рамки, пока чат ни разу не открыт */
+/* Мягкая «пульсация» кнопки, пока чат ни разу не открыт */
 .chat__toggle::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -2;
-  background: linear-gradient(135deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  clip-path: var(--clip-md);
+  border-radius: 50%;
+  border: 2px solid hsl(var(--primary));
   animation: chat-pulse 2.4s ease-out infinite;
   pointer-events: none;
 }
@@ -1335,23 +940,15 @@
 }
 
 @keyframes chat-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 .chat__icon {
   grid-area: 1 / 1;
   width: 24px;
   height: 24px;
-  transition:
-    transform 0.3s ease,
-    opacity 0.2s ease;
+  transition: transform 0.3s ease, opacity 0.2s ease;
 }
 
 .chat__icon--close {
@@ -1370,35 +967,17 @@
   transform: rotate(0);
 }
 
-/* Окно переписки — HUD-панель со скошенными углами */
+/* Окно переписки */
 .chat__window {
   display: flex;
   flex-direction: column;
   width: calc(100vw - 32px);
   height: min(520px, calc(100vh - 110px));
   overflow: hidden;
-  border: 1px solid hsl(var(--neon-1) / 0.55);
-  background:
-    linear-gradient(
-      135deg,
-      hsl(var(--neon-1)) calc(14px * 0.7071 + 1px),
-      transparent 0
-    ),
-    linear-gradient(
-      -45deg,
-      hsl(var(--neon-2)) calc(14px * 0.7071 + 1px),
-      transparent 0
-    ),
-    hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
   box-shadow: var(--shadow-xl);
-  clip-path: polygon(
-    14px 0,
-    100% 0,
-    100% calc(100% - 14px),
-    calc(100% - 14px) 100%,
-    0 100%,
-    0 14px
-  );
   -webkit-transform-origin: bottom right;
   transform-origin: bottom right;
   animation: chat-in 0.25s var(--ease-spring);
@@ -1409,39 +988,16 @@
 }
 
 @keyframes chat-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: none; }
 }
 
 .chat__header {
-  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px 14px 20px;
-  background: linear-gradient(90deg, hsl(var(--neon-1) / 0.14), transparent);
-}
-
-/* Неоновая линия под шапкой чата */
-.chat__header::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    hsl(var(--neon-1)),
-    hsl(var(--neon-2)),
-    transparent
-  );
+  padding: 14px 16px;
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .chat__avatar {
@@ -1449,16 +1005,8 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  color: hsl(var(--on-neon));
-  clip-path: polygon(
-    8px 0,
-    100% 0,
-    100% calc(100% - 8px),
-    calc(100% - 8px) 100%,
-    0 100%,
-    0 8px
-  );
+  border-radius: 50%;
+  background: hsl(var(--secondary));
 }
 
 .chat__avatar .icon {
@@ -1474,31 +1022,22 @@
 .chat__title {
   font-size: 0.85rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: -0.01em;
 }
 
 .chat__status {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
   color: hsl(var(--muted-foreground));
 }
 
 .chat__dot {
   width: 7px;
   height: 7px;
-  background: hsl(150 100% 50%);
-  box-shadow: 0 0 8px hsl(150 100% 50%);
-  animation: neon-pulse 1.8s ease-in-out infinite;
-}
-
-.theme-light .chat__dot {
-  background: hsl(150 90% 32%);
-  box-shadow: none;
+  border-radius: 50%;
+  background: #3fbf6f;
 }
 
 .chat__close .icon {
@@ -1523,6 +1062,7 @@
 .chat__message {
   max-width: 85%;
   padding: 9px 12px;
+  border-radius: var(--radius);
   font-size: 0.88rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -1530,37 +1070,19 @@
 }
 
 @keyframes chat-msg {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
 }
 
-/* Ответ бота — тёмная плашка с циановой полосой слева */
 .chat__message--bot {
   align-self: flex-start;
   background: hsl(var(--secondary));
-  border-left: 2px solid hsl(var(--neon-2));
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 8px),
-    calc(100% - 8px) 100%,
-    0 100%
-  );
 }
 
-/* Сообщение пользователя — неоновый градиент */
 .chat__message--user {
   align-self: flex-end;
-  background: linear-gradient(120deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  color: hsl(var(--on-neon));
-  font-weight: 500;
-  clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%, 0 8px);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
 }
 
 /* Индикатор «оператор печатает» — три точки */
@@ -1573,31 +1095,20 @@
 .chat__typing-dot {
   width: 6px;
   height: 6px;
-  background: hsl(var(--neon-2));
+  border-radius: 50%;
+  background: hsl(var(--muted-foreground));
   animation: chat-typing 1s infinite ease-in-out;
 }
 
-.chat__typing-dot:nth-child(2) {
-  animation-delay: 0.15s;
-}
-.chat__typing-dot:nth-child(3) {
-  animation-delay: 0.3s;
-}
+.chat__typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.chat__typing-dot:nth-child(3) { animation-delay: 0.3s; }
 
 @keyframes chat-typing {
-  0%,
-  60%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.5;
-  }
-  30% {
-    transform: translateY(-4px);
-    opacity: 1;
-  }
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
 }
 
-/* Быстрые вопросы — неоновые чипы */
+/* Быстрые вопросы */
 .chat__quick {
   display: flex;
   flex-wrap: wrap;
@@ -1607,25 +1118,21 @@
 
 .chat__chip {
   padding: 6px 10px;
-  border: 1px solid hsl(var(--neon-1) / 0.5);
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
   background: transparent;
   color: hsl(var(--foreground));
   font: inherit;
   font-size: 0.78rem;
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .chat__chip:hover {
-  border-color: hsl(var(--neon-2));
-  background: hsl(var(--neon-2) / 0.1);
-  color: hsl(var(--neon-2));
+  background: hsl(var(--accent));
 }
 
-/* Поле ввода — «командная строка» */
+/* Поле ввода */
 .chat__form {
   display: flex;
   gap: 8px;
@@ -1639,23 +1146,16 @@
   height: 42px;
   padding: 0 12px;
   border: 1px solid hsl(var(--input));
+  border-radius: var(--radius);
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  caret-color: hsl(var(--neon-2));
   font: inherit;
   font-size: 0.9rem;
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
 }
 
-.chat__input:focus,
-.chat__input:focus-visible {
+.chat__input:focus {
   outline: none;
   border-color: hsl(var(--ring));
-  box-shadow:
-    0 0 0 1px hsl(var(--ring)),
-    0 0 12px hsl(var(--ring) / 0.35);
 }
 
 .chat__send {
@@ -1664,14 +1164,15 @@
   width: 42px;
   height: 42px;
   border: 0;
-  background: linear-gradient(135deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
-  color: hsl(var(--on-neon));
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   cursor: pointer;
-  transition: box-shadow 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .chat__send:hover {
-  box-shadow: 0 0 14px hsl(var(--neon-1) / var(--glow-strength));
+  opacity: 0.9;
 }
 
 .chat__send .icon {
@@ -1696,19 +1197,12 @@
   }
 }
 
-/* Без анимаций и пульсаций свечения для тех, кто отключил их в системе */
+/* Без анимаций для тех, кто отключил их в системе */
 @media (prefers-reduced-motion: reduce) {
   .chat__toggle::after,
   .chat__window,
   .chat__message,
-  .chat__typing-dot,
-  .chat__dot,
-  .logo__spark {
+  .chat__typing-dot {
     animation: none;
-  }
-
-  .game-card:hover,
-  .btn--primary:hover {
-    transform: none;
   }
 }

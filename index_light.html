@@ -20,9 +20,9 @@
     <meta property="og:image" content="img/cyber-drift.webp">
     <meta name="twitter:image" content="img/cyber-drift.webp">
 
-    <!-- Шрифты: Tektur (заголовки, кириллица), Exo 2 (текст), JetBrains Mono (цены, метки) -->
+    <!-- Шрифты: Unbounded (заголовки) и Onest (текст) -->
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&family=Exo+2:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Onest:wght@400;500;600;700&display=swap">
 
     <!-- Стили сайта -->
     <link rel="stylesheet" href="css/variables.css">
@@ -125,15 +125,6 @@
             <img class="hero__image" src="img/void-runner.webp" alt="Void Runner — постер игры" data-title="Void Runner" data-price="1799" data-tag="Ранний доступ" width="1360" height="768" loading="lazy" decoding="async">
         </div>
         <div class="hero__shade"></div>
-        <!-- HUD-декор: уголки рамки и служебная строка со счётчиком слайдов -->
-        <span class="hero__hud hero__hud--tl" aria-hidden="true"></span>
-        <span class="hero__hud hero__hud--tr" aria-hidden="true"></span>
-        <span class="hero__hud hero__hud--bl" aria-hidden="true"></span>
-        <span class="hero__hud hero__hud--br" aria-hidden="true"></span>
-        <div class="hero__status" aria-hidden="true">
-          <span class="hero__live">New releases</span>
-          <span class="hero__counter"><span class="hero__counter-current" data-slide-current>01</span> / <span data-slide-total>03</span></span>
-        </div>
         <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Предыдущий слайд"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 18-6-6 6-6"/></svg></button>
         <button class="hero__arrow hero__arrow--next" type="button" aria-label="Следующий слайд"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg></button>
         <div class="hero__content hero__content--animate" aria-live="polite">
@@ -158,7 +149,6 @@
       <form class="genre-search__form" role="search" action="catalog.html" method="get" novalidate>
         <div class="genre-search__box">
           <label class="visually-hidden" for="genre-input">Жанр игры</label>
-          <span class="genre-search__prompt" aria-hidden="true">&gt;</span>
           <input class="genre-search__input" id="genre-input" name="genre" type="text" placeholder="Шутер, RPG, стратегия…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="genre-hints">
           <button class="btn btn--primary btn--lg" type="submit">Найти</button>
         </div>

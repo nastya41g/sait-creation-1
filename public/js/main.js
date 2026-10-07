@@ -159,16 +159,7 @@
     var tag = slider.querySelector('.hero__tag');
     var title = slider.querySelector('.hero__title');
     var price = slider.querySelector('.hero__price');
-    // HUD-счётчик «01 / 03» (необязательный декоративный элемент)
-    var counterCurrent = slider.querySelector('[data-slide-current]');
-    var counterTotal = slider.querySelector('[data-slide-total]');
     var index = 0;
-
-    function pad(n) {
-      return (n < 10 ? '0' : '') + n;
-    }
-
-    if (counterTotal) counterTotal.textContent = pad(images.length);
     var timer = null;
     var paused = false;
 
@@ -186,7 +177,6 @@
       tag.textContent = cur.dataset.tag;
       title.textContent = cur.dataset.title;
       price.textContent = formatPrice(cur.dataset.price);
-      if (counterCurrent) counterCurrent.textContent = pad(index + 1);
       // Перезапуск анимации появления текста
       content.classList.remove('hero__content--animate');
       void content.offsetWidth;
