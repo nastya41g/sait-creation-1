@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <!--
   BestGames — index_light.html
-  Главная страница в фиксированной светлой теме (модификатор блока page для светлой темы, отличия описаны в css/home.css).
+  Главная страница в фиксированной светлой теме (класс page--light, отличия описаны в css/home.css).
   Чистые HTML + CSS (БЭМ) + небольшой vanilla JS. Стили: public/css/, скрипты: public/js/.
 -->
 <html lang="ru" class="theme-light" data-forced-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>BestGames — светлая версия главной</title>
-    <meta name="description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7.">
-    <meta name="author" content="BestGames">
+    <meta name="description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7."/>
+    <meta name="author" content="BestGames"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta property="og:title" content="BestGames — светлая версия главной">
     <meta property="og:description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7.">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image" content="img/cyber-drift.webp">
-    <meta name="twitter:image" content="img/cyber-drift.webp">
+    <meta property="og:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+    <meta name="twitter:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
 
     <!-- Шрифты: Unbounded (заголовки) и Onest (текст) -->
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,9 +117,9 @@
     <div class="hero-layout__slider">
       <section class="hero" id="new" data-slider aria-roledescription="carousel" aria-label="Новинки игр">
         <div class="hero__slides">
-            <img class="hero__image hero__image--active" src="img/cyber-drift.webp" alt="Cyber Drift 2077 — постер игры" data-title="Cyber Drift 2077" data-price="2499" data-tag="Новинка" width="1024" height="1024" fetchpriority="high" decoding="async">
-            <img class="hero__image" src="img/ashen-crown.webp" alt="Ashen Crown — постер игры" data-title="Ashen Crown" data-price="1999" data-tag="Новинка недели" width="1360" height="768" loading="lazy" decoding="async">
-            <img class="hero__image" src="img/void-runner.webp" alt="Void Runner — постер игры" data-title="Void Runner" data-price="1799" data-tag="Ранний доступ" width="1360" height="768" loading="lazy" decoding="async">
+            <img class="hero__image hero__image--active" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg" alt="Cyber Drift 2077 — постер игры" data-title="Cyber Drift 2077" data-price="2499" data-tag="Новинка">
+            <img class="hero__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/b8e8af11-eed1-492a-a661-c537cacf5f95.jpg" alt="Ashen Crown — постер игры" data-title="Ashen Crown" data-price="1999" data-tag="Новинка недели" loading="lazy">
+            <img class="hero__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/ad5498fb-165a-428b-9e5b-dc0255291960.jpg" alt="Void Runner — постер игры" data-title="Void Runner" data-price="1799" data-tag="Ранний доступ" loading="lazy">
         </div>
         <div class="hero__shade"></div>
         <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Предыдущий слайд"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 18-6-6 6-6"/></svg></button>
@@ -131,10 +131,10 @@
             <span class="hero__price">2 499 ₽</span>
             <a class="btn btn--primary btn--lg hero__more" href="catalog.html">Подробнее</a>
           </div>
-          <div class="hero__dots" role="group" aria-label="Слайды">
-              <button class="hero__dot hero__dot--active" type="button" aria-current="true" aria-label="Слайд 1: Cyber Drift 2077"><span class="hero__dot-fill"></span></button>
-              <button class="hero__dot" type="button" aria-current="false" aria-label="Слайд 2: Ashen Crown"><span class="hero__dot-fill"></span></button>
-              <button class="hero__dot" type="button" aria-current="false" aria-label="Слайд 3: Void Runner"><span class="hero__dot-fill"></span></button>
+          <div class="hero__dots" role="tablist" aria-label="Слайды">
+              <button class="hero__dot hero__dot--active" type="button" role="tab" aria-selected="true" aria-label="Слайд 1: Cyber Drift 2077"><span class="hero__dot-fill"></span></button>
+              <button class="hero__dot" type="button" role="tab" aria-selected="false" aria-label="Слайд 2: Ashen Crown"><span class="hero__dot-fill"></span></button>
+              <button class="hero__dot" type="button" role="tab" aria-selected="false" aria-label="Слайд 3: Void Runner"><span class="hero__dot-fill"></span></button>
           </div>
         </div>
       </section>
@@ -166,65 +166,65 @@
       <ul class="popular-list__items">
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="img/starfall-legion-thumb.webp" alt="Starfall Legion" width="52" height="52" loading="lazy" decoding="async">
+              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="Starfall Legion" loading="lazy" width="52" height="52">
               <span class="popular-list__info">
                 <span class="popular-list__name">Starfall Legion</span>
                 <span class="popular-list__meta">Стратегия · Nova Forge</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
+                <span class="stars popular-list__stars" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
                 <span class="popular-list__price">1 499 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="img/hollow-pines-thumb.webp" alt="Hollow Pines" width="52" height="52" loading="lazy" decoding="async">
+              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" alt="Hollow Pines" loading="lazy" width="52" height="52">
               <span class="popular-list__info">
                 <span class="popular-list__name">Hollow Pines</span>
                 <span class="popular-list__meta">Хоррор · Ember Lab</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
+                <span class="stars popular-list__stars" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
                 <span class="popular-list__price">899 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="img/apex-rally-thumb.webp" alt="Apex Rally" width="52" height="52" loading="lazy" decoding="async">
+              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" alt="Apex Rally" loading="lazy" width="52" height="52">
               <span class="popular-list__info">
                 <span class="popular-list__name">Apex Rally</span>
                 <span class="popular-list__meta">Гонки · Drift Works</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
+                <span class="stars popular-list__stars" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
                 <span class="popular-list__price">1 299 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="img/runebound-thumb.webp" alt="Runebound" width="52" height="52" loading="lazy" decoding="async">
+              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" alt="Runebound" loading="lazy" width="52" height="52">
               <span class="popular-list__info">
                 <span class="popular-list__name">Runebound</span>
                 <span class="popular-list__meta">RPG · North Hall</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
+                <span class="stars popular-list__stars" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
                 <span class="popular-list__price">1 999 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="img/pixel-siege-thumb.webp" alt="Pixel Siege" width="52" height="52" loading="lazy" decoding="async">
+              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" alt="Pixel Siege" loading="lazy" width="52" height="52">
               <span class="popular-list__info">
                 <span class="popular-list__name">Pixel Siege</span>
                 <span class="popular-list__meta">Инди · Tiny Keep</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></span>
+                <span class="stars popular-list__stars" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></span>
                 <span class="popular-list__price">499 ₽</span>
               </span>
             </a>
@@ -282,13 +282,13 @@
           <!-- Карточка: Starfall Legion -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="img/starfall-legion-card.webp" alt="Обложка игры Starfall Legion" width="640" height="480" loading="lazy" decoding="async">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="Обложка игры Starfall Legion" loading="lazy" width="800" height="600">
               <span class="game-card__badge">Стратегия</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Starfall Legion</a></h3>
               <p class="game-card__meta">Стратегия · Nova Forge</p>
-              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 499 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -298,13 +298,13 @@
           <!-- Карточка: Hollow Pines -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="img/hollow-pines-card.webp" alt="Обложка игры Hollow Pines" width="640" height="480" loading="lazy" decoding="async">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" alt="Обложка игры Hollow Pines" loading="lazy" width="800" height="600">
               <span class="game-card__badge">Хоррор</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Hollow Pines</a></h3>
               <p class="game-card__meta">Хоррор · Ember Lab</p>
-              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">899 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -314,13 +314,13 @@
           <!-- Карточка: Apex Rally -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="img/apex-rally-card.webp" alt="Обложка игры Apex Rally" width="640" height="480" loading="lazy" decoding="async">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" alt="Обложка игры Apex Rally" loading="lazy" width="800" height="600">
               <span class="game-card__badge">Гонки</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Apex Rally</a></h3>
               <p class="game-card__meta">Гонки · Drift Works</p>
-              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 299 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -330,13 +330,13 @@
           <!-- Карточка: Runebound -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="img/runebound-card.webp" alt="Обложка игры Runebound" width="640" height="480" loading="lazy" decoding="async">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" alt="Обложка игры Runebound" loading="lazy" width="800" height="600">
               <span class="game-card__badge">RPG</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Runebound</a></h3>
               <p class="game-card__meta">RPG · North Hall</p>
-              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 999 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -346,13 +346,13 @@
           <!-- Карточка: Pixel Siege -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="img/pixel-siege-card.webp" alt="Обложка игры Pixel Siege" width="640" height="480" loading="lazy" decoding="async">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" alt="Обложка игры Pixel Siege" loading="lazy" width="800" height="600">
               <span class="game-card__badge">Инди</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Pixel Siege</a></h3>
               <p class="game-card__meta">Инди · Tiny Keep</p>
-              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">499 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>

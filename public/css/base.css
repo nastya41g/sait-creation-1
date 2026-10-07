@@ -16,10 +16,6 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  /* убираем серую подсветку при тапе в мобильных WebKit/Blink */
-  -webkit-tap-highlight-color: transparent;
   line-height: 1.5;
 }
 
@@ -85,28 +81,10 @@ h4 {
   letter-spacing: -0.03em;
 }
 
-/* --- Видимый фокус для клавиатуры ---
-   Фолбэк для старых Safari (<15.4) без :focus-visible — обычный :focus;
-   в современных браузерах контур при клике мышью убирается. */
-:focus {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-}
-
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
+/* --- Видимый фокус для клавиатуры --- */
 :focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
-}
-
-/* Подписи кнопок нельзя случайно выделить при двойном клике */
-button {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
 }
 
 /* --- Скрыто визуально, доступно скринридерам --- */
@@ -239,15 +217,5 @@ button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  /* Секции показываются сразу, без «выплывания» */
-  .js .reveal {
-    opacity: 1;
-    transform: none;
   }
 }
