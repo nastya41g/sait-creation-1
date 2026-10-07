@@ -1,6 +1,10 @@
 /* ==========================================================================
    BestGames — базовые стили: сброс, типографика, общие анимации,
    служебные классы (visually-hidden), анимация появления при скролле.
+   Стиль «Неон / Киберпанк»: фон с сеткой и неоновыми пятнами,
+   едва заметные линии развёртки поверх страницы, неоновое кольцо фокуса,
+   выделение текста в цветах неона. Анимации свечения отключаются при
+   prefers-reduced-motion.
    ========================================================================== */
 
 /* --- Сброс --- */
@@ -16,6 +20,10 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* убираем серую подсветку при тапе в мобильных WebKit/Blink */
+  -webkit-tap-highlight-color: transparent;
   line-height: 1.5;
 }
 
@@ -70,7 +78,7 @@ table {
   border-collapse: collapse;
 }
 
-/* --- Заголовки: шрифт Unbounded, плотный трекинг --- */
+/* --- Заголовки: шрифт Tektur (угловатый, с кириллицей) --- */
 h1,
 h2,
 h3,
@@ -78,13 +86,38 @@ h4 {
   font-family: var(--font-head);
   font-weight: inherit;
   font-size: inherit;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
-/* --- Видимый фокус для клавиатуры --- */
+/* Выделение текста — в цвете неона */
+::selection {
+  background: hsl(var(--neon-1) / 0.35);
+  color: hsl(var(--foreground));
+}
+
+/* --- Видимый фокус для клавиатуры ---
+   Фолбэк для старых Safari (<15.4) без :focus-visible — обычный :focus;
+   в современных браузерах контур при клике мышью убирается. */
+:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 :focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
+  box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2), 0 0 16px hsl(var(--ring) / 0.5);
+}
+
+/* Подписи кнопок нельзя случайно выделить при двойном клике */
+button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 /* --- Скрыто визуально, доступно скринридерам --- */
@@ -100,15 +133,63 @@ h4 {
   border: 0;
 }
 
-/* --- Фон страницы с мягким радиальным свечением --- */
+/* --- Фон страницы: неоновые пятна (маджента слева сверху, циан справа)
+   и тонкая сетка 48×48 px, затухающая книзу --- */
 .page {
+  position: relative;
   min-height: 100vh;
   overflow-x: hidden;
-  background: radial-gradient(
-    ellipse at 35% 30%,
-    hsl(var(--glow)),
-    hsl(var(--background)) 60%
+  background:
+    radial-gradient(
+      circle at 12% 8%,
+      hsl(var(--neon-1) / 0.18),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 92% 30%,
+      hsl(var(--neon-2) / 0.12),
+      transparent 36%
+    ),
+    linear-gradient(hsl(var(--grid-line)) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, hsl(var(--grid-line)) 1px, transparent 1px) 0 0 / 48px 48px,
+    hsl(var(--background));
+}
+
+/* Линии развёртки (scanlines) поверх всей страницы: очень слабые,
+   не перехватывают клики; в светлой теме выключены (--scanlines: 0) */
+.page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: var(--scanlines);
+  background: repeating-linear-gradient(
+    to bottom,
+    #000 0,
+    #000 1px,
+    transparent 1px,
+    transparent 3px
   );
+}
+
+/* --- Общие утилиты неонового стиля --- */
+/* Текст с градиентом маджента → циан */
+.neon-text {
+  background: linear-gradient(90deg, hsl(var(--neon-1)), hsl(var(--neon-2)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Маленькая метка: моноширинный шрифт, капс, разрядка */
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: hsl(var(--neon-2));
 }
 
 /* Внутренние страницы: футер прижат к низу */
@@ -185,6 +266,16 @@ h4 {
   }
 }
 
+@keyframes neon-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
 @keyframes overlay-in {
   from {
     opacity: 0;
@@ -217,5 +308,15 @@ h4 {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Секции показываются сразу, без «выплывания» */
+  .js .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

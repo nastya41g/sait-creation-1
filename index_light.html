@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <!--
   BestGames — index_light.html
-  Главная страница в фиксированной светлой теме (класс page--light, отличия описаны в css/home.css).
+  Главная страница в фиксированной светлой теме (модификатор блока page для светлой темы, отличия описаны в css/home.css).
   Чистые HTML + CSS (БЭМ) + небольшой vanilla JS. Стили: public/css/, скрипты: public/js/.
 -->
 <html lang="ru" class="theme-light" data-forced-theme="light">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BestGames — светлая версия главной</title>
-    <meta name="description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7."/>
-    <meta name="author" content="BestGames"/>
+    <meta name="description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7.">
+    <meta name="author" content="BestGames">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta property="og:title" content="BestGames — светлая версия главной">
     <meta property="og:description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7.">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
-    <meta name="twitter:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+    <meta property="og:image" content="img/cyber-drift.webp">
+    <meta name="twitter:image" content="img/cyber-drift.webp">
 
-    <!-- Шрифты: Unbounded (заголовки) и Onest (текст) -->
+    <!-- Шрифты: Tektur (заголовки, кириллица), Exo 2 (текст), JetBrains Mono (цены, метки) -->
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Onest:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&family=Exo+2:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 
     <!-- Стили сайта -->
     <link rel="stylesheet" href="css/variables.css">
@@ -52,7 +52,7 @@
   <!-- ===== Первый экран: меню + слайдер + поиск + мини-список «Популярное» ===== -->
   <div class="container hero-layout">
     <div class="hero-layout__nav">
-    <!-- ===== Шапка: логотип, меню (3 колонки на десктопе), тема, корзина, бургер ===== -->
+    <!-- ===== Шапка: логотип, меню (4 колонки на десктопе), тема, бургер ===== -->
     <header class="header">
       <nav class="header__nav" aria-label="Главное меню">
         <a class="logo" href="index.html" aria-label="BestGames — на главную">
@@ -75,11 +75,14 @@
           <a class="header__link story-link" href="login.html">Войти</a>
           <a class="header__link story-link" href="register.html">Регистрация</a>
         </div>
+        <!-- Служебный раздел: доступ к админ-панели -->
+        <div class="header__group header__group--admin">
+          <a class="header__link story-link" href="admin.html">Админ-панель</a>
+        </div>
         <div class="header__actions">
           <a class="icon-btn icon-btn--bordered header__theme" href="index.html" aria-label="Перейти к тёмной версии" title="Тёмная версия">
             <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
           </a>
-          <a class="header__cart" href="profile.html" aria-label="Корзина: 0 товаров">0</a>
           <button class="icon-btn header__burger" type="button" data-drawer-open="menu-drawer" aria-controls="menu-drawer" aria-expanded="false" aria-label="Открыть меню">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
           </button>
@@ -117,11 +120,20 @@
     <div class="hero-layout__slider">
       <section class="hero" id="new" data-slider aria-roledescription="carousel" aria-label="Новинки игр">
         <div class="hero__slides">
-            <img class="hero__image hero__image--active" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg" alt="Cyber Drift 2077 — постер игры" data-title="Cyber Drift 2077" data-price="2499" data-tag="Новинка">
-            <img class="hero__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/b8e8af11-eed1-492a-a661-c537cacf5f95.jpg" alt="Ashen Crown — постер игры" data-title="Ashen Crown" data-price="1999" data-tag="Новинка недели" loading="lazy">
-            <img class="hero__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/ad5498fb-165a-428b-9e5b-dc0255291960.jpg" alt="Void Runner — постер игры" data-title="Void Runner" data-price="1799" data-tag="Ранний доступ" loading="lazy">
+            <img class="hero__image hero__image--active" src="img/cyber-drift.webp" alt="Cyber Drift 2077 — постер игры" data-title="Cyber Drift 2077" data-price="2499" data-tag="Новинка" width="1024" height="1024" fetchpriority="high" decoding="async">
+            <img class="hero__image" src="img/ashen-crown.webp" alt="Ashen Crown — постер игры" data-title="Ashen Crown" data-price="1999" data-tag="Новинка недели" width="1360" height="768" loading="lazy" decoding="async">
+            <img class="hero__image" src="img/void-runner.webp" alt="Void Runner — постер игры" data-title="Void Runner" data-price="1799" data-tag="Ранний доступ" width="1360" height="768" loading="lazy" decoding="async">
         </div>
         <div class="hero__shade"></div>
+        <!-- HUD-декор: уголки рамки и служебная строка со счётчиком слайдов -->
+        <span class="hero__hud hero__hud--tl" aria-hidden="true"></span>
+        <span class="hero__hud hero__hud--tr" aria-hidden="true"></span>
+        <span class="hero__hud hero__hud--bl" aria-hidden="true"></span>
+        <span class="hero__hud hero__hud--br" aria-hidden="true"></span>
+        <div class="hero__status" aria-hidden="true">
+          <span class="hero__live">New releases</span>
+          <span class="hero__counter"><span class="hero__counter-current" data-slide-current>01</span> / <span data-slide-total>03</span></span>
+        </div>
         <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Предыдущий слайд"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 18-6-6 6-6"/></svg></button>
         <button class="hero__arrow hero__arrow--next" type="button" aria-label="Следующий слайд"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg></button>
         <div class="hero__content hero__content--animate" aria-live="polite">
@@ -131,10 +143,10 @@
             <span class="hero__price">2 499 ₽</span>
             <a class="btn btn--primary btn--lg hero__more" href="catalog.html">Подробнее</a>
           </div>
-          <div class="hero__dots" role="tablist" aria-label="Слайды">
-              <button class="hero__dot hero__dot--active" type="button" role="tab" aria-selected="true" aria-label="Слайд 1: Cyber Drift 2077"><span class="hero__dot-fill"></span></button>
-              <button class="hero__dot" type="button" role="tab" aria-selected="false" aria-label="Слайд 2: Ashen Crown"><span class="hero__dot-fill"></span></button>
-              <button class="hero__dot" type="button" role="tab" aria-selected="false" aria-label="Слайд 3: Void Runner"><span class="hero__dot-fill"></span></button>
+          <div class="hero__dots" role="group" aria-label="Слайды">
+              <button class="hero__dot hero__dot--active" type="button" aria-current="true" aria-label="Слайд 1: Cyber Drift 2077"><span class="hero__dot-fill"></span></button>
+              <button class="hero__dot" type="button" aria-current="false" aria-label="Слайд 2: Ashen Crown"><span class="hero__dot-fill"></span></button>
+              <button class="hero__dot" type="button" aria-current="false" aria-label="Слайд 3: Void Runner"><span class="hero__dot-fill"></span></button>
           </div>
         </div>
       </section>
@@ -146,6 +158,7 @@
       <form class="genre-search__form" role="search" action="catalog.html" method="get" novalidate>
         <div class="genre-search__box">
           <label class="visually-hidden" for="genre-input">Жанр игры</label>
+          <span class="genre-search__prompt" aria-hidden="true">&gt;</span>
           <input class="genre-search__input" id="genre-input" name="genre" type="text" placeholder="Шутер, RPG, стратегия…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="genre-hints">
           <button class="btn btn--primary btn--lg" type="submit">Найти</button>
         </div>
@@ -166,65 +179,65 @@
       <ul class="popular-list__items">
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="Starfall Legion" loading="lazy" width="52" height="52">
+              <img class="popular-list__image" src="img/starfall-legion-thumb.webp" alt="Starfall Legion" width="52" height="52" loading="lazy" decoding="async">
               <span class="popular-list__info">
                 <span class="popular-list__name">Starfall Legion</span>
                 <span class="popular-list__meta">Стратегия · Nova Forge</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
+                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
                 <span class="popular-list__price">1 499 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" alt="Hollow Pines" loading="lazy" width="52" height="52">
+              <img class="popular-list__image" src="img/hollow-pines-thumb.webp" alt="Hollow Pines" width="52" height="52" loading="lazy" decoding="async">
               <span class="popular-list__info">
                 <span class="popular-list__name">Hollow Pines</span>
                 <span class="popular-list__meta">Хоррор · Ember Lab</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
+                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
                 <span class="popular-list__price">899 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" alt="Apex Rally" loading="lazy" width="52" height="52">
+              <img class="popular-list__image" src="img/apex-rally-thumb.webp" alt="Apex Rally" width="52" height="52" loading="lazy" decoding="async">
               <span class="popular-list__info">
                 <span class="popular-list__name">Apex Rally</span>
                 <span class="popular-list__meta">Гонки · Drift Works</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
+                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></span>
                 <span class="popular-list__price">1 299 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" alt="Runebound" loading="lazy" width="52" height="52">
+              <img class="popular-list__image" src="img/runebound-thumb.webp" alt="Runebound" width="52" height="52" loading="lazy" decoding="async">
               <span class="popular-list__info">
                 <span class="popular-list__name">Runebound</span>
                 <span class="popular-list__meta">RPG · North Hall</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
+                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></span>
                 <span class="popular-list__price">1 999 ₽</span>
               </span>
             </a>
           </li>
           <li class="popular-list__item">
             <a class="popular-list__link" href="catalog.html">
-              <img class="popular-list__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" alt="Pixel Siege" loading="lazy" width="52" height="52">
+              <img class="popular-list__image" src="img/pixel-siege-thumb.webp" alt="Pixel Siege" width="52" height="52" loading="lazy" decoding="async">
               <span class="popular-list__info">
                 <span class="popular-list__name">Pixel Siege</span>
                 <span class="popular-list__meta">Инди · Tiny Keep</span>
               </span>
               <span class="popular-list__side">
-                <span class="stars popular-list__stars" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></span>
+                <span class="stars popular-list__stars" role="img" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></span>
                 <span class="popular-list__price">499 ₽</span>
               </span>
             </a>
@@ -282,13 +295,13 @@
           <!-- Карточка: Starfall Legion -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="Обложка игры Starfall Legion" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/starfall-legion-card.webp" alt="Обложка игры Starfall Legion" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Стратегия</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Starfall Legion</a></h3>
               <p class="game-card__meta">Стратегия · Nova Forge</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 499 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -298,13 +311,13 @@
           <!-- Карточка: Hollow Pines -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" alt="Обложка игры Hollow Pines" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/hollow-pines-card.webp" alt="Обложка игры Hollow Pines" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Хоррор</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Hollow Pines</a></h3>
               <p class="game-card__meta">Хоррор · Ember Lab</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">899 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -314,13 +327,13 @@
           <!-- Карточка: Apex Rally -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" alt="Обложка игры Apex Rally" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/apex-rally-card.webp" alt="Обложка игры Apex Rally" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Гонки</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Apex Rally</a></h3>
               <p class="game-card__meta">Гонки · Drift Works</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 299 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -330,13 +343,13 @@
           <!-- Карточка: Runebound -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" alt="Обложка игры Runebound" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/runebound-card.webp" alt="Обложка игры Runebound" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">RPG</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Runebound</a></h3>
               <p class="game-card__meta">RPG · North Hall</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 999 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -346,13 +359,13 @@
           <!-- Карточка: Pixel Siege -->
           <article class="game-card">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" alt="Обложка игры Pixel Siege" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/pixel-siege-card.webp" alt="Обложка игры Pixel Siege" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Инди</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="catalog.html">Pixel Siege</a></h3>
               <p class="game-card__meta">Инди · Tiny Keep</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">499 ₽</span>
                 <a class="btn btn--primary btn--sm game-card__button" href="catalog.html" tabindex="-1">В каталог</a>
@@ -421,6 +434,7 @@
           <li><a class="story-link" href="login.html">Авторизация</a></li>
           <li><a class="story-link" href="profile.html">Личный кабинет</a></li>
           <li><a class="story-link" href="index.html#search">Поиск</a></li>
+          <li><a class="story-link" href="admin.html">Админ-панель</a></li>
         </ul>
       </nav>
     </div>
@@ -429,6 +443,44 @@
       <a class="footer__bottom-link" href="index.html">Тёмная версия главной</a>
     </div>
   </footer>
+
+  <!-- ==================== Чат поддержки (плавающая кнопка + окно) ==================== -->
+  <aside class="chat" data-chat aria-label="Чат поддержки">
+    <section class="chat__window" id="chat-window" aria-labelledby="chat-title" hidden>
+      <header class="chat__header">
+        <span class="chat__avatar" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg>
+        </span>
+        <div class="chat__heading">
+          <h2 class="chat__title" id="chat-title">Поддержка BestGames</h2>
+          <p class="chat__status"><span class="chat__dot" aria-hidden="true"></span>Онлайн 24/7</p>
+        </div>
+        <button class="icon-btn chat__close" type="button" data-chat-close aria-label="Закрыть чат">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <ol class="chat__messages" data-chat-messages aria-live="polite">
+        <li class="chat__message chat__message--bot">Привет! Я помощник BestGames. Спросите про оплату, доставку ключа, возврат или скидки.</li>
+      </ol>
+      <div class="chat__quick" data-chat-quick>
+        <button class="chat__chip" type="button">Как оплатить?</button>
+        <button class="chat__chip" type="button">Где мой ключ?</button>
+        <button class="chat__chip" type="button">Возврат</button>
+        <button class="chat__chip" type="button">Акции</button>
+      </div>
+      <form class="chat__form" data-chat-form novalidate>
+        <label class="visually-hidden" for="chat-input">Сообщение в поддержку</label>
+        <input class="chat__input" id="chat-input" name="message" type="text" placeholder="Напишите сообщение…" autocomplete="off" maxlength="500">
+        <button class="chat__send" type="submit" aria-label="Отправить сообщение">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        </button>
+      </form>
+    </section>
+    <button class="chat__toggle" type="button" data-chat-toggle aria-controls="chat-window" aria-expanded="false" aria-label="Открыть чат поддержки">
+      <svg class="icon chat__icon chat__icon--open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <svg class="icon chat__icon chat__icon--close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </aside>
 </div>
 
 <!-- Yandex.Metrika counter -->

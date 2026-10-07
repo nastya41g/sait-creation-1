@@ -12,6 +12,7 @@
      8. Валидация форм: вход, регистрация, админ-панель
      9. Личный кабинет: тема, смена пароля
     10. Появление секций при прокрутке
+    11. Чат поддержки с автоответами
    ========================================================================== */
 (function () {
   'use strict';
@@ -158,7 +159,16 @@
     var tag = slider.querySelector('.hero__tag');
     var title = slider.querySelector('.hero__title');
     var price = slider.querySelector('.hero__price');
+    // HUD-счётчик «01 / 03» (необязательный декоративный элемент)
+    var counterCurrent = slider.querySelector('[data-slide-current]');
+    var counterTotal = slider.querySelector('[data-slide-total]');
     var index = 0;
+
+    function pad(n) {
+      return (n < 10 ? '0' : '') + n;
+    }
+
+    if (counterTotal) counterTotal.textContent = pad(images.length);
     var timer = null;
     var paused = false;
 
@@ -170,12 +180,13 @@
       dots.forEach(function (dot, n) {
         var active = n === index;
         dot.classList.toggle('hero__dot--active', active);
-        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+        dot.setAttribute('aria-current', active ? 'true' : 'false');
       });
       var cur = images[index];
       tag.textContent = cur.dataset.tag;
       title.textContent = cur.dataset.title;
       price.textContent = formatPrice(cur.dataset.price);
+      if (counterCurrent) counterCurrent.textContent = pad(index + 1);
       // Перезапуск анимации появления текста
       content.classList.remove('hero__content--animate');
       void content.offsetWidth;
@@ -405,7 +416,7 @@
     });
 
     modal.querySelector('.game-modal__buy').addEventListener('click', function () {
-      toast('«' + current + '» добавлена в корзину');
+      toast('Покупка «' + current + '» оформлена');
       modal.close();
     });
   })();
@@ -585,5 +596,104 @@
       });
     }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
     items.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* ---------- 11. Чат поддержки с автоответами ---------- */
+  (function initChat() {
+    var chat = document.querySelector('[data-chat]');
+    if (!chat) return;
+    var win = chat.querySelector('.chat__window');
+    var toggleBtn = chat.querySelector('[data-chat-toggle]');
+    var list = chat.querySelector('[data-chat-messages]');
+    var form = chat.querySelector('[data-chat-form]');
+    var input = form.elements.message;
+    var STORAGE_KEY = 'bg-chat-seen';
+
+    // База автоответов: ключевые слова (начала слов) → ответ
+    var ANSWERS = [
+      { keys: ['оплат', 'карт', 'сбп', 'плат', 'куп'], text: 'Оплатить можно банковской картой, через СБП или электронным кошельком. Деньги списываются только после подтверждения заказа.' },
+      { keys: ['ключ', 'код', 'активац', 'достав', 'пришл', 'приш', 'получ'], text: 'Ключ приходит на почту и в личный кабинет в течение 1–2 минут после оплаты. Проверьте папку «Спам», если письма нет.' },
+      { keys: ['возврат', 'верн', 'отмен', 'деньг'], text: 'Вернуть деньги можно в течение 14 дней, если ключ ещё не активирован. Напишите номер заказа — оформим возврат.' },
+      { keys: ['акци', 'скидк', 'промо', 'распрод', 'дешев'], text: 'Каждый месяц у нас новые акции со скидками до 70%. Следите за разделом «Новинки» на главной.' },
+      { keys: ['предмет', 'скин', 'внутриигр', 'донат', 'пропуск'], text: 'Внутриигровые предметы зачисляются на ваш игровой аккаунт автоматически, обычно в течение 5 минут.' },
+      { keys: ['пароль', 'войти', 'вход', 'аккаунт', 'регистр', 'профил'], text: 'Войти можно на странице «Войти». Если забыли пароль — нажмите «Забыли пароль?», и мы пришлём ссылку для восстановления.' },
+      { keys: ['турнир', 'кибер', 'команд', 'партн', 'сотруд', 'реклам', 'инвест'], text: 'По турнирам, рекламе и партнёрству напишите на best@games.ru — менеджер ответит в течение рабочего дня.' },
+      { keys: ['телефон', 'позвон', 'звон', 'почт', 'связ', 'оператор', 'человек'], text: 'Позвоните нам: 8-800-999-55-99 (бесплатно, круглосуточно) или напишите на best@games.ru.' },
+      { keys: ['привет', 'здравств', 'добр', 'хай', 'hello'], text: 'Здравствуйте! Чем могу помочь?' },
+      { keys: ['спасиб', 'благодар'], text: 'Всегда рады помочь! Хорошей игры 🎮' }
+    ];
+    var FALLBACK = 'Спасибо за вопрос! Оператор скоро подключится. А пока можно позвонить по номеру 8-800-999-55-99.';
+
+    function findAnswer(text) {
+      var words = text.toLowerCase().replace(/ё/g, 'е').split(/[^a-zа-я0-9]+/);
+      for (var i = 0; i < ANSWERS.length; i++) {
+        for (var k = 0; k < ANSWERS[i].keys.length; k++) {
+          for (var w = 0; w < words.length; w++) {
+            if (words[w] && words[w].indexOf(ANSWERS[i].keys[k]) === 0) return ANSWERS[i].text;
+          }
+        }
+      }
+      return FALLBACK;
+    }
+
+    function addMessage(text, who) {
+      var li = document.createElement('li');
+      li.className = 'chat__message chat__message--' + who;
+      li.textContent = text;
+      list.appendChild(li);
+      list.scrollTop = list.scrollHeight;
+      return li;
+    }
+
+    // Отправка сообщения пользователя и «печатающий» автоответ
+    function send(text) {
+      text = text.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      var typing = document.createElement('li');
+      typing.className = 'chat__message chat__message--bot chat__message--typing';
+      typing.setAttribute('aria-label', 'Оператор печатает');
+      typing.innerHTML = '<span class="chat__typing-dot"></span><span class="chat__typing-dot"></span><span class="chat__typing-dot"></span>';
+      list.appendChild(typing);
+      list.scrollTop = list.scrollHeight;
+      setTimeout(function () {
+        typing.remove();
+        addMessage(findAnswer(text), 'bot');
+      }, 700 + Math.random() * 600);
+    }
+
+    function setOpen(open) {
+      win.hidden = !open;
+      chat.classList.toggle('chat--open', open);
+      toggleBtn.setAttribute('aria-expanded', String(open));
+      toggleBtn.setAttribute('aria-label', open ? 'Закрыть чат поддержки' : 'Открыть чат поддержки');
+      if (open) {
+        chat.classList.add('chat--seen');
+        try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* приватный режим */ }
+        input.focus();
+      }
+    }
+
+    // Пульсация кнопки только для тех, кто ещё не открывал чат
+    try { if (localStorage.getItem(STORAGE_KEY)) chat.classList.add('chat--seen'); } catch (e) { /* приватный режим */ }
+
+    toggleBtn.addEventListener('click', function () { setOpen(win.hidden); });
+    chat.querySelector('[data-chat-close]').addEventListener('click', function () {
+      setOpen(false);
+      toggleBtn.focus();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !win.hidden) setOpen(false);
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      send(input.value);
+      input.value = '';
+    });
+
+    chat.querySelectorAll('.chat__chip').forEach(function (chip) {
+      chip.addEventListener('click', function () { send(chip.textContent); });
+    });
   })();
 })();

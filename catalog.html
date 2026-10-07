@@ -6,23 +6,23 @@
 -->
 <html lang="ru" class="theme-dark">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог игр — BestGames</title>
-    <meta name="description" content="Каталог компьютерных игр BestGames с фильтром по жанрам."/>
-    <meta name="author" content="BestGames"/>
+    <meta name="description" content="Каталог компьютерных игр BestGames с фильтром по жанрам.">
+    <meta name="author" content="BestGames">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta property="og:title" content="Каталог игр — BestGames">
     <meta property="og:description" content="Каталог компьютерных игр BestGames с фильтром по жанрам.">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
-    <meta name="twitter:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+    <meta property="og:image" content="img/cyber-drift.webp">
+    <meta name="twitter:image" content="img/cyber-drift.webp">
 
-    <!-- Шрифты: Unbounded (заголовки) и Onest (текст) -->
+    <!-- Шрифты: Tektur (заголовки, кириллица), Exo 2 (текст), JetBrains Mono (цены, метки) -->
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Onest:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700&family=Exo+2:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 
     <!-- Стили сайта -->
     <link rel="stylesheet" href="css/variables.css">
@@ -50,7 +50,7 @@
 <body>
 <div class="page page--inner">
   <div class="container page-top">
-    <!-- ===== Шапка: логотип, меню (3 колонки на десктопе), тема, корзина, бургер ===== -->
+    <!-- ===== Шапка: логотип, меню (4 колонки на десктопе), тема, бургер ===== -->
     <header class="header">
       <nav class="header__nav" aria-label="Главное меню">
         <a class="logo" href="index.html" aria-label="BestGames — на главную">
@@ -73,11 +73,14 @@
           <a class="header__link story-link" href="login.html">Войти</a>
           <a class="header__link story-link" href="register.html">Регистрация</a>
         </div>
+        <!-- Служебный раздел: доступ к админ-панели -->
+        <div class="header__group header__group--admin">
+          <a class="header__link story-link" href="admin.html">Админ-панель</a>
+        </div>
         <div class="header__actions">
           <button class="icon-btn icon-btn--bordered header__theme" type="button" data-theme-toggle aria-label="Сменить тему">
             <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
           </button>
-          <a class="header__cart" href="profile.html" aria-label="Корзина: 0 товаров">0</a>
           <button class="icon-btn header__burger" type="button" data-drawer-open="menu-drawer" aria-controls="menu-drawer" aria-expanded="false" aria-label="Открыть меню">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
           </button>
@@ -208,15 +211,15 @@
           <!-- ===== Сетка карточек игр ===== -->
           <div class="catalog__grid">
           <!-- Карточка: Starfall Legion -->
-          <article class="game-card" data-game data-genre="Стратегия" data-title="Starfall Legion" data-developer="Nova Forge" data-price="1499" data-rating="5" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" data-description="Масштабная стратегия о войне легионов под падающими звёздами.">
+          <article class="game-card" data-game data-genre="Стратегия" data-title="Starfall Legion" data-developer="Nova Forge" data-price="1499" data-rating="5" data-image="img/starfall-legion-card.webp" data-description="Масштабная стратегия о войне легионов под падающими звёздами.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="Обложка игры Starfall Legion" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/starfall-legion-card.webp" alt="Обложка игры Starfall Legion" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Стратегия</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Starfall Legion</a></h3>
               <p class="game-card__meta">Стратегия · Nova Forge</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 499 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -224,15 +227,15 @@
             </div>
           </article>
           <!-- Карточка: Hollow Pines -->
-          <article class="game-card" data-game data-genre="Хоррор" data-title="Hollow Pines" data-developer="Ember Lab" data-price="899" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" data-description="Туманный лес, заброшенная хижина и тайна, которую лучше не знать.">
+          <article class="game-card" data-game data-genre="Хоррор" data-title="Hollow Pines" data-developer="Ember Lab" data-price="899" data-rating="4" data-image="img/hollow-pines-card.webp" data-description="Туманный лес, заброшенная хижина и тайна, которую лучше не знать.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" alt="Обложка игры Hollow Pines" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/hollow-pines-card.webp" alt="Обложка игры Hollow Pines" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Хоррор</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Hollow Pines</a></h3>
               <p class="game-card__meta">Хоррор · Ember Lab</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">899 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -240,15 +243,15 @@
             </div>
           </article>
           <!-- Карточка: Apex Rally -->
-          <article class="game-card" data-game data-genre="Гонки" data-title="Apex Rally" data-developer="Drift Works" data-price="1299" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" data-description="Раллийные трассы в горах, пыль из-под колёс и честная физика.">
+          <article class="game-card" data-game data-genre="Гонки" data-title="Apex Rally" data-developer="Drift Works" data-price="1299" data-rating="4" data-image="img/apex-rally-card.webp" data-description="Раллийные трассы в горах, пыль из-под колёс и честная физика.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" alt="Обложка игры Apex Rally" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/apex-rally-card.webp" alt="Обложка игры Apex Rally" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Гонки</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Apex Rally</a></h3>
               <p class="game-card__meta">Гонки · Drift Works</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 299 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -256,15 +259,15 @@
             </div>
           </article>
           <!-- Карточка: Runebound -->
-          <article class="game-card" data-game data-genre="RPG" data-title="Runebound" data-developer="North Hall" data-price="1999" data-rating="5" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" data-description="Северная ролевая сага о магии рун и древних клятвах.">
+          <article class="game-card" data-game data-genre="RPG" data-title="Runebound" data-developer="North Hall" data-price="1999" data-rating="5" data-image="img/runebound-card.webp" data-description="Северная ролевая сага о магии рун и древних клятвах.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" alt="Обложка игры Runebound" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/runebound-card.webp" alt="Обложка игры Runebound" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">RPG</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Runebound</a></h3>
               <p class="game-card__meta">RPG · North Hall</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 999 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -272,15 +275,15 @@
             </div>
           </article>
           <!-- Карточка: Pixel Siege -->
-          <article class="game-card" data-game data-genre="Инди" data-title="Pixel Siege" data-developer="Tiny Keep" data-price="499" data-rating="3" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" data-description="Уютная осада крошечного замка — для коротких вечерних сессий.">
+          <article class="game-card" data-game data-genre="Инди" data-title="Pixel Siege" data-developer="Tiny Keep" data-price="499" data-rating="3" data-image="img/pixel-siege-card.webp" data-description="Уютная осада крошечного замка — для коротких вечерних сессий.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" alt="Обложка игры Pixel Siege" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/pixel-siege-card.webp" alt="Обложка игры Pixel Siege" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Инди</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Pixel Siege</a></h3>
               <p class="game-card__meta">Инди · Tiny Keep</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">499 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -288,15 +291,15 @@
             </div>
           </article>
           <!-- Карточка: Cyber Drift 2077 -->
-          <article class="game-card" data-game data-genre="Экшен" data-title="Cyber Drift 2077" data-developer="Neon Shift" data-price="2499" data-rating="5" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg" data-description="Ночной город, неоновые трассы и погони на пределе скорости.">
+          <article class="game-card" data-game data-genre="Экшен" data-title="Cyber Drift 2077" data-developer="Neon Shift" data-price="2499" data-rating="5" data-image="img/cyber-drift-card.webp" data-description="Ночной город, неоновые трассы и погони на пределе скорости.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg" alt="Обложка игры Cyber Drift 2077" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/cyber-drift-card.webp" alt="Обложка игры Cyber Drift 2077" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Экшен</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Cyber Drift 2077</a></h3>
               <p class="game-card__meta">Экшен · Neon Shift</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">2 499 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -304,15 +307,15 @@
             </div>
           </article>
           <!-- Карточка: Ashen Crown -->
-          <article class="game-card" data-game data-genre="RPG" data-title="Ashen Crown" data-developer="Grey Tower" data-price="1999" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/b8e8af11-eed1-492a-a661-c537cacf5f95.jpg" data-description="Тёмное фэнтези о рыцаре, который ищет потерянную корону.">
+          <article class="game-card" data-game data-genre="RPG" data-title="Ashen Crown" data-developer="Grey Tower" data-price="1999" data-rating="4" data-image="img/ashen-crown-card.webp" data-description="Тёмное фэнтези о рыцаре, который ищет потерянную корону.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/b8e8af11-eed1-492a-a661-c537cacf5f95.jpg" alt="Обложка игры Ashen Crown" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/ashen-crown-card.webp" alt="Обложка игры Ashen Crown" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">RPG</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Ashen Crown</a></h3>
               <p class="game-card__meta">RPG · Grey Tower</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 999 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -320,15 +323,15 @@
             </div>
           </article>
           <!-- Карточка: Void Runner -->
-          <article class="game-card" data-game data-genre="Шутер" data-title="Void Runner" data-developer="Orbit Games" data-price="1799" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/ad5498fb-165a-428b-9e5b-dc0255291960.jpg" data-description="Космический шутер среди астероидов и колец гигантской планеты.">
+          <article class="game-card" data-game data-genre="Шутер" data-title="Void Runner" data-developer="Orbit Games" data-price="1799" data-rating="4" data-image="img/void-runner-card.webp" data-description="Космический шутер среди астероидов и колец гигантской планеты.">
             <div class="game-card__media">
-              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/ad5498fb-165a-428b-9e5b-dc0255291960.jpg" alt="Обложка игры Void Runner" loading="lazy" width="800" height="600">
+              <img class="game-card__image" src="img/void-runner-card.webp" alt="Обложка игры Void Runner" width="640" height="480" loading="lazy" decoding="async">
               <span class="game-card__badge">Шутер</span>
             </div>
             <div class="game-card__body">
               <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Void Runner</a></h3>
               <p class="game-card__meta">Шутер · Orbit Games</p>
-              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <p class="stars game-card__rating" role="img" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
               <div class="game-card__footer">
                 <span class="game-card__price">1 799 ₽</span>
                 <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
@@ -377,6 +380,7 @@
           <li><a class="story-link" href="login.html">Авторизация</a></li>
           <li><a class="story-link" href="profile.html">Личный кабинет</a></li>
           <li><a class="story-link" href="index.html#search">Поиск</a></li>
+          <li><a class="story-link" href="admin.html">Админ-панель</a></li>
         </ul>
       </nav>
     </div>
@@ -385,6 +389,44 @@
       <a class="footer__bottom-link" href="index_light.html">Светлая версия главной</a>
     </div>
   </footer>
+
+  <!-- ==================== Чат поддержки (плавающая кнопка + окно) ==================== -->
+  <aside class="chat" data-chat aria-label="Чат поддержки">
+    <section class="chat__window" id="chat-window" aria-labelledby="chat-title" hidden>
+      <header class="chat__header">
+        <span class="chat__avatar" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg>
+        </span>
+        <div class="chat__heading">
+          <h2 class="chat__title" id="chat-title">Поддержка BestGames</h2>
+          <p class="chat__status"><span class="chat__dot" aria-hidden="true"></span>Онлайн 24/7</p>
+        </div>
+        <button class="icon-btn chat__close" type="button" data-chat-close aria-label="Закрыть чат">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <ol class="chat__messages" data-chat-messages aria-live="polite">
+        <li class="chat__message chat__message--bot">Привет! Я помощник BestGames. Спросите про оплату, доставку ключа, возврат или скидки.</li>
+      </ol>
+      <div class="chat__quick" data-chat-quick>
+        <button class="chat__chip" type="button">Как оплатить?</button>
+        <button class="chat__chip" type="button">Где мой ключ?</button>
+        <button class="chat__chip" type="button">Возврат</button>
+        <button class="chat__chip" type="button">Акции</button>
+      </div>
+      <form class="chat__form" data-chat-form novalidate>
+        <label class="visually-hidden" for="chat-input">Сообщение в поддержку</label>
+        <input class="chat__input" id="chat-input" name="message" type="text" placeholder="Напишите сообщение…" autocomplete="off" maxlength="500">
+        <button class="chat__send" type="submit" aria-label="Отправить сообщение">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        </button>
+      </form>
+    </section>
+    <button class="chat__toggle" type="button" data-chat-toggle aria-controls="chat-window" aria-expanded="false" aria-label="Открыть чат поддержки">
+      <svg class="icon chat__icon chat__icon--open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <svg class="icon chat__icon chat__icon--close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </aside>
 </div>
 
 <!-- ===== Панель фильтра для мобильных и планшетов ===== -->
@@ -469,13 +511,13 @@
 <!-- ===== Модальное окно «Подробнее» (заполняется из data-атрибутов карточки) ===== -->
 <dialog class="modal modal--flush game-modal" id="game-modal" aria-labelledby="game-modal-title">
   <button class="modal__close" type="button" data-modal-close aria-label="Закрыть"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-  <img class="game-modal__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="">
+  <img class="game-modal__image" src="img/starfall-legion-card.webp" alt="" width="640" height="480" loading="lazy" decoding="async">
   <div class="game-modal__body">
     <div class="modal__header">
-      <h2 class="game-modal__title" id="game-modal-title"></h2>
+      <h2 class="game-modal__title" id="game-modal-title">Описание игры</h2>
       <p class="game-modal__meta"></p>
     </div>
-    <p class="stars game-modal__rating"></p>
+    <p class="stars game-modal__rating" role="img" aria-label="Рейтинг"></p>
     <p class="game-modal__text"></p>
     <div class="game-modal__footer">
       <span class="game-modal__price"></span>
