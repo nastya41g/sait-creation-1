@@ -389,6 +389,44 @@
       <a class="footer__bottom-link" href="index_light.html">Светлая версия главной</a>
     </div>
   </footer>
+
+  <!-- ==================== Чат поддержки (плавающая кнопка + окно) ==================== -->
+  <aside class="chat" data-chat aria-label="Чат поддержки">
+    <section class="chat__window" id="chat-window" aria-labelledby="chat-title" hidden>
+      <header class="chat__header">
+        <span class="chat__avatar" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg>
+        </span>
+        <div class="chat__heading">
+          <h2 class="chat__title" id="chat-title">Поддержка BestGames</h2>
+          <p class="chat__status"><span class="chat__dot" aria-hidden="true"></span>Онлайн 24/7</p>
+        </div>
+        <button class="icon-btn chat__close" type="button" data-chat-close aria-label="Закрыть чат">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <ol class="chat__messages" data-chat-messages aria-live="polite">
+        <li class="chat__message chat__message--bot">Привет! Я помощник BestGames. Спросите про оплату, доставку ключа, возврат или скидки.</li>
+      </ol>
+      <div class="chat__quick" data-chat-quick>
+        <button class="chat__chip" type="button">Как оплатить?</button>
+        <button class="chat__chip" type="button">Где мой ключ?</button>
+        <button class="chat__chip" type="button">Возврат</button>
+        <button class="chat__chip" type="button">Акции</button>
+      </div>
+      <form class="chat__form" data-chat-form novalidate>
+        <label class="visually-hidden" for="chat-input">Сообщение в поддержку</label>
+        <input class="chat__input" id="chat-input" name="message" type="text" placeholder="Напишите сообщение…" autocomplete="off" maxlength="500">
+        <button class="chat__send" type="submit" aria-label="Отправить сообщение">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        </button>
+      </form>
+    </section>
+    <button class="chat__toggle" type="button" data-chat-toggle aria-controls="chat-window" aria-expanded="false" aria-label="Открыть чат поддержки">
+      <svg class="icon chat__icon chat__icon--open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <svg class="icon chat__icon chat__icon--close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </aside>
 </div>
 
 <!-- ===== Панель фильтра для мобильных и планшетов ===== -->

@@ -886,3 +886,323 @@
     grid-template-columns: 1.55fr 1fr 1fr;
   }
 }
+
+/* ==========================================================================
+   Чат поддержки (блок .chat)
+   Плавающая круглая кнопка в правом нижнем углу и окно переписки.
+   360px: окно на всю ширину экрана над кнопкой.
+   ≥768px: окно фиксированной ширины 380px, выровнено по правому краю.
+   ========================================================================== */
+.chat {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Кнопка открытия */
+.chat__toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 50%;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: var(--shadow-xl);
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.chat__toggle:hover {
+  transform: scale(1.07);
+}
+
+/* Мягкая «пульсация» кнопки, пока чат ни разу не открыт */
+.chat__toggle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--primary));
+  animation: chat-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.chat--seen .chat__toggle::after {
+  display: none;
+}
+
+@keyframes chat-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.chat__icon {
+  grid-area: 1 / 1;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.chat__icon--close {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+/* Состояние «открыто»: иконка сообщения сменяется крестиком */
+.chat--open .chat__icon--open {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.chat--open .chat__icon--close {
+  opacity: 1;
+  transform: rotate(0);
+}
+
+/* Окно переписки */
+.chat__window {
+  display: flex;
+  flex-direction: column;
+  width: calc(100vw - 32px);
+  height: min(520px, calc(100vh - 110px));
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-xl);
+  -webkit-transform-origin: bottom right;
+  transform-origin: bottom right;
+  animation: chat-in 0.25s var(--ease-spring);
+}
+
+.chat__window[hidden] {
+  display: none;
+}
+
+@keyframes chat-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+.chat__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.chat__avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: hsl(var(--secondary));
+}
+
+.chat__avatar .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.chat__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.chat__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.chat__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3fbf6f;
+}
+
+.chat__close .icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Лента сообщений */
+.chat__messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 16px;
+  overflow-y: auto;
+  list-style: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.chat__message {
+  max-width: 85%;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  animation: chat-msg 0.25s ease;
+}
+
+@keyframes chat-msg {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.chat__message--bot {
+  align-self: flex-start;
+  background: hsl(var(--secondary));
+}
+
+.chat__message--user {
+  align-self: flex-end;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+/* Индикатор «оператор печатает» — три точки */
+.chat__message--typing {
+  display: flex;
+  gap: 4px;
+  padding: 12px;
+}
+
+.chat__typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--muted-foreground));
+  animation: chat-typing 1s infinite ease-in-out;
+}
+
+.chat__typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.chat__typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes chat-typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Быстрые вопросы */
+.chat__quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 16px 12px;
+}
+
+.chat__chip {
+  padding: 6px 10px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  background: transparent;
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chat__chip:hover {
+  background: hsl(var(--accent));
+}
+
+/* Поле ввода */
+.chat__form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.chat__input {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid hsl(var(--input));
+  border-radius: var(--radius);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.chat__input:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+}
+
+.chat__send {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.chat__send:hover {
+  opacity: 0.9;
+}
+
+.chat__send .icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Уведомления поднимаются выше кнопки чата, чтобы не перекрывать её */
+.toast-region {
+  bottom: 84px;
+}
+
+/* ≥768px: окно фиксированной ширины, кнопка чуть дальше от края */
+@media (min-width: 768px) {
+  .chat {
+    right: 24px;
+    bottom: 24px;
+  }
+
+  .chat__window {
+    width: 380px;
+  }
+}
+
+/* Без анимаций для тех, кто отключил их в системе */
+@media (prefers-reduced-motion: reduce) {
+  .chat__toggle::after,
+  .chat__window,
+  .chat__message,
+  .chat__typing-dot {
+    animation: none;
+  }
+}
