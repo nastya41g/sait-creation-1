@@ -10,7 +10,7 @@ type Props = {
   onButton?: (g: Game) => void;
 };
 
-const GameCard = ({ game, to = "/catalog", buttonLabel = "В каталог", onButton }: Props) => {
+const GameCard = ({ game, to = "/catalog.html", buttonLabel = "В каталог", onButton }: Props) => {
   const navigate = useNavigate();
   const open = () => (onButton ? onButton(game) : navigate(to));
 

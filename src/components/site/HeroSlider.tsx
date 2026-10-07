@@ -59,7 +59,7 @@ const HeroSlider = () => {
         <div className="mt-5 flex items-center justify-center gap-[22px] animate-fade-in [animation-delay:160ms]">
           <span className="font-head text-[1.4rem]">{formatPrice(SLIDES[index].price)}</span>
           <Link
-            to="/catalog"
+            to="/catalog.html"
             className="rounded-[6px] bg-primary px-[26px] py-[11px] font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:opacity-90"
           >
             Подробнее

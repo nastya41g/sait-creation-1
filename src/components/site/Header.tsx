@@ -6,16 +6,16 @@ import Logo from "./Logo";
 import { useTheme } from "@/hooks/use-theme";
 
 const LINKS = [
-  { to: "/catalog", label: "Каталог игр" },
-  { to: "/#search", label: "Поиск" },
-  { to: "/profile", label: "Личный кабинет" },
-  { to: "/#new", label: "Новинки" },
-  { to: "/login", label: "Войти" },
-  { to: "/register", label: "Регистрация" },
+  { to: "/catalog.html", label: "Каталог игр" },
+  { to: "/index.html#search", label: "Поиск" },
+  { to: "/profile.html", label: "Личный кабинет" },
+  { to: "/index.html#new", label: "Новинки" },
+  { to: "/login.html", label: "Войти" },
+  { to: "/register.html", label: "Регистрация" },
 ];
 
 const NavLink = ({ to, label, onClick }: { to: string; label: string; onClick?: () => void }) =>
-  to.startsWith("/#") ? (
+  to.startsWith("/index.html#") ? (
     <a href={to} onClick={onClick} className="story-link transition-colors hover:text-foreground">
       {label}
     </a>
@@ -58,7 +58,7 @@ const Header = ({ hideThemeToggle = false }: { hideThemeToggle?: boolean }) => {
             </button>
           )}
           <Link
-            to="/profile"
+            to="/profile.html"
             aria-label="Корзина"
             className="grid h-[30px] w-[30px] place-items-center border-2 border-foreground text-[0.8rem] font-semibold transition-transform hover:scale-105"
           >
@@ -76,7 +76,7 @@ const Header = ({ hideThemeToggle = false }: { hideThemeToggle?: boolean }) => {
                 {LINKS.map((l) => (
                   <li key={l.to}><NavLink {...l} onClick={() => setOpen(false)} /></li>
                 ))}
-                <li><NavLink to="/admin" label="Админ-панель" onClick={() => setOpen(false)} /></li>
+                <li><NavLink to="/admin.html" label="Админ-панель" onClick={() => setOpen(false)} /></li>
               </ul>
             </SheetContent>
           </Sheet>

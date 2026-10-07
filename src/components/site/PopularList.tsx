@@ -9,7 +9,7 @@ const PopularList = () => (
       {GAMES.slice(0, 5).map((g, i) => (
         <li key={g.id} className="animate-fade-in" style={{ animationDelay: `${200 + i * 70}ms` }}>
           <Link
-            to="/catalog"
+            to="/catalog.html"
             className="group grid grid-cols-[52px_1fr_auto] items-center gap-3.5 border-t border-border py-[11px] transition-colors"
           >
             <img src={g.image} alt={g.title} loading="lazy" className="h-[52px] w-[52px] rounded-[6px] object-cover transition-transform duration-300 group-hover:scale-105" />

@@ -24,7 +24,7 @@ const Login = () => {
     setErrors(er);
     if (Object.keys(er).length) return;
     toast.success("Вы вошли в аккаунт");
-    navigate("/profile");
+    navigate("/profile.html");
   };
 
   return (
@@ -35,7 +35,7 @@ const Login = () => {
         <button type="submit" className="h-11 rounded-[6px] bg-primary font-medium text-primary-foreground transition-opacity hover:opacity-90">Войти</button>
         <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
           <button type="button" onClick={() => setRecoverOpen(true)} className="story-link text-muted-foreground hover:text-foreground">Забыли пароль?</button>
-          <Link to="/register" className="story-link">Регистрация</Link>
+          <Link to="/register.html" className="story-link">Регистрация</Link>
         </div>
       </form>
 

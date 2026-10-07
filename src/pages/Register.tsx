@@ -32,7 +32,7 @@ const Register = () => {
     setErrors(er);
     if (Object.keys(er).length) return;
     toast.success("Аккаунт создан");
-    navigate("/profile");
+    navigate("/profile.html");
   };
 
   return (
@@ -58,7 +58,7 @@ const Register = () => {
         </div>
         <button type="submit" className="h-11 rounded-[6px] bg-primary font-medium text-primary-foreground transition-opacity hover:opacity-90">Зарегистрироваться</button>
         <p className="text-center text-sm text-muted-foreground">
-          Уже есть аккаунт? <Link to="/login" className="story-link text-foreground">Войти</Link>
+          Уже есть аккаунт? <Link to="/login.html" className="story-link text-foreground">Войти</Link>
         </p>
       </form>
     </PageShell>

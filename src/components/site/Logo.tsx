@@ -10,7 +10,7 @@ export const LogoMark = ({ size = 34, className }: { size?: number; className?: 
 );
 
 const Logo = ({ className }: { className?: string }) => (
-  <Link to="/" className={cn("logo group flex items-center gap-2.5", className)} aria-label="BestGames — на главную">
+  <Link to="/index.html" className={cn("logo group flex items-center gap-2.5", className)} aria-label="BestGames — на главную">
     <LogoMark />
     <span className="font-head text-[1.05rem] font-bold uppercase leading-none tracking-[0.02em]">
       Best<span className="font-normal text-muted-foreground transition-colors group-hover:text-foreground">Games</span>

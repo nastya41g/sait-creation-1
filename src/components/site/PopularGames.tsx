@@ -10,7 +10,7 @@ const PopularGames = () => {
     <section ref={ref} className="reveal py-16 md:py-20" aria-labelledby="pop-title">
       <div className="mb-10 flex items-end justify-between gap-4">
         <h2 id="pop-title" className="font-head text-3xl font-medium tracking-tight md:text-4xl">Популярные игры</h2>
-        <Link to="/catalog" className="story-link flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/catalog.html" className="story-link flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           Весь каталог <Icon name="ArrowRight" size={14} />
         </Link>
       </div>

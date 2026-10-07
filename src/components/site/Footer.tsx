@@ -4,11 +4,11 @@ import Logo from "./Logo";
 
 const INFO = ["Клиентам", "Партнёрам", "О нас", "Контакты"];
 const NAV = [
-  { to: "/", label: "Главная" },
-  { to: "/register", label: "Регистрация" },
-  { to: "/login", label: "Авторизация" },
-  { to: "/profile", label: "Личный кабинет" },
-  { to: "/#search", label: "Поиск" },
+  { to: "/index.html", label: "Главная" },
+  { to: "/register.html", label: "Регистрация" },
+  { to: "/login.html", label: "Авторизация" },
+  { to: "/profile.html", label: "Личный кабинет" },
+  { to: "/index.html#search", label: "Поиск" },
 ];
 
 const Footer = () => (
@@ -39,7 +39,7 @@ const Footer = () => (
         <ul className="flex flex-col gap-2.5">
           {NAV.map((n) => (
             <li key={n.label}>
-              {n.to.startsWith("/#") ? (
+              {n.to.startsWith("/index.html#") ? (
                 <a href={n.to} className="story-link">{n.label}</a>
               ) : (
                 <Link to={n.to} className="story-link">{n.label}</Link>
@@ -51,7 +51,7 @@ const Footer = () => (
     </div>
     <div className="mx-auto flex max-w-[1920px] flex-col gap-2 border-t border-border px-4 py-5 text-xs text-muted-foreground md:flex-row md:justify-between md:px-7 lg:px-[30px]">
       <span>© 2026 BestGames</span>
-      <Link to="/light" className="hover:text-foreground">Светлая версия главной</Link>
+      <Link to="/index_light.html" className="hover:text-foreground">Светлая версия главной</Link>
     </div>
   </footer>
 );

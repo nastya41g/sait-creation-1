@@ -21,7 +21,7 @@ const GenreSearch = () => {
       inputRef.current?.focus();
       return;
     }
-    navigate(`/catalog?genre=${encodeURIComponent(v)}`);
+    navigate(`/catalog.html?genre=${encodeURIComponent(v)}`);
   };
 
   return (
