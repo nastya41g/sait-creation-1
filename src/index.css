@@ -4,35 +4,30 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --background: 40 12% 95%;
+    --foreground: 225 8% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 225 8% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --popover-foreground: 225 8% 12%;
+    --primary: 225 8% 14%;
+    --primary-foreground: 60 10% 96%;
+    --secondary: 40 10% 90%;
+    --secondary-foreground: 225 8% 14%;
+    --muted: 40 10% 90%;
+    --muted-foreground: 228 4% 40%;
+    --accent: 40 10% 88%;
+    --accent-foreground: 225 8% 12%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 8% 84%;
+    --input: 40 8% 80%;
+    --ring: 225 8% 14%;
+    --radius: 6px;
+    --glow: 40 30% 99%;
+    --star: 38 85% 45%;
+    --surface: 40 10% 90%;
+    --shadow: 0 10px 30px -12px rgba(20, 20, 22, 0.18);
 
     --sidebar-background: 0 0% 98%;
 
@@ -52,33 +47,31 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 5% 12%;
+    --foreground: 60 10% 95%;
+    --card: 225 5% 16%;
+    --card-foreground: 60 10% 95%;
+    --popover: 225 5% 16%;
+    --popover-foreground: 60 10% 95%;
+    --primary: 60 10% 95%;
+    --primary-foreground: 240 5% 8%;
+    --secondary: 225 5% 19%;
+    --secondary-foreground: 60 10% 95%;
+    --muted: 225 5% 19%;
+    --muted-foreground: 228 2% 56%;
+    --accent: 225 5% 21%;
+    --accent-foreground: 60 10% 95%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 228 4% 24%;
+    --input: 228 4% 24%;
+    --ring: 60 10% 85%;
+    --radius: 6px;
+    --glow: 230 5% 24%;
+    --star: 46 77% 60%;
+    --surface: 225 5% 16%;
+    --shadow: 0 0 0 0 transparent;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -95,7 +88,45 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-head;
+  }
+}
+
+@layer components {
+  .page-glow {
+    background: radial-gradient(ellipse at 35% 30%, hsl(var(--glow)), hsl(var(--background)) 60%);
+  }
+
+  .story-link {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-px after:bottom-0 after:left-0 after:bg-current after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1;
+  }
+
+  .surface-shadow {
+    box-shadow: var(--shadow);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
   }
 }
