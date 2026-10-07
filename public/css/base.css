@@ -287,7 +287,7 @@ button {
 
 /* --- Появление секций при прокрутке (класс .js ставит theme.js) --- */
 .js .reveal {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(18px);
   transition:
     opacity 0.7s ease,

@@ -117,38 +117,42 @@
   <main class="container page-main">
     <div class="page-head">
       <h1 class="page-head__title">Личный кабинет</h1>
-        <p class="page-head__subtitle">Иван, добро пожаловать обратно.</p>
+        <p class="page-head__subtitle" data-profile-greeting>Загружаем ваш профиль…</p>
     </div>
     <div class="page-body">
       <div class="profile">
         <!-- ===== Данные пользователя ===== -->
         <section class="card profile__info" aria-labelledby="u-title">
           <div class="profile__user">
-            <span class="profile__avatar" aria-hidden="true">ИП</span>
-            <h2 class="profile__name" id="u-title">Иван Петров</h2>
+            <span class="profile__avatar" aria-hidden="true" data-user-field="initials"></span>
+            <h2 class="profile__name" id="u-title" data-user-field="fullName"></h2>
           </div>
           <dl class="profile__data">
             <div class="profile__data-row">
               <dt class="profile__data-label">E-mail</dt>
-              <dd class="profile__data-value">ivan.petrov@games.ru</dd>
+              <dd class="profile__data-value" data-user-field="email">—</dd>
             </div>
             <div class="profile__data-row">
               <dt class="profile__data-label">Фамилия</dt>
-              <dd class="profile__data-value">Петров</dd>
+              <dd class="profile__data-value" data-user-field="lastName">—</dd>
             </div>
             <div class="profile__data-row">
               <dt class="profile__data-label">Имя</dt>
-              <dd class="profile__data-value">Иван</dd>
+              <dd class="profile__data-value" data-user-field="firstName">—</dd>
             </div>
             <div class="profile__data-row">
               <dt class="profile__data-label">Дата рождения</dt>
-              <dd class="profile__data-value">14.03.2001</dd>
+              <dd class="profile__data-value" data-user-field="birthText">—</dd>
             </div>
             <div class="profile__data-row">
               <dt class="profile__data-label">Телефон</dt>
-              <dd class="profile__data-value">+7 912 345-67-89</dd>
+              <dd class="profile__data-value" data-user-field="phone">—</dd>
             </div>
           </dl>
+          <div class="profile__actions">
+            <button class="btn btn--primary btn--sm" type="button" data-modal-open="edit-modal">Редактировать</button>
+            <button class="btn btn--outline btn--sm" type="button" data-logout>Выйти</button>
+          </div>
         </section>
 
         <!-- ===== История покупок ===== -->
@@ -163,29 +167,9 @@
                   <th scope="col" class="purchases__price">Стоимость</th>
                 </tr>
               </thead>
-              <tbody>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-10-02">02.10.2026</time></td>
-                <td>Cyber Drift 2077</td>
-                <td class="purchases__price">2 499 ₽</td>
-              </tr>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-09-21">21.09.2026</time></td>
-                <td>Набор скинов «Неон» — Apex Rally</td>
-                <td class="purchases__price">349 ₽</td>
-              </tr>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-09-05">05.09.2026</time></td>
-                <td>Runebound</td>
-                <td class="purchases__price">1 999 ₽</td>
-              </tr>
-              <tr>
-                <td class="purchases__date"><time datetime="2026-08-18">18.08.2026</time></td>
-                <td>Сезонный пропуск — Starfall Legion</td>
-                <td class="purchases__price">599 ₽</td>
-              </tr>
-              </tbody>
+              <tbody data-purchases></tbody>
             </table>
+            <p class="purchases__empty" data-purchases-empty hidden>Покупок пока нет — загляните в <a class="story-link" href="catalog.html">каталог</a>.</p>
           </div>
         </section>
 
@@ -199,11 +183,11 @@
           </label>
           <label class="settings__row">
             <span class="settings__label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> Уведомления о покупках</span>
-            <input class="switch" type="checkbox" role="switch" checked>
+            <input class="switch" type="checkbox" role="switch" data-setting="notifyPurchases">
           </label>
           <label class="settings__row">
             <span class="settings__label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg> Рассылка об акциях</span>
-            <input class="switch" type="checkbox" role="switch">
+            <input class="switch" type="checkbox" role="switch" data-setting="notifyPromo">
           </label>
             <div class="settings__row">
               <span class="settings__label"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg> Пароль</span>
@@ -298,6 +282,25 @@
     </button>
   </aside>
 </div>
+
+<!-- ===== Модальное окно редактирования профиля ===== -->
+<dialog class="modal" id="edit-modal" aria-labelledby="edit-title">
+  <button class="modal__close" type="button" data-modal-close aria-label="Закрыть"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+  <div class="modal__header">
+    <h2 class="modal__title" id="edit-title">Редактирование профиля</h2>
+  </div>
+  <form class="modal__form" id="edit-form" novalidate>
+    <label class="field__label" for="ed-last">Фамилия</label>
+    <input class="field__input" id="ed-last" name="lastName" type="text" required>
+    <label class="field__label" for="ed-first">Имя</label>
+    <input class="field__input" id="ed-first" name="firstName" type="text" required>
+    <label class="field__label" for="ed-birth">Дата рождения</label>
+    <input class="field__input" id="ed-birth" name="birth" type="date">
+    <label class="field__label" for="ed-phone">Телефон</label>
+    <input class="field__input" id="ed-phone" name="phone" type="tel" placeholder="+7 900 000-00-00">
+    <button class="btn btn--primary btn--block" type="submit">Сохранить</button>
+  </form>
+</dialog>
 
 <!-- ===== Модальное окно смены пароля ===== -->
 <dialog class="modal" id="password-modal" aria-labelledby="password-title">

@@ -207,7 +207,7 @@
   background: hsl(250 40% 6% / 0.55);
   color: hsl(185 100% 50%);
   clip-path: var(--clip-sm);
-  opacity: 0;
+  opacity: 0.85;
   transform: translateY(-50%);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -488,7 +488,9 @@
   z-index: 20;
   margin-top: 6px;
   padding: 4px 0;
-  overflow: hidden;
+  max-height: min(420px, 60vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border: 1px solid hsl(var(--neon-2) / 0.6);
   background: hsl(var(--popover));
   box-shadow:
@@ -501,7 +503,79 @@
   display: none;
 }
 
+.genre-search__group {
+  padding: 8px 16px 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: hsl(var(--muted-foreground));
+}
+
+.genre-search__nothing {
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.genre-search__result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  color: hsl(var(--foreground));
+  transition: background-color 0.15s ease;
+}
+
+.genre-search__result:hover,
+.genre-search__result.genre-search__hint--active {
+  background: hsl(var(--neon-2) / 0.12);
+}
+
+.genre-search__thumb {
+  width: 48px;
+  height: 36px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.genre-search__info {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.genre-search__name {
+  overflow: hidden;
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.genre-search__result:hover .genre-search__name,
+.genre-search__result.genre-search__hint--active .genre-search__name {
+  color: hsl(var(--neon-2));
+}
+
+.genre-search__meta {
+  font-size: 0.72rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.genre-search__price {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: hsl(var(--neon-2));
+}
+
 .genre-search__hint {
+  display: block;
   width: 100%;
   padding: 8px 16px;
   text-align: left;

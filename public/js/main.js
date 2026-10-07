@@ -19,6 +19,83 @@
 
   var THEME_KEY = 'bestgames-theme';
   var GENRES = ['Экшен', 'RPG', 'Стратегия', 'Гонки', 'Хоррор', 'Инди', 'Шутер', 'Симулятор', 'Спорт'];
+  var GAMES = [
+    { title: 'Starfall Legion', genre: 'Стратегия', developer: 'Nova Forge', price: 1499, image: 'img/starfall-legion-card.webp' },
+    { title: 'Hollow Pines', genre: 'Хоррор', developer: 'Ember Lab', price: 899, image: 'img/hollow-pines-card.webp' },
+    { title: 'Apex Rally', genre: 'Гонки', developer: 'Drift Works', price: 1299, image: 'img/apex-rally-card.webp' },
+    { title: 'Runebound', genre: 'RPG', developer: 'North Hall', price: 1999, image: 'img/runebound-card.webp' },
+    { title: 'Pixel Siege', genre: 'Инди', developer: 'Tiny Keep', price: 499, image: 'img/pixel-siege-card.webp' },
+    { title: 'Cyber Drift 2077', genre: 'Экшен', developer: 'Neon Shift', price: 2499, image: 'img/cyber-drift-card.webp' },
+    { title: 'Ashen Crown', genre: 'RPG', developer: 'Grey Tower', price: 1999, image: 'img/ashen-crown-card.webp' },
+    { title: 'Void Runner', genre: 'Шутер', developer: 'Orbit Games', price: 1799, image: 'img/void-runner-card.webp' }
+  ];
+  var AUTH_URL = 'https://functions.poehali.dev/f1480e86-e7cd-4528-a176-09c6d9f929a1';
+  var TOKEN_KEY = 'bestgames-token';
+  var USER_KEY = 'bestgames-user';
+
+  function norm(v) {
+    return String(v || '').toLowerCase().replace(/ё/g, 'е').trim();
+  }
+
+  /** Совпадение запроса с игрой: по названию, жанру или разработчику */
+  function gameMatches(game, q) {
+    if (!q) return true;
+    var hay = norm(game.title + ' ' + game.genre + ' ' + game.developer);
+    return norm(q).split(/\s+/).every(function (w) { return hay.indexOf(w) !== -1; });
+  }
+
+  function escapeHtml(v) {
+    return String(v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ---------- Аккаунт: токен, запросы к серверу ---------- */
+  function getToken() {
+    try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
+  }
+
+  function getStoredUser() {
+    try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch (e) { return null; }
+  }
+
+  function saveSession(token, user) {
+    try {
+      if (token) localStorage.setItem(TOKEN_KEY, token);
+      if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
+    } catch (e) { /* приватный режим */ }
+  }
+
+  function clearSession() {
+    try {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    } catch (e) { /* приватный режим */ }
+  }
+
+  function api(action, body) {
+    var opts = { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json' } };
+    var token = getToken();
+    if (token) opts.headers['X-Auth-Token'] = token;
+    if (body) opts.body = JSON.stringify(body);
+    return fetch(AUTH_URL + '?action=' + action, opts).then(function (r) {
+      return r.json().then(function (data) {
+        if (!r.ok) {
+          if (r.status === 401 && token && action !== 'login') clearSession();
+          throw new Error(data.error || 'Ошибка сервера');
+        }
+        return data;
+      });
+    });
+  }
+
+  function logout() {
+    var done = function () {
+      clearSession();
+      window.location.href = 'index.html';
+    };
+    api('logout', {}).then(done, done);
+  }
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var PHONE_RE = /^[+\d][\d\s()-]{9,}$/;
 
@@ -230,7 +307,7 @@
     schedule();
   })();
 
-  /* ---------- 5. Поиск по жанрам с подсказками ---------- */
+  /* ---------- 5. Поиск игр: список результатов под полем ---------- */
   (function initGenreSearch() {
     var box = document.querySelector('[data-genre-search]');
     if (!box) return;
@@ -239,50 +316,64 @@
     var input = box.querySelector('.genre-search__input');
     var list = box.querySelector('.genre-search__hints');
     var activeIndex = -1;
+    var items = [];
 
     function go(value) {
       var v = (value || '').trim();
-      if (!v) {
-        box.classList.add('genre-search--error');
-        input.focus();
-        return;
-      }
-      window.location.href = 'catalog.html?genre=' + encodeURIComponent(v);
+      window.location.href = v ? 'catalog.html?q=' + encodeURIComponent(v) : 'catalog.html';
     }
 
     function render() {
-      var q = input.value.trim().toLowerCase();
-      var hints = q ? GENRES.filter(function (g) { return g.toLowerCase().indexOf(q) !== -1; }) : GENRES;
-      list.innerHTML = '';
-      activeIndex = -1;
-      hints.forEach(function (g) {
-        var li = document.createElement('li');
-        li.setAttribute('role', 'option');
-        var b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'genre-search__hint';
-        b.textContent = g;
-        b.tabIndex = -1;
-        // mousedown не даёт полю потерять фокус до клика
-        b.addEventListener('mousedown', function (e) { e.preventDefault(); });
-        b.addEventListener('click', function () {
-          input.value = g;
-          go(g);
+      var q = input.value.trim();
+      var games = GAMES.filter(function (g) { return gameMatches(g, q); });
+      var genres = q ? GENRES.filter(function (g) { return norm(g).indexOf(norm(q)) !== -1; }) : [];
+      items = [];
+      var html = '';
+      if (genres.length) {
+        html += '<li class="genre-search__group" role="presentation">Жанры</li>';
+        genres.forEach(function (g) {
+          items.push({ href: 'catalog.html?genre=' + encodeURIComponent(g) });
+          html += '<li role="option"><a class="genre-search__hint genre-search__hint--genre" href="catalog.html?genre=' + encodeURIComponent(g) + '" tabindex="-1">' + escapeHtml(g) + '</a></li>';
         });
-        li.appendChild(b);
-        list.appendChild(li);
+      }
+      if (games.length) {
+        html += '<li class="genre-search__group" role="presentation">Игры · ' + games.length + '</li>';
+        games.forEach(function (g) {
+          var href = 'catalog.html?q=' + encodeURIComponent(g.title);
+          items.push({ href: href });
+          html += '<li role="option"><a class="genre-search__result" href="' + href + '" tabindex="-1">' +
+            '<img class="genre-search__thumb" src="' + g.image + '" alt="" width="48" height="36" loading="lazy">' +
+            '<span class="genre-search__info"><span class="genre-search__name">' + escapeHtml(g.title) + '</span>' +
+            '<span class="genre-search__meta">' + escapeHtml(g.genre + ' · ' + g.developer) + '</span></span>' +
+            '<span class="genre-search__price">' + formatPrice(g.price) + '</span></a></li>';
+        });
+      }
+      if (!items.length) {
+        html = '<li class="genre-search__nothing">Ничего не найдено по запросу «' + escapeHtml(q) + '»</li>';
+      }
+      list.innerHTML = html;
+      activeIndex = -1;
+      list.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('mousedown', function (e) { e.preventDefault(); });
       });
-      list.hidden = hints.length === 0;
-      input.setAttribute('aria-expanded', hints.length ? 'true' : 'false');
+      list.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
     }
 
     function highlight(step) {
-      var items = list.querySelectorAll('.genre-search__hint');
-      if (!items.length) return;
-      activeIndex = (activeIndex + step + items.length) % items.length;
-      items.forEach(function (it, n) {
-        it.classList.toggle('genre-search__hint--active', n === activeIndex);
+      var links = list.querySelectorAll('a');
+      if (!links.length) return;
+      activeIndex = (activeIndex + step + links.length) % links.length;
+      links.forEach(function (it, n) {
+        var on = n === activeIndex;
+        it.classList.toggle('genre-search__hint--active', on);
+        if (on) it.scrollIntoView({ block: 'nearest' });
       });
+    }
+
+    function close() {
+      list.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
     }
 
     input.addEventListener('focus', render);
@@ -290,20 +381,14 @@
       box.classList.remove('genre-search--error');
       render();
     });
-    input.addEventListener('blur', function () {
-      setTimeout(function () {
-        list.hidden = true;
-        input.setAttribute('aria-expanded', 'false');
-      }, 150);
-    });
+    input.addEventListener('blur', function () { setTimeout(close, 150); });
     input.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowDown') { e.preventDefault(); highlight(1); }
       if (e.key === 'ArrowUp') { e.preventDefault(); highlight(-1); }
-      if (e.key === 'Escape') { list.hidden = true; }
+      if (e.key === 'Escape') close();
       if (e.key === 'Enter' && activeIndex >= 0) {
         e.preventDefault();
-        var items = list.querySelectorAll('.genre-search__hint');
-        go(items[activeIndex].textContent);
+        window.location.href = items[activeIndex].href;
       }
     });
 
@@ -313,7 +398,9 @@
     });
 
     box.querySelectorAll('.genre-search__tag').forEach(function (t) {
-      t.addEventListener('click', function () { go(t.textContent); });
+      t.addEventListener('click', function () {
+        window.location.href = 'catalog.html?genre=' + encodeURIComponent(t.textContent.trim());
+      });
     });
   })();
 
@@ -330,11 +417,15 @@
     var badge = document.querySelector('.catalog__filter-count');
     var chips = document.querySelector('.catalog__chips');
     var selected = [];
+    var searchInput = document.querySelector('[data-catalog-search]');
+    var query = '';
 
     function apply() {
       var visible = 0;
       cards.forEach(function (card) {
-        var show = !selected.length || selected.indexOf(card.dataset.genre) !== -1;
+        var d = card.dataset;
+        var show = (!selected.length || selected.indexOf(d.genre) !== -1) &&
+          gameMatches({ title: d.title, genre: d.genre, developer: d.developer }, query);
         card.hidden = !show;
         if (show) visible++;
       });
@@ -343,8 +434,10 @@
         cb.checked = selected.indexOf(cb.value) !== -1;
       });
       resets.forEach(function (r) { r.hidden = !selected.length; });
+      if (searchInput && searchInput.value !== query) searchInput.value = query;
       count.textContent = visible;
       empty.hidden = visible > 0;
+      if (searchInput) searchInput.closest('.catalog-search').classList.toggle('catalog-search--filled', !!query);
       badge.hidden = !selected.length;
       badge.textContent = selected.length;
       // Плашки выбранных жанров (моб./планшет)
@@ -377,12 +470,31 @@
       });
     });
 
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        query = searchInput.value;
+        apply();
+        var url = new URL(window.location.href);
+        if (query.trim()) url.searchParams.set('q', query.trim()); else url.searchParams.delete('q');
+        window.history.replaceState(null, '', url);
+      });
+      var clearBtn = document.querySelector('[data-catalog-search-clear]');
+      if (clearBtn) clearBtn.addEventListener('click', function () {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+        searchInput.focus();
+      });
+    }
+
+    var urlParams = new URLSearchParams(window.location.search);
+    query = urlParams.get('q') || '';
     // Жанр из адресной строки: catalog.html?genre=RPG (частичное совпадение)
-    var param = new URLSearchParams(window.location.search).get('genre');
+    var param = urlParams.get('genre');
     if (param) {
       var q = param.toLowerCase();
       var match = GENRES.filter(function (g) { return g.toLowerCase().indexOf(q) !== -1; })[0];
       if (match) selected = [match];
+      else if (!query) query = param;
     }
     apply();
   })();
@@ -393,12 +505,14 @@
     if (!modal) return;
 
     var current = null;
+    var currentPrice = 0;
 
     document.querySelectorAll('[data-game]').forEach(function (card) {
       function open(e) {
         if (e) e.preventDefault();
         var d = card.dataset;
         current = d.title;
+        currentPrice = d.price;
         modal.querySelector('.game-modal__image').src = d.image;
         modal.querySelector('.game-modal__image').alt = d.title;
         modal.querySelector('.game-modal__title').textContent = d.title;
@@ -416,8 +530,7 @@
     });
 
     modal.querySelector('.game-modal__buy').addEventListener('click', function () {
-      toast('Покупка «' + current + '» оформлена');
-      modal.close();
+      if (window.BestGamesBuy(current, currentPrice)) modal.close();
     });
   })();
 
@@ -449,8 +562,16 @@
       if (!EMAIL_RE.test(email.value.trim())) { setFieldError(email, 'Введите корректный e-mail'); ok = false; }
       if (pass.value.length < 6) { setFieldError(pass, 'Минимум 6 символов'); ok = false; }
       if (!ok) return;
-      toast('Вы вошли в аккаунт');
-      setTimeout(function () { window.location.href = 'profile.html'; }, 700);
+      var btn = form.querySelector('[type="submit"]');
+      btn.disabled = true;
+      api('login', { email: email.value.trim(), password: pass.value }).then(function (data) {
+        saveSession(data.token, data.user);
+        toast('Вы вошли в аккаунт');
+        setTimeout(function () { window.location.href = 'profile.html'; }, 500);
+      }).catch(function (err) {
+        toast(err.message, true);
+        btn.disabled = false;
+      });
     });
 
     // Восстановление пароля
@@ -491,8 +612,23 @@
         if (row[1]) ok = false;
       });
       if (!ok) return;
-      toast('Аккаунт создан');
-      setTimeout(function () { window.location.href = 'profile.html'; }, 700);
+      var btn = form.querySelector('[type="submit"]');
+      btn.disabled = true;
+      api('register', {
+        email: f.email.value.trim(),
+        lastName: f.lastName.value.trim(),
+        firstName: f.firstName.value.trim(),
+        birth: f.birth.value,
+        phone: f.phone.value.trim(),
+        password: f.password.value
+      }).then(function (data) {
+        saveSession(data.token, data.user);
+        toast('Аккаунт создан');
+        setTimeout(function () { window.location.href = 'profile.html'; }, 500);
+      }).catch(function (err) {
+        toast(err.message, true);
+        btn.disabled = false;
+      });
     });
   })();
 
@@ -564,20 +700,158 @@
       });
     });
 
+    var page = document.querySelector('.profile');
+    if (!page) return;
+    if (!getToken()) {
+      window.location.replace('login.html');
+      return;
+    }
+
+    var user = null;
+
+    function fill(u) {
+      user = u;
+      var initials = ((u.firstName || '')[0] || '') + ((u.lastName || '')[0] || '');
+      var birthText = u.birth ? u.birth.split('-').reverse().join('.') : '—';
+      var values = {
+        initials: initials.toUpperCase(),
+        fullName: u.firstName + ' ' + u.lastName,
+        email: u.email,
+        lastName: u.lastName,
+        firstName: u.firstName,
+        birthText: birthText,
+        phone: u.phone || '—'
+      };
+      document.querySelectorAll('[data-user-field]').forEach(function (el) {
+        el.textContent = values[el.getAttribute('data-user-field')] || '—';
+      });
+      document.querySelector('[data-profile-greeting]').textContent = u.firstName + ', добро пожаловать обратно.';
+      document.querySelectorAll('[data-setting]').forEach(function (sw) {
+        sw.checked = !!u[sw.getAttribute('data-setting')];
+      });
+      saveSession(null, u);
+    }
+
+    function renderPurchases(items) {
+      var body = document.querySelector('[data-purchases]');
+      var empty = document.querySelector('[data-purchases-empty]');
+      var table = body.closest('table');
+      body.innerHTML = items.map(function (p) {
+        var d = new Date(p.date);
+        var iso = p.date.slice(0, 10);
+        return '<tr><td class="purchases__date"><time datetime="' + iso + '">' + d.toLocaleDateString('ru-RU') + '</time></td>' +
+          '<td>' + escapeHtml(p.title) + '</td><td class="purchases__price">' + formatPrice(p.price) + '</td></tr>';
+      }).join('');
+      table.hidden = !items.length;
+      empty.hidden = items.length > 0;
+    }
+
+    api('me').then(function (data) {
+      fill(data.user);
+      renderPurchases(data.purchases);
+    }).catch(function (err) {
+      toast(err.message, true);
+      if (!getToken()) setTimeout(function () { window.location.replace('login.html'); }, 800);
+    });
+
+    document.querySelectorAll('[data-setting]').forEach(function (sw) {
+      sw.addEventListener('change', function () {
+        if (!user) return;
+        var patch = Object.assign({}, user);
+        patch[sw.getAttribute('data-setting')] = sw.checked;
+        api('update', patch).then(function (data) {
+          fill(data.user);
+          toast('Настройки сохранены');
+        }).catch(function (err) {
+          sw.checked = !sw.checked;
+          toast(err.message, true);
+        });
+      });
+    });
+
+    // Редактирование профиля
+    var editModal = document.getElementById('edit-modal');
+    var editForm = document.getElementById('edit-form');
+    document.querySelectorAll('[data-modal-open="edit-modal"]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (!user) return;
+        editForm.elements.lastName.value = user.lastName;
+        editForm.elements.firstName.value = user.firstName;
+        editForm.elements.birth.value = user.birth || '';
+        editForm.elements.phone.value = user.phone || '';
+      });
+    });
+    editForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = editForm.elements;
+      if (!f.lastName.value.trim() || !f.firstName.value.trim()) return toast('Укажите имя и фамилию', true);
+      if (f.phone.value.trim() && !PHONE_RE.test(f.phone.value.trim())) return toast('Проверьте номер телефона', true);
+      var patch = Object.assign({}, user, {
+        lastName: f.lastName.value.trim(),
+        firstName: f.firstName.value.trim(),
+        birth: f.birth.value,
+        phone: f.phone.value.trim()
+      });
+      api('update', patch).then(function (data) {
+        fill(data.user);
+        toast('Профиль обновлён');
+        editModal.close();
+      }).catch(function (err) { toast(err.message, true); });
+    });
+
+    document.querySelectorAll('[data-logout]').forEach(function (btn) {
+      btn.addEventListener('click', logout);
+    });
+
     // Смена пароля
     var form = document.getElementById('password-form');
-    if (!form) return;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var f = form.elements;
       if (!f.old.value) return toast('Введите текущий пароль', true);
       if (f.next.value.length < 6) return toast('Новый пароль — минимум 6 символов', true);
       if (f.next.value !== f.repeat.value) return toast('Пароли не совпадают', true);
-      toast('Пароль изменён');
-      form.reset();
-      document.getElementById('password-modal').close();
+      api('password', { old: f.old.value, next: f.next.value }).then(function () {
+        toast('Пароль изменён');
+        form.reset();
+        document.getElementById('password-modal').close();
+      }).catch(function (err) { toast(err.message, true); });
     });
   })();
+
+  /* ---------- Шапка: состояние входа ---------- */
+  (function initAuthNav() {
+    var u = getStoredUser();
+    if (!getToken() || !u) return;
+    document.querySelectorAll('a[href="login.html"]').forEach(function (a) {
+      if (a.closest('.auth-form')) return;
+      a.textContent = u.firstName || 'Профиль';
+      a.setAttribute('href', 'profile.html');
+    });
+    document.querySelectorAll('.header a[href="register.html"], .drawer a[href="register.html"]').forEach(function (a) {
+      a.textContent = 'Выйти';
+      a.setAttribute('href', '#');
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        logout();
+      });
+    });
+    if (/login|register/.test(window.location.pathname)) window.location.replace('profile.html');
+  })();
+
+  /* ---------- Покупка: запись в историю аккаунта ---------- */
+  function recordPurchase(title, price) {
+    if (!getToken()) {
+      toast('Войдите, чтобы покупка сохранилась в кабинете', true);
+      setTimeout(function () { window.location.href = 'login.html'; }, 1200);
+      return false;
+    }
+    api('buy', { title: title, price: Number(price) }).then(function () {
+      toast('Покупка «' + title + '» оформлена — смотрите её в личном кабинете');
+    }).catch(function (err) { toast(err.message, true); });
+    return true;
+  }
+  window.BestGamesBuy = recordPurchase;
 
   /* ---------- 10. Появление секций при прокрутке ---------- */
   (function initReveal() {
