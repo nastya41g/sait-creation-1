@@ -122,6 +122,7 @@ export default defineConfig(({mode}) => ({
                 register: path.resolve(__dirname, 'register.html'),
                 profile: path.resolve(__dirname, 'profile.html'),
                 catalog: path.resolve(__dirname, 'catalog.html'),
+                cart: path.resolve(__dirname, 'cart.html'),
                 admin: path.resolve(__dirname, 'admin.html'),
             },
         },
