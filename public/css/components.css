@@ -306,11 +306,12 @@
   height: 22px;
 }
 
-/* Десктоп (≥1280px): бургер скрыт, ссылки — в три колонки по сетке */
+/* Десктоп (≥1280px): бургер скрыт, ссылки — в четыре колонки по сетке */
 @media (min-width: 1280px) {
   .header__nav {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    /* Логотип, четыре группы ссылок (включая «Админ-панель») и кнопки */
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr auto;
   }
 
   .header__group {
