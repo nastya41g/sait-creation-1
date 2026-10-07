@@ -1,0 +1,604 @@
+/* ==========================================================================
+   BestGames — стили внутренних страниц:
+   общий каркас (.page-main, .page-head), карточка формы (.form-card),
+   авторизация/регистрация (.auth), каталог (.catalog, .filter, .game-modal),
+   личный кабинет (.profile, .purchases, .settings), админ-панель (.admin).
+   ========================================================================== */
+
+/* ---------- Каркас внутренней страницы ---------- */
+.page-top {
+  padding-top: 20px;
+}
+
+.page-main {
+  flex: 1;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Узкая колонка для форм входа/регистрации */
+.page-main--narrow {
+  max-width: 520px;
+}
+
+.page-head {
+  margin-bottom: 32px;
+  animation: fade-in 0.6s ease-out both;
+}
+
+.page-head__title {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+.page-head__subtitle {
+  margin-top: 8px;
+  color: hsl(var(--muted-foreground));
+}
+
+.page-body {
+  animation: fade-in 0.6s ease-out both;
+  animation-delay: 100ms;
+}
+
+/* ---------- Карточка-подложка (формы, секции кабинета) ---------- */
+.card {
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.card__title {
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 2rem;
+}
+
+/* ---------- Формы входа и регистрации ---------- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-form__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.auth-form__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.auth-form__muted-link {
+  color: hsl(var(--muted-foreground));
+}
+
+.auth-form__muted-link:hover {
+  color: hsl(var(--foreground));
+}
+
+.auth-form__note {
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.auth-form__note a {
+  color: hsl(var(--foreground));
+}
+
+.auth-form__consent .field__error {
+  margin-top: 4px;
+}
+
+@media (min-width: 640px) {
+  .auth-form__row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- Каталог ---------- */
+.catalog {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+/* Боковой фильтр — только на десктопе */
+.catalog__aside {
+  display: none;
+}
+
+.catalog__aside-box {
+  position: sticky;
+  top: 24px;
+  padding: 20px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+}
+
+/* Панель с кнопкой «Фильтр» и выбранными жанрами (моб./планшет) */
+.catalog__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.catalog__filter-btn {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.catalog__filter-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.catalog__filter-count {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-size: 0.7rem;
+}
+
+.catalog__filter-count[hidden] {
+  display: none;
+}
+
+.catalog__chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.catalog__chip {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  background: hsl(var(--secondary));
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.catalog__chip svg {
+  width: 12px;
+  height: 12px;
+}
+
+.catalog__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.catalog__empty {
+  padding: 80px 0;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+}
+
+.catalog__empty[hidden] {
+  display: none;
+}
+
+/* ---------- Фильтр по жанрам ---------- */
+.filter__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.filter__title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+}
+
+.filter__reset {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.filter__reset:hover {
+  color: hsl(var(--foreground));
+}
+
+.filter__reset[hidden] {
+  display: none;
+}
+
+.filter__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter--drawer {
+  padding-top: 24px;
+}
+
+/* ---------- Модальное окно «Подробнее» ---------- */
+.game-modal__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.game-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+}
+
+.game-modal__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 2rem;
+}
+
+.game-modal__meta,
+.game-modal__text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.game-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.game-modal__price {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.game-modal .modal__close {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius);
+  background: hsl(var(--background) / 0.7);
+}
+
+/* ---------- Личный кабинет ---------- */
+.profile {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.profile__user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.profile__avatar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+}
+
+.profile__name {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 2rem;
+}
+
+.profile__data-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.profile__data-row + .profile__data-row {
+  border-top: 1px solid hsl(var(--border));
+}
+
+.profile__data-label {
+  color: hsl(var(--muted-foreground));
+}
+
+.profile__data-value {
+  text-align: right;
+}
+
+/* Таблица истории покупок */
+.purchases {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.purchases__table {
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  caption-side: bottom;
+}
+
+.purchases__table th {
+  height: 48px;
+  padding: 0 8px;
+  text-align: left;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+}
+
+.purchases__table td {
+  padding: 12px 8px;
+}
+
+.purchases__table tr {
+  border-bottom: 1px solid hsl(var(--border));
+  transition: background-color 0.15s ease;
+}
+
+.purchases__table tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.purchases__table tbody tr:hover {
+  background: hsl(var(--muted) / 0.5);
+}
+
+.purchases__date {
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+}
+
+.purchases__table .purchases__price {
+  white-space: nowrap;
+  text-align: right;
+  font-family: var(--font-head);
+}
+
+/* Настройки профиля */
+.settings__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 40px;
+}
+
+.settings__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid hsl(var(--border));
+  cursor: pointer;
+}
+
+.settings__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings__label svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- Админ-панель ---------- */
+.admin-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 56rem;
+}
+
+.admin-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-form__side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Зона загрузки изображения с превью */
+.upload {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px dashed hsl(var(--border));
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.upload:hover {
+  border-color: hsl(var(--muted-foreground));
+}
+
+.upload--error {
+  border-color: hsl(var(--destructive));
+}
+
+.upload__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.upload__placeholder svg {
+  width: 28px;
+  height: 28px;
+}
+
+.upload__preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload__preview[hidden],
+.upload__placeholder[hidden] {
+  display: none;
+}
+
+.admin-form__submit {
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   Адаптив внутренних страниц
+   ========================================================================== */
+
+/* 768px: крупнее заголовок и отступы; сетка каталога 1 → 2 колонки;
+   настройки кабинета 1 → 2 колонки; админ-форма: поля + колонка
+   изображения 240px рядом; внутренние отступы карточек форм 32px. */
+@media (min-width: 768px) {
+  .page-main {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  .page-head__title {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .card--roomy {
+    padding: 32px;
+  }
+
+  .purchases__table th {
+    padding: 0 16px;
+  }
+
+  .purchases__table td {
+    padding: 16px;
+  }
+
+  .catalog__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .settings__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-form {
+    grid-template-columns: 1fr 240px;
+  }
+}
+
+/* 1280px (десктоп): в каталоге появляется боковой фильтр (240px), кнопка
+   «Фильтр» скрывается; кабинет — две колонки (1fr / 1.55fr);
+   каталог — 3 карточки в ряд. */
+@media (min-width: 1280px) {
+  .page-top {
+    padding-top: 24px;
+  }
+
+  .catalog {
+    grid-template-columns: 240px 1fr;
+  }
+
+  .catalog__aside {
+    display: block;
+  }
+
+  .catalog__toolbar {
+    display: none;
+  }
+
+  .profile {
+    grid-template-columns: 1fr 1.55fr;
+  }
+
+  .profile__settings {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1280px) {
+  .catalog__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 1536px: 4 карточки в ряд в каталоге. */
+@media (min-width: 1536px) {
+  .catalog__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Сообщение об отсутствии изображения в админ-форме */
+.upload__error:not([hidden]) {
+  display: block;
+}
+
+/* Элементы сеток не растягивают колонку шире экрана (таблица, длинный e-mail) */
+.profile > *,
+.catalog > *,
+.admin-form > * {
+  min-width: 0;
+}
+
+.profile__data-value {
+  overflow-wrap: anywhere;
+}

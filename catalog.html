@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<!--
+  BestGames — catalog.html
+  Каталог игр: фильтр по жанрам (боковая панель / выезжающая панель), ?genre=, окно «Подробнее».
+  Чистые HTML + CSS (БЭМ) + небольшой vanilla JS. Стили: public/css/, скрипты: public/js/.
+-->
+<html lang="ru" class="theme-dark">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Каталог игр — BestGames</title>
+    <meta name="description" content="Каталог компьютерных игр BestGames с фильтром по жанрам."/>
+    <meta name="author" content="BestGames"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="Каталог игр — BestGames">
+    <meta property="og:description" content="Каталог компьютерных игр BestGames с фильтром по жанрам.">
+    <meta property="og:type" content="website">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+    <meta name="twitter:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+
+    <!-- Шрифты: Unbounded (заголовки) и Onest (текст) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Onest:wght@400;500;600;700&display=swap">
+
+    <!-- Стили сайта -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+
+    <!-- Тема применяется до отрисовки (без мигания) -->
+    <script src="js/theme-init.js"></script>
+    <script src="js/main.js" defer></script>
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
+    <script src="https://cdn.poehali.dev/intertnal/js/pp-min-4.js"></script>
+    <script src="https://cdn.poehali.dev/intertnal/js/route-min.js"></script>
+    <script src="https://cdn.poehali.dev/intertnal/js/telemetry-min.js"></script>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
+
+    <script src="https://cdn.poehali.dev/intertnal/js/ve-2.0.0-rc.2.min.js" defer=""></script>
+      <meta name="pp-name" value="sait-creation-1">
+      <script src="https://cdn.poehali.dev/intertnal/js/inspector-min.js"></script>
+  </head>
+
+<body>
+<div class="page page--inner">
+  <div class="container page-top">
+    <!-- ===== Шапка: логотип, меню (3 колонки на десктопе), тема, корзина, бургер ===== -->
+    <header class="header">
+      <nav class="header__nav" aria-label="Главное меню">
+        <a class="logo" href="index.html" aria-label="BestGames — на главную">
+          <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect class="logo__diamond" x="6.5" y="6.5" width="27" height="27" rx="6"/>
+            <path class="logo__play" d="M16.5 13.2v13.6c0 .9 1 1.4 1.7.9l9.6-6.8c.6-.4.6-1.4 0-1.8l-9.6-6.8c-.7-.5-1.7 0-1.7.9Z"/>
+            <path class="logo__spark" d="M33 1.5l1.4 3.6 3.6 1.4-3.6 1.4L33 11.5l-1.4-3.6-3.6-1.4 3.6-1.4Z"/>
+          </svg>
+          <span class="logo__text">Best<span class="logo__text-light">Games</span></span>
+        </a>
+        <div class="header__group">
+          <a class="header__link header__link--active story-link" href="catalog.html" aria-current="page">Каталог игр</a>
+          <a class="header__link story-link" href="index.html#search">Поиск</a>
+        </div>
+        <div class="header__group">
+          <a class="header__link story-link" href="profile.html">Личный кабинет</a>
+          <a class="header__link story-link" href="index.html#new">Новинки</a>
+        </div>
+        <div class="header__group">
+          <a class="header__link story-link" href="login.html">Войти</a>
+          <a class="header__link story-link" href="register.html">Регистрация</a>
+        </div>
+        <div class="header__actions">
+          <button class="icon-btn icon-btn--bordered header__theme" type="button" data-theme-toggle aria-label="Сменить тему">
+            <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+          <a class="header__cart" href="profile.html" aria-label="Корзина: 0 товаров">0</a>
+          <button class="icon-btn header__burger" type="button" data-drawer-open="menu-drawer" aria-controls="menu-drawer" aria-expanded="false" aria-label="Открыть меню">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ===== Мобильное меню (выезжает справа, мобильные и планшеты) ===== -->
+    <div class="drawer" id="menu-drawer" aria-hidden="true">
+      <div class="drawer__overlay" data-drawer-close></div>
+      <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Меню">
+        <button class="drawer__close" type="button" data-drawer-close aria-label="Закрыть меню"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        <div class="drawer__head"><a class="logo" href="index.html" aria-label="BestGames — на главную">
+          <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect class="logo__diamond" x="6.5" y="6.5" width="27" height="27" rx="6"/>
+            <path class="logo__play" d="M16.5 13.2v13.6c0 .9 1 1.4 1.7.9l9.6-6.8c.6-.4.6-1.4 0-1.8l-9.6-6.8c-.7-.5-1.7 0-1.7.9Z"/>
+            <path class="logo__spark" d="M33 1.5l1.4 3.6 3.6 1.4-3.6 1.4L33 11.5l-1.4-3.6-3.6-1.4 3.6-1.4Z"/>
+          </svg>
+          <span class="logo__text">Best<span class="logo__text-light">Games</span></span>
+        </a></div>
+        <ul class="drawer__list">
+          <li><a class="drawer__link story-link" href="catalog.html">Каталог игр</a></li>
+          <li><a class="drawer__link story-link" href="index.html#search">Поиск</a></li>
+          <li><a class="drawer__link story-link" href="profile.html">Личный кабинет</a></li>
+          <li><a class="drawer__link story-link" href="index.html#new">Новинки</a></li>
+          <li><a class="drawer__link story-link" href="login.html">Войти</a></li>
+          <li><a class="drawer__link story-link" href="register.html">Регистрация</a></li>
+          <li><a class="drawer__link story-link" href="admin.html">Админ-панель</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="container page-main">
+    <div class="page-head">
+      <h1 class="page-head__title">Каталог игр</h1>
+        <p class="page-head__subtitle">Найдено игр: <span data-found>8</span></p>
+    </div>
+    <div class="page-body">
+      <div class="catalog" data-catalog>
+        <!-- ===== Боковой фильтр (только десктоп) ===== -->
+        <aside class="catalog__aside" aria-label="Фильтр по жанрам">
+          <div class="catalog__aside-box">
+            <div class="filter">
+      <div class="filter__head">
+        <h2 class="filter__title" id="filter-title-side">Жанры</h2>
+        <button class="filter__reset" type="button" hidden>Сбросить</button>
+      </div>
+      <ul class="filter__list" aria-labelledby="filter-title-side">
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Экшен" data-genre-checkbox>
+            Экшен
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="RPG" data-genre-checkbox>
+            RPG
+            <span class="checkbox__count">2</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Стратегия" data-genre-checkbox>
+            Стратегия
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Гонки" data-genre-checkbox>
+            Гонки
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Хоррор" data-genre-checkbox>
+            Хоррор
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Инди" data-genre-checkbox>
+            Инди
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Шутер" data-genre-checkbox>
+            Шутер
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Симулятор" data-genre-checkbox>
+            Симулятор
+            <span class="checkbox__count">0</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Спорт" data-genre-checkbox>
+            Спорт
+            <span class="checkbox__count">0</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+          </div>
+        </aside>
+
+        <div class="catalog__content">
+          <!-- ===== Кнопка фильтра и выбранные жанры (мобильные и планшеты) ===== -->
+          <div class="catalog__toolbar">
+            <button class="catalog__filter-btn" type="button" data-drawer-open="filter-drawer" aria-controls="filter-drawer" aria-expanded="false">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg> Фильтр
+              <span class="catalog__filter-count" hidden>0</span>
+            </button>
+            <div class="catalog__chips"></div>
+          </div>
+
+          <!-- ===== Сетка карточек игр ===== -->
+          <div class="catalog__grid">
+          <!-- Карточка: Starfall Legion -->
+          <article class="game-card" data-game data-genre="Стратегия" data-title="Starfall Legion" data-developer="Nova Forge" data-price="1499" data-rating="5" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" data-description="Масштабная стратегия о войне легионов под падающими звёздами.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="Обложка игры Starfall Legion" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">Стратегия</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Starfall Legion</a></h3>
+              <p class="game-card__meta">Стратегия · Nova Forge</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">1 499 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          <!-- Карточка: Hollow Pines -->
+          <article class="game-card" data-game data-genre="Хоррор" data-title="Hollow Pines" data-developer="Ember Lab" data-price="899" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" data-description="Туманный лес, заброшенная хижина и тайна, которую лучше не знать.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/43f03f65-fd9a-4030-b4fc-66502fe72a7a.jpg" alt="Обложка игры Hollow Pines" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">Хоррор</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Hollow Pines</a></h3>
+              <p class="game-card__meta">Хоррор · Ember Lab</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">899 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          <!-- Карточка: Apex Rally -->
+          <article class="game-card" data-game data-genre="Гонки" data-title="Apex Rally" data-developer="Drift Works" data-price="1299" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" data-description="Раллийные трассы в горах, пыль из-под колёс и честная физика.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/5030b3d3-b094-49cd-80b1-47b584d61e60.jpg" alt="Обложка игры Apex Rally" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">Гонки</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Apex Rally</a></h3>
+              <p class="game-card__meta">Гонки · Drift Works</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">1 299 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          <!-- Карточка: Runebound -->
+          <article class="game-card" data-game data-genre="RPG" data-title="Runebound" data-developer="North Hall" data-price="1999" data-rating="5" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" data-description="Северная ролевая сага о магии рун и древних клятвах.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/48438619-8513-4056-aab4-20e640ae9f38.jpg" alt="Обложка игры Runebound" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">RPG</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Runebound</a></h3>
+              <p class="game-card__meta">RPG · North Hall</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">1 999 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          <!-- Карточка: Pixel Siege -->
+          <article class="game-card" data-game data-genre="Инди" data-title="Pixel Siege" data-developer="Tiny Keep" data-price="499" data-rating="3" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" data-description="Уютная осада крошечного замка — для коротких вечерних сессий.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/783149ac-f476-45b7-885e-f4536aeb4101.jpg" alt="Обложка игры Pixel Siege" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">Инди</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Pixel Siege</a></h3>
+              <p class="game-card__meta">Инди · Tiny Keep</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 3 из 5">★★★<span class="stars__empty">★★</span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">499 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          <!-- Карточка: Cyber Drift 2077 -->
+          <article class="game-card" data-game data-genre="Экшен" data-title="Cyber Drift 2077" data-developer="Neon Shift" data-price="2499" data-rating="5" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg" data-description="Ночной город, неоновые трассы и погони на пределе скорости.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg" alt="Обложка игры Cyber Drift 2077" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">Экшен</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Cyber Drift 2077</a></h3>
+              <p class="game-card__meta">Экшен · Neon Shift</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 5 из 5">★★★★★<span class="stars__empty"></span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">2 499 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          <!-- Карточка: Ashen Crown -->
+          <article class="game-card" data-game data-genre="RPG" data-title="Ashen Crown" data-developer="Grey Tower" data-price="1999" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/b8e8af11-eed1-492a-a661-c537cacf5f95.jpg" data-description="Тёмное фэнтези о рыцаре, который ищет потерянную корону.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/b8e8af11-eed1-492a-a661-c537cacf5f95.jpg" alt="Обложка игры Ashen Crown" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">RPG</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Ashen Crown</a></h3>
+              <p class="game-card__meta">RPG · Grey Tower</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">1 999 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          <!-- Карточка: Void Runner -->
+          <article class="game-card" data-game data-genre="Шутер" data-title="Void Runner" data-developer="Orbit Games" data-price="1799" data-rating="4" data-image="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/ad5498fb-165a-428b-9e5b-dc0255291960.jpg" data-description="Космический шутер среди астероидов и колец гигантской планеты.">
+            <div class="game-card__media">
+              <img class="game-card__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/ad5498fb-165a-428b-9e5b-dc0255291960.jpg" alt="Обложка игры Void Runner" loading="lazy" width="800" height="600">
+              <span class="game-card__badge">Шутер</span>
+            </div>
+            <div class="game-card__body">
+              <h3 class="game-card__title"><a class="game-card__link" href="#game-modal" aria-haspopup="dialog">Void Runner</a></h3>
+              <p class="game-card__meta">Шутер · Orbit Games</p>
+              <p class="stars game-card__rating" aria-label="Рейтинг 4 из 5">★★★★<span class="stars__empty">★</span></p>
+              <div class="game-card__footer">
+                <span class="game-card__price">1 799 ₽</span>
+                <button class="btn btn--primary btn--sm game-card__button" type="button" aria-haspopup="dialog">Подробнее</button>
+              </div>
+            </div>
+          </article>
+          </div>
+          <p class="catalog__empty" hidden>По выбранным жанрам игр пока нет.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== Подвал: контакты, информация, навигация ===== -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__about">
+        <a class="logo" href="index.html" aria-label="BestGames — на главную">
+          <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect class="logo__diamond" x="6.5" y="6.5" width="27" height="27" rx="6"/>
+            <path class="logo__play" d="M16.5 13.2v13.6c0 .9 1 1.4 1.7.9l9.6-6.8c.6-.4.6-1.4 0-1.8l-9.6-6.8c-.7-.5-1.7 0-1.7.9Z"/>
+            <path class="logo__spark" d="M33 1.5l1.4 3.6 3.6 1.4-3.6 1.4L33 11.5l-1.4-3.6-3.6-1.4 3.6-1.4Z"/>
+          </svg>
+          <span class="logo__text">Best<span class="logo__text-light">Games</span></span>
+        </a>
+        <p class="footer__text">Маркетплейс компьютерных игр и внутриигровых предметов.</p>
+        <address class="footer__contacts">
+          <a class="footer__contact footer__contact--phone" href="tel:88009995599"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 8-800-999-55-99</a>
+          <a class="footer__contact footer__contact--mail" href="mailto:best@games.ru"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> best@games.ru</a>
+        </address>
+      </div>
+      <nav class="footer__nav" aria-label="Информация">
+        <h2 class="footer__title">Информация</h2>
+        <ul class="footer__list">
+          <li><a class="story-link" href="#">Клиентам</a></li>
+          <li><a class="story-link" href="#">Партнёрам</a></li>
+          <li><a class="story-link" href="#">О нас</a></li>
+          <li><a class="story-link" href="#">Контакты</a></li>
+        </ul>
+      </nav>
+      <nav class="footer__nav" aria-label="Навигация по сайту">
+        <h2 class="footer__title">Навигация</h2>
+        <ul class="footer__list">
+          <li><a class="story-link" href="index.html">Главная</a></li>
+          <li><a class="story-link" href="register.html">Регистрация</a></li>
+          <li><a class="story-link" href="login.html">Авторизация</a></li>
+          <li><a class="story-link" href="profile.html">Личный кабинет</a></li>
+          <li><a class="story-link" href="index.html#search">Поиск</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container footer__bottom">
+      <span>© 2026 BestGames</span>
+      <a class="footer__bottom-link" href="index_light.html">Светлая версия главной</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ===== Панель фильтра для мобильных и планшетов ===== -->
+<div class="drawer drawer--left" id="filter-drawer" aria-hidden="true">
+  <div class="drawer__overlay" data-drawer-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Фильтр">
+    <button class="drawer__close" type="button" data-drawer-close aria-label="Закрыть фильтр"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="filter filter--drawer">
+      <div class="filter__head">
+        <h2 class="filter__title" id="filter-title-drawer">Жанры</h2>
+        <button class="filter__reset" type="button" hidden>Сбросить</button>
+      </div>
+      <ul class="filter__list" aria-labelledby="filter-title-drawer">
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Экшен" data-genre-checkbox>
+            Экшен
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="RPG" data-genre-checkbox>
+            RPG
+            <span class="checkbox__count">2</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Стратегия" data-genre-checkbox>
+            Стратегия
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Гонки" data-genre-checkbox>
+            Гонки
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Хоррор" data-genre-checkbox>
+            Хоррор
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Инди" data-genre-checkbox>
+            Инди
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Шутер" data-genre-checkbox>
+            Шутер
+            <span class="checkbox__count">1</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Симулятор" data-genre-checkbox>
+            Симулятор
+            <span class="checkbox__count">0</span>
+          </label>
+        </li>
+        <li>
+          <label class="checkbox">
+            <input class="checkbox__input" type="checkbox" value="Спорт" data-genre-checkbox>
+            Спорт
+            <span class="checkbox__count">0</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Модальное окно «Подробнее» (заполняется из data-атрибутов карточки) ===== -->
+<dialog class="modal modal--flush game-modal" id="game-modal" aria-labelledby="game-modal-title">
+  <button class="modal__close" type="button" data-modal-close aria-label="Закрыть"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+  <img class="game-modal__image" src="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/acb8614e-971a-41b4-950e-9deca0ff5c22.jpg" alt="">
+  <div class="game-modal__body">
+    <div class="modal__header">
+      <h2 class="game-modal__title" id="game-modal-title"></h2>
+      <p class="game-modal__meta"></p>
+    </div>
+    <p class="stars game-modal__rating"></p>
+    <p class="game-modal__text"></p>
+    <div class="game-modal__footer">
+      <span class="game-modal__price"></span>
+      <button class="btn btn--primary btn--md game-modal__buy" type="button">Купить</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+            if (document.scripts[j].src === r) {
+                return;
+            }
+        }
+        k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(101026698, "init", {
+        trustedDomains: ["poehali.dev"],
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+        trackHash: true
+    });
+</script>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/101026698" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

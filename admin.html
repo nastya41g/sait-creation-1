@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!--
+  BestGames — admin.html
+  Админ-панель: форма добавления игры с превью изображения и проверкой полей.
+  Чистые HTML + CSS (БЭМ) + небольшой vanilla JS. Стили: public/css/, скрипты: public/js/.
+-->
+<html lang="ru" class="theme-dark">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Админ-панель — BestGames</title>
+    <meta name="description" content="Админ-панель BestGames: добавление новой игры в каталог."/>
+    <meta name="author" content="BestGames"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta property="og:title" content="Админ-панель — BestGames">
+    <meta property="og:description" content="Админ-панель BestGames: добавление новой игры в каталог.">
+    <meta property="og:type" content="website">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+    <meta name="twitter:image" content="https://cdn.poehali.dev/projects/40188c72-a0d2-418f-8473-3080745e7d30/files/36b47633-1535-46c5-a0a2-d4ba099e33ba.jpg">
+
+    <!-- Шрифты: Unbounded (заголовки) и Onest (текст) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Onest:wght@400;500;600;700&display=swap">
+
+    <!-- Стили сайта -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+
+    <!-- Тема применяется до отрисовки (без мигания) -->
+    <script src="js/theme-init.js"></script>
+    <script src="js/main.js" defer></script>
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
+    <script src="https://cdn.poehali.dev/intertnal/js/pp-min-4.js"></script>
+    <script src="https://cdn.poehali.dev/intertnal/js/route-min.js"></script>
+    <script src="https://cdn.poehali.dev/intertnal/js/telemetry-min.js"></script>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
+
+    <script src="https://cdn.poehali.dev/intertnal/js/ve-2.0.0-rc.2.min.js" defer=""></script>
+      <meta name="pp-name" value="sait-creation-1">
+      <script src="https://cdn.poehali.dev/intertnal/js/inspector-min.js"></script>
+  </head>
+
+<body>
+<div class="page page--inner">
+  <div class="container page-top">
+    <!-- ===== Шапка: логотип, меню (3 колонки на десктопе), тема, корзина, бургер ===== -->
+    <header class="header">
+      <nav class="header__nav" aria-label="Главное меню">
+        <a class="logo" href="index.html" aria-label="BestGames — на главную">
+          <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect class="logo__diamond" x="6.5" y="6.5" width="27" height="27" rx="6"/>
+            <path class="logo__play" d="M16.5 13.2v13.6c0 .9 1 1.4 1.7.9l9.6-6.8c.6-.4.6-1.4 0-1.8l-9.6-6.8c-.7-.5-1.7 0-1.7.9Z"/>
+            <path class="logo__spark" d="M33 1.5l1.4 3.6 3.6 1.4-3.6 1.4L33 11.5l-1.4-3.6-3.6-1.4 3.6-1.4Z"/>
+          </svg>
+          <span class="logo__text">Best<span class="logo__text-light">Games</span></span>
+        </a>
+        <div class="header__group">
+          <a class="header__link story-link" href="catalog.html">Каталог игр</a>
+          <a class="header__link story-link" href="index.html#search">Поиск</a>
+        </div>
+        <div class="header__group">
+          <a class="header__link story-link" href="profile.html">Личный кабинет</a>
+          <a class="header__link story-link" href="index.html#new">Новинки</a>
+        </div>
+        <div class="header__group">
+          <a class="header__link story-link" href="login.html">Войти</a>
+          <a class="header__link story-link" href="register.html">Регистрация</a>
+        </div>
+        <div class="header__actions">
+          <button class="icon-btn icon-btn--bordered header__theme" type="button" data-theme-toggle aria-label="Сменить тему">
+            <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+          <a class="header__cart" href="profile.html" aria-label="Корзина: 0 товаров">0</a>
+          <button class="icon-btn header__burger" type="button" data-drawer-open="menu-drawer" aria-controls="menu-drawer" aria-expanded="false" aria-label="Открыть меню">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ===== Мобильное меню (выезжает справа, мобильные и планшеты) ===== -->
+    <div class="drawer" id="menu-drawer" aria-hidden="true">
+      <div class="drawer__overlay" data-drawer-close></div>
+      <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Меню">
+        <button class="drawer__close" type="button" data-drawer-close aria-label="Закрыть меню"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        <div class="drawer__head"><a class="logo" href="index.html" aria-label="BestGames — на главную">
+          <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect class="logo__diamond" x="6.5" y="6.5" width="27" height="27" rx="6"/>
+            <path class="logo__play" d="M16.5 13.2v13.6c0 .9 1 1.4 1.7.9l9.6-6.8c.6-.4.6-1.4 0-1.8l-9.6-6.8c-.7-.5-1.7 0-1.7.9Z"/>
+            <path class="logo__spark" d="M33 1.5l1.4 3.6 3.6 1.4-3.6 1.4L33 11.5l-1.4-3.6-3.6-1.4 3.6-1.4Z"/>
+          </svg>
+          <span class="logo__text">Best<span class="logo__text-light">Games</span></span>
+        </a></div>
+        <ul class="drawer__list">
+          <li><a class="drawer__link story-link" href="catalog.html">Каталог игр</a></li>
+          <li><a class="drawer__link story-link" href="index.html#search">Поиск</a></li>
+          <li><a class="drawer__link story-link" href="profile.html">Личный кабинет</a></li>
+          <li><a class="drawer__link story-link" href="index.html#new">Новинки</a></li>
+          <li><a class="drawer__link story-link" href="login.html">Войти</a></li>
+          <li><a class="drawer__link story-link" href="register.html">Регистрация</a></li>
+          <li><a class="drawer__link story-link" href="admin.html">Админ-панель</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main class="container page-main">
+    <div class="page-head">
+      <h1 class="page-head__title">Админ-панель</h1>
+        <p class="page-head__subtitle">Добавление новой игры в каталог.</p>
+    </div>
+    <div class="page-body">
+      <!-- ===== Форма добавления игры ===== -->
+      <form class="card card--roomy admin-form" id="admin-form" novalidate>
+        <div class="admin-form__fields">
+        <div class="field">
+          <label class="field__label" for="title">Название игры</label>
+          <input class="field__input" id="title" name="title" type="text" required aria-describedby="title-error">
+          <span class="field__error" id="title-error" role="alert"></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="genre">Жанр</label>
+          <select class="field__input field__input--select" id="genre" name="genre" required aria-describedby="genre-error">
+            <option value="">Выберите жанр</option>
+            <option value="Экшен">Экшен</option>
+            <option value="RPG">RPG</option>
+            <option value="Стратегия">Стратегия</option>
+            <option value="Гонки">Гонки</option>
+            <option value="Хоррор">Хоррор</option>
+            <option value="Инди">Инди</option>
+            <option value="Шутер">Шутер</option>
+            <option value="Симулятор">Симулятор</option>
+            <option value="Спорт">Спорт</option>
+          </select>
+          <span class="field__error" id="genre-error" role="alert"></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="developer">Компания-разработчик</label>
+          <input class="field__input" id="developer" name="developer" type="text" required aria-describedby="developer-error">
+          <span class="field__error" id="developer-error" role="alert"></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="description">Описание</label>
+          <textarea class="field__input field__input--textarea" id="description" name="description" rows="5" required aria-describedby="description-error"></textarea>
+          <span class="field__error" id="description-error" role="alert"></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="price">Стоимость, ₽</label>
+          <input class="field__input" id="price" name="price" type="number" required min="0" step="1" inputmode="numeric" aria-describedby="price-error">
+          <span class="field__error" id="price-error" role="alert"></span>
+        </div>
+        </div>
+
+        <!-- ===== Загрузка изображения с превью ===== -->
+        <div class="admin-form__side">
+          <span class="field__label" id="image-label">Изображение</span>
+          <label class="upload" aria-labelledby="image-label">
+            <span class="upload__placeholder"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg> Выбрать файл</span>
+            <img class="upload__preview" alt="Превью загруженного изображения" hidden>
+            <input class="visually-hidden" type="file" name="image" accept="image/*">
+          </label>
+          <span class="field__error upload__error" data-image-error role="alert" hidden>Загрузите изображение</span>
+          <button class="btn btn--primary btn--block admin-form__submit" type="submit">Добавить</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ===== Подвал: контакты, информация, навигация ===== -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__about">
+        <a class="logo" href="index.html" aria-label="BestGames — на главную">
+          <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <rect class="logo__diamond" x="6.5" y="6.5" width="27" height="27" rx="6"/>
+            <path class="logo__play" d="M16.5 13.2v13.6c0 .9 1 1.4 1.7.9l9.6-6.8c.6-.4.6-1.4 0-1.8l-9.6-6.8c-.7-.5-1.7 0-1.7.9Z"/>
+            <path class="logo__spark" d="M33 1.5l1.4 3.6 3.6 1.4-3.6 1.4L33 11.5l-1.4-3.6-3.6-1.4 3.6-1.4Z"/>
+          </svg>
+          <span class="logo__text">Best<span class="logo__text-light">Games</span></span>
+        </a>
+        <p class="footer__text">Маркетплейс компьютерных игр и внутриигровых предметов.</p>
+        <address class="footer__contacts">
+          <a class="footer__contact footer__contact--phone" href="tel:88009995599"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 8-800-999-55-99</a>
+          <a class="footer__contact footer__contact--mail" href="mailto:best@games.ru"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> best@games.ru</a>
+        </address>
+      </div>
+      <nav class="footer__nav" aria-label="Информация">
+        <h2 class="footer__title">Информация</h2>
+        <ul class="footer__list">
+          <li><a class="story-link" href="#">Клиентам</a></li>
+          <li><a class="story-link" href="#">Партнёрам</a></li>
+          <li><a class="story-link" href="#">О нас</a></li>
+          <li><a class="story-link" href="#">Контакты</a></li>
+        </ul>
+      </nav>
+      <nav class="footer__nav" aria-label="Навигация по сайту">
+        <h2 class="footer__title">Навигация</h2>
+        <ul class="footer__list">
+          <li><a class="story-link" href="index.html">Главная</a></li>
+          <li><a class="story-link" href="register.html">Регистрация</a></li>
+          <li><a class="story-link" href="login.html">Авторизация</a></li>
+          <li><a class="story-link" href="profile.html">Личный кабинет</a></li>
+          <li><a class="story-link" href="index.html#search">Поиск</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container footer__bottom">
+      <span>© 2026 BestGames</span>
+      <a class="footer__bottom-link" href="index_light.html">Светлая версия главной</a>
+    </div>
+  </footer>
+</div>
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+            if (document.scripts[j].src === r) {
+                return;
+            }
+        }
+        k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(101026698, "init", {
+        trustedDomains: ["poehali.dev"],
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+        trackHash: true
+    });
+</script>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/101026698" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

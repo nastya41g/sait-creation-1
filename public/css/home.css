@@ -1,0 +1,794 @@
+/* ==========================================================================
+   BestGames — стили главной страницы (index.html, index_light.html):
+   первый экран (.hero-layout), слайдер (.hero), поиск по жанрам
+   (.genre-search), мини-список «Популярное» (.popular-list),
+   преимущества (.advantages), популярные игры (.popular), партнёры (.partners).
+   ========================================================================== */
+
+/* ---------- Сетка первого экрана ---------- */
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding-top: 20px;
+  padding-bottom: 32px;
+}
+
+/* ---------- Слайдер новинок ---------- */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: hsl(var(--surface));
+  animation: scale-in 0.3s ease-out both;
+}
+
+.hero__slides {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.hero__image--active {
+  opacity: 1;
+  animation: slow-zoom 6s ease-out both;
+}
+
+/* Затемнение снизу для читаемости текста */
+.hero__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    hsl(var(--background)) 4%,
+    transparent 55%
+  );
+}
+
+/* Стрелки (видны при наведении, только с планшета) */
+.hero__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: var(--radius);
+  background: rgb(0 0 0 / 0.3);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(-50%);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: opacity 0.15s ease;
+}
+
+.hero__arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.hero__arrow--prev {
+  left: 16px;
+}
+
+.hero__arrow--next {
+  right: 16px;
+}
+
+.hero:hover .hero__arrow,
+.hero__arrow:focus-visible {
+  opacity: 1;
+}
+
+/* Текстовый блок слайда */
+.hero__content {
+  position: absolute;
+  right: 20px;
+  bottom: 28px;
+  left: 20px;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Перезапуск анимации текста при смене слайда (класс снимает/ставит JS) */
+.hero__content--animate .hero__tag,
+.hero__content--animate .hero__title,
+.hero__content--animate .hero__buy {
+  animation: fade-in 0.6s ease-out both;
+}
+
+.hero__content--animate .hero__title {
+  animation-delay: 80ms;
+}
+
+.hero__content--animate .hero__buy {
+  animation-delay: 160ms;
+}
+
+.hero__tag {
+  margin-bottom: 6px;
+  font-family: var(--font-head);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.hero__title {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.hero__buy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.hero__price {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+}
+
+.hero__more:hover {
+  transform: translateY(-2px);
+}
+
+/* Индикаторы слайдов: полоски 22×2 с прогрессом */
+.hero__dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 22px;
+}
+
+.hero__dot {
+  position: relative;
+  width: 22px;
+  height: 2px;
+  overflow: visible;
+  background: hsl(var(--border));
+}
+
+/* Увеличенная зона клика */
+.hero__dot::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 0;
+  bottom: -8px;
+  left: 0;
+}
+
+.hero__dot-fill {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: hsl(var(--foreground));
+  transform-origin: left;
+}
+
+.hero__dot--active .hero__dot-fill {
+  display: block;
+  animation: progress 6s linear both;
+}
+
+/* На паузе (наведение) прогресс заполнен целиком */
+.hero--paused .hero__dot--active .hero__dot-fill {
+  animation: none;
+}
+
+/* ---------- Поиск по жанрам ---------- */
+.genre-search {
+  padding-top: 6px;
+  scroll-margin-top: 24px;
+  animation: fade-in 0.6s ease-out both;
+  animation-delay: 120ms;
+}
+
+.genre-search__title,
+.popular-list__title {
+  margin-bottom: 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: hsl(var(--muted-foreground));
+}
+
+.genre-search__form {
+  position: relative;
+}
+
+.genre-search__box {
+  display: flex;
+  padding: 5px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease;
+}
+
+.genre-search__box:focus-within {
+  border-color: hsl(var(--muted-foreground));
+}
+
+.genre-search--error .genre-search__box {
+  border-color: hsl(var(--destructive));
+}
+
+.genre-search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 12px;
+  outline: none;
+}
+
+.genre-search__input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.genre-search__input:focus-visible {
+  outline: none;
+}
+
+/* Выпадающий список подсказок */
+.genre-search__hints {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  margin-top: 6px;
+  padding: 4px 0;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--popover));
+  box-shadow: var(--shadow-xl);
+  animation: scale-in 0.3s ease-out both;
+}
+
+.genre-search__hints[hidden] {
+  display: none;
+}
+
+.genre-search__hint {
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: background-color 0.15s ease;
+}
+
+.genre-search__hint:hover,
+.genre-search__hint--active {
+  background: hsl(var(--accent));
+}
+
+.genre-search__error {
+  display: none;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: hsl(var(--destructive));
+}
+
+.genre-search--error .genre-search__error {
+  display: block;
+}
+
+/* Быстрые теги */
+.genre-search__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.genre-search__tag:hover {
+  color: hsl(var(--foreground));
+}
+
+/* ---------- Мини-список «Популярное» справа от слайдера ---------- */
+.popular-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.popular-list__item {
+  animation: fade-in 0.6s ease-out both;
+}
+
+.popular-list__item:nth-child(1) {
+  animation-delay: 200ms;
+}
+.popular-list__item:nth-child(2) {
+  animation-delay: 270ms;
+}
+.popular-list__item:nth-child(3) {
+  animation-delay: 340ms;
+}
+.popular-list__item:nth-child(4) {
+  animation-delay: 410ms;
+}
+.popular-list__item:nth-child(5) {
+  animation-delay: 480ms;
+}
+
+.popular-list__link {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 0;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.popular-list__image {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.popular-list__info {
+  min-width: 0;
+}
+
+.popular-list__name,
+.popular-list__meta,
+.popular-list__price {
+  display: block;
+}
+
+.popular-list__name {
+  overflow: hidden;
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  letter-spacing: -0.03em;
+  transition: transform 0.3s ease;
+}
+
+.popular-list__meta,
+.popular-list__price {
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.popular-list__side {
+  text-align: right;
+}
+
+.popular-list__stars {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.popular-list__link:hover .popular-list__image {
+  transform: scale(1.05);
+}
+
+.popular-list__link:hover .popular-list__name {
+  transform: translateX(4px);
+}
+
+/* ---------- Общие стили секций главной ---------- */
+.section {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.section__head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+/* Заголовок + ссылка «Весь каталог» всегда в одну строку */
+.section__head--row {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section__title {
+  font-size: 1.875rem;
+  font-weight: 500;
+  line-height: 2.25rem;
+  letter-spacing: -0.025em;
+}
+
+.section__lead {
+  max-width: 24rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.section__more {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.section__more:hover {
+  color: hsl(var(--foreground));
+}
+
+.section__more svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- Преимущества ---------- */
+.advantages__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px; /* линии-разделители из фона-рамки */
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--border));
+}
+
+.advantages__item {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+  background: hsl(var(--background));
+  transition: background-color 0.3s ease;
+}
+
+.advantages__item:nth-child(2) {
+  transition-delay: 40ms;
+}
+.advantages__item:nth-child(3) {
+  transition-delay: 80ms;
+}
+.advantages__item:nth-child(4) {
+  transition-delay: 120ms;
+}
+
+.advantages__item:hover {
+  background: hsl(var(--card));
+}
+
+.advantages__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  color: hsl(var(--foreground));
+  transition: transform 0.5s ease;
+}
+
+.advantages__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.advantages__item:hover .advantages__icon {
+  transform: rotate(-6deg) scale(1.1);
+}
+
+.advantages__title {
+  margin-bottom: 6px;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+}
+
+.advantages__text {
+  font-size: 0.875rem;
+  line-height: 1.625;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ---------- Популярные игры (сетка карточек) ---------- */
+.popular__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+/* ---------- Партнёры: бегущая строка логотипов ---------- */
+.partners__track {
+  position: relative;
+  overflow: hidden;
+  padding: 32px 0;
+  border-top: 1px solid hsl(var(--border));
+  border-bottom: 1px solid hsl(var(--border));
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+
+.partners__list {
+  display: flex;
+  gap: 56px;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.partners__list:hover {
+  animation-play-state: paused;
+}
+
+.partners__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: hsl(var(--muted-foreground));
+  transition: color 0.15s ease;
+}
+
+.partners__item:hover {
+  color: hsl(var(--foreground));
+}
+
+.partners__item svg {
+  width: 30px;
+  height: 30px;
+}
+
+.partners__name {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 2rem;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Адаптив главной
+   ========================================================================== */
+
+/* 768px (планшет) — структурные изменения:
+   1) первый экран: сетка из 2 колонок — слайдер на всю ширину,
+      поиск и «Популярное» встают рядом в две колонки;
+   2) преимущества: 1 колонка → 2 колонки, иконка над текстом (столбец);
+   3) популярные игры: 1 колонка карточек → 2 колонки;
+   4) заголовок «Почему BestGames» и подзаголовок — в одну строку;
+   5) у слайдера появляются стрелки «назад/вперёд», он становится выше;
+   (+ подвал 1 → 2 колонки, см. components.css) */
+@media (min-width: 768px) {
+  .hero-layout {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 32px;
+  }
+
+  .hero-layout__nav,
+  .hero-layout__slider {
+    grid-column: span 2;
+  }
+
+  .hero {
+    min-height: 520px;
+  }
+
+  .hero__arrow {
+    display: grid;
+  }
+
+  .hero__content {
+    right: 40px;
+    bottom: 36px;
+    left: 40px;
+  }
+
+  .hero__tag {
+    font-size: 1.25rem;
+  }
+
+  .hero__title {
+    font-size: 56px;
+  }
+
+  .section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .section__head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .section__title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .advantages__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .advantages__item {
+    flex-direction: column;
+    padding: 32px;
+  }
+
+  .popular__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 1280px (десктоп) — структурные изменения:
+   1) первый экран на высоту окна: сетка 1.55fr / 1fr с областями
+      «меню / слайдер + поиск / слайдер + популярное» — слайдер слева,
+      поиск и мини-список справа;
+   2) бургер скрыт, меню — три колонки ссылок (см. components.css);
+   3) преимущества: 2 колонки → 4 колонки в один ряд;
+   4) популярные игры: 2 колонки → 3 колонки (≥1536px — 5 в ряд);
+   5) подвал: 2 колонки → 3 колонки (см. components.css). */
+@media (min-width: 1280px) {
+  .hero-layout {
+    grid-template-columns: 1.55fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "nav nav"
+      "slider search"
+      "slider cards";
+    column-gap: 40px;
+    row-gap: 22px;
+    height: 100vh;
+    min-height: 680px;
+    max-height: 1080px;
+    padding-top: 24px;
+    padding-bottom: 30px;
+  }
+
+  .hero-layout__nav {
+    grid-area: nav;
+  }
+
+  .hero-layout__slider {
+    grid-area: slider;
+  }
+
+  .genre-search {
+    grid-area: search;
+  }
+
+  .popular-list {
+    grid-area: cards;
+  }
+
+  .hero {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .hero__title {
+    font-size: 64px;
+  }
+
+  .advantages__list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .popular__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 1536px (большие экраны, до 1920px): 5 карточек популярных игр в ряд. */
+@media (min-width: 1536px) {
+  .popular__grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* ==========================================================================
+   Светлая версия главной (index_light.html, класс .page--light на body)
+   Дизайнерские отличия от тёмной версии:
+   1) светлый тёплый фон и белые карточки (палитра .theme-light);
+   2) у карточек игр, слайдера и блока преимуществ — мягкие тени,
+      в тёмной версии теней нет;
+   3) свечение фона светлое и сильнее смещено к верху страницы;
+   4) иконки преимуществ на тёмной плашке (инверсия), а не в рамке;
+   5) у мини-списка «Популярное» и поиска — белая подложка-карточка;
+   6) затемнение слайдера мягче, текст слайда тёмный.
+   ========================================================================== */
+.page--light {
+  background:
+    radial-gradient(ellipse at 35% 10%, hsl(var(--glow)), transparent 55%),
+    linear-gradient(180deg, hsl(40 14% 97%), hsl(var(--background)) 40%);
+}
+
+.page--light .hero {
+  box-shadow: 0 24px 50px -24px rgba(20, 20, 22, 0.35);
+}
+
+.page--light .hero__shade {
+  background: linear-gradient(
+    to top,
+    hsl(var(--background) / 0.96) 6%,
+    hsl(var(--background) / 0.4) 35%,
+    transparent 60%
+  );
+}
+
+.page--light .game-card {
+  box-shadow: 0 14px 34px -16px rgba(20, 20, 22, 0.28);
+}
+
+.page--light .game-card:hover {
+  box-shadow: 0 22px 44px -18px rgba(20, 20, 22, 0.35);
+}
+
+.page--light .advantages__list {
+  box-shadow: var(--shadow);
+}
+
+.page--light .advantages__item {
+  background: hsl(var(--card));
+}
+
+.page--light .advantages__item:hover {
+  background: hsl(var(--background));
+}
+
+.page--light .advantages__icon {
+  border-color: transparent;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.page--light .genre-search__box {
+  background: hsl(var(--card));
+  box-shadow: var(--shadow);
+}
+
+.page--light .partners__track {
+  background: hsl(var(--card) / 0.6);
+}

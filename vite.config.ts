@@ -113,6 +113,19 @@ export default defineConfig(({mode}) => ({
             "@": path.resolve(__dirname, "./src"),
         },
     },
+    build: {
+        rollupOptions: {
+            input: {
+                main: path.resolve(__dirname, 'index.html'),
+                light: path.resolve(__dirname, 'index_light.html'),
+                login: path.resolve(__dirname, 'login.html'),
+                register: path.resolve(__dirname, 'register.html'),
+                profile: path.resolve(__dirname, 'profile.html'),
+                catalog: path.resolve(__dirname, 'catalog.html'),
+                admin: path.resolve(__dirname, 'admin.html'),
+            },
+        },
+    },
     server: {
         host: '0.0.0.0',
         port: 5173,

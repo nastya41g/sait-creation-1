@@ -1,0 +1,897 @@
+/* ==========================================================================
+   BestGames — общие компоненты (БЭМ-блоки), используемые на всех страницах:
+   .container, .story-link, .logo, .btn, .icon-btn, .header, .drawer,
+   .stars, .game-card, .footer, .field, .checkbox, .switch, .modal, .toast.
+   Подход mobile-first: базовые стили — для 360px, далее min-width.
+   ========================================================================== */
+
+/* ---------- Контейнер (ограничение ширины и боковые отступы) ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* ---------- Ссылка с анимированным подчёркиванием ---------- */
+.story-link {
+  position: relative;
+  display: inline-block;
+  transition: color 0.15s ease;
+}
+
+.story-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.story-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* ---------- Логотип: ромб с треугольником «play» и золотой искрой ---------- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo__mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* Ромб (квадрат, повёрнутый на 45°) и треугольник плавно анимируются */
+.logo__diamond,
+.logo__play {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.5s var(--ease-spring);
+}
+
+.logo__diamond {
+  fill: hsl(var(--foreground));
+  transform: rotate(45deg);
+}
+
+.logo__play {
+  fill: hsl(var(--background));
+}
+
+/* Искра — периодически «вспыхивает» */
+.logo__spark {
+  fill: hsl(var(--star));
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: logo-spark 3.2s ease-in-out infinite;
+}
+
+/* При наведении ромб поворачивается, треугольник сдвигается */
+.logo:hover .logo__diamond {
+  transform: rotate(135deg);
+}
+
+.logo:hover .logo__play {
+  transform: translateX(1.5px);
+}
+
+@keyframes logo-spark {
+  0%,
+  70%,
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.35) rotate(45deg);
+    opacity: 0.7;
+  }
+}
+
+.logo__text {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.logo__text-light {
+  font-weight: 400;
+  color: hsl(var(--muted-foreground));
+  transition: color 0.15s ease;
+}
+
+.logo:hover .logo__text-light {
+  color: hsl(var(--foreground));
+}
+
+/* ---------- Кнопки ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* Основная кнопка (светлая в тёмной теме, тёмная в светлой) */
+.btn--primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.btn--primary:hover {
+  opacity: 0.9;
+}
+
+/* Обводка */
+.btn--outline {
+  border: 1px solid hsl(var(--border));
+}
+
+.btn--outline:hover {
+  border-color: hsl(var(--muted-foreground));
+}
+
+/* Размеры */
+.btn--sm {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.btn--md {
+  padding: 10px 20px;
+}
+
+.btn--lg {
+  padding: 11px 26px;
+}
+
+/* Кнопка на всю ширину формы, высота 44px */
+.btn--block {
+  width: 100%;
+  height: 44px;
+}
+
+/* Квадратная кнопка-иконка 30×30 (тема, бургер) */
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  color: hsl(var(--muted-foreground));
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.icon-btn:hover {
+  color: hsl(var(--foreground));
+}
+
+.icon-btn--bordered {
+  border: 1px solid hsl(var(--border));
+}
+
+.icon-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Общий вид линейных SVG-иконок (lucide) */
+.icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* ---------- Шапка ---------- */
+.header {
+  animation: fade-in 0.6s ease-out both;
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+/* Колонки ссылок — скрыты на мобильных и планшетах (там бургер) */
+.header__group {
+  display: none;
+  color: hsl(var(--muted-foreground));
+}
+
+.header__link:hover,
+.header__link--active {
+  color: hsl(var(--foreground));
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Иконка темы: в тёмной теме — солнце, в светлой — луна */
+.header__theme .icon--moon,
+.theme-light .header__theme .icon--sun {
+  display: none;
+}
+
+.theme-light .header__theme .icon--moon {
+  display: block;
+}
+
+/* Счётчик корзины — квадрат с толстой рамкой */
+.header__cart {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid hsl(var(--foreground));
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: transform 0.15s ease;
+}
+
+.header__cart:hover {
+  transform: scale(1.05);
+}
+
+.header__burger {
+  color: hsl(var(--foreground));
+}
+
+.header__burger svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Десктоп (≥1280px): бургер скрыт, ссылки — в три колонки по сетке */
+@media (min-width: 1280px) {
+  .header__nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  }
+
+  .header__group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header__burger {
+    display: none;
+  }
+}
+
+/* ---------- Выезжающая панель (мобильное меню и фильтр каталога) ---------- */
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+}
+
+.drawer--open {
+  display: block;
+}
+
+.drawer__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.8);
+  animation: overlay-in 0.3s ease both;
+}
+
+.drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 100%;
+  overflow-y: auto;
+  padding: 24px;
+  background: hsl(var(--background));
+  border-left: 1px solid hsl(var(--border));
+  box-shadow: var(--shadow-lg);
+  animation: slide-in-right 0.4s ease both;
+}
+
+/* Панель слева (фильтр каталога) */
+.drawer--left .drawer__panel {
+  right: auto;
+  left: 0;
+  border-left: 0;
+  border-right: 1px solid hsl(var(--border));
+  animation-name: slide-in-left;
+}
+
+.drawer__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  opacity: 0.7;
+  color: hsl(var(--foreground));
+  transition: opacity 0.15s ease;
+}
+
+.drawer__close:hover {
+  opacity: 1;
+}
+
+.drawer__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.drawer__head {
+  margin-bottom: 32px;
+}
+
+.drawer__list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: var(--font-head);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.drawer__link:hover {
+  color: hsl(var(--foreground));
+}
+
+/* ---------- Рейтинг звёздами ---------- */
+.stars {
+  color: hsl(var(--star));
+  letter-spacing: 1px;
+}
+
+.stars__empty {
+  opacity: 0.3;
+}
+
+/* ---------- Карточка игры ---------- */
+.game-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  border-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Скрытая фильтром карточка */
+.game-card[hidden] {
+  display: none;
+}
+
+.game-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: hsl(var(--surface));
+}
+
+.game-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.game-card:hover .game-card__image {
+  transform: scale(1.05);
+}
+
+.game-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  background: hsl(var(--background) / 0.8);
+  font-size: 0.7rem;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.game-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+}
+
+.game-card__title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+/* Ссылка в заголовке растянута на всю карточку — вся карточка кликабельна */
+.game-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.game-card__meta {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.game-card__rating {
+  margin-top: 4px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.game-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.game-card__price {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+/* Кнопка поверх растянутой ссылки */
+.game-card__button {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- Подвал ---------- */
+.footer {
+  border-top: 1px solid hsl(var(--border));
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+.footer__about {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer__text {
+  max-width: 20rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.footer__contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer__contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease;
+}
+
+.footer__contact svg {
+  width: 16px;
+  height: 16px;
+}
+
+.footer__contact--phone {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.footer__contact--phone:hover {
+  opacity: 0.8;
+}
+
+.footer__contact--mail {
+  color: hsl(var(--muted-foreground));
+}
+
+.footer__contact--mail:hover {
+  color: hsl(var(--foreground));
+}
+
+.footer__title {
+  margin-bottom: 16px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground));
+}
+
+.footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid hsl(var(--border));
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.footer__bottom-link:hover {
+  color: hsl(var(--foreground));
+}
+
+/* ---------- Поля форм ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  color: hsl(var(--muted-foreground));
+}
+
+.field__input {
+  width: 100%;
+  height: 44px;
+  padding: 8px 12px;
+  border: 1px solid hsl(var(--input));
+  border-radius: var(--radius);
+  background: transparent;
+  font-size: 1rem;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.field__input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.field__input:focus {
+  outline: none;
+  box-shadow:
+    0 0 0 2px hsl(var(--background)),
+    0 0 0 4px hsl(var(--ring));
+}
+
+/* Многострочное поле */
+.field__input--textarea {
+  height: auto;
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Выпадающий список жанров */
+.field__input--select {
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8c90' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+}
+
+.field__input--select option {
+  background: hsl(var(--popover));
+  color: hsl(var(--foreground));
+}
+
+/* Поле с ошибкой */
+.field--error .field__input,
+.field__input--error {
+  border-color: hsl(var(--destructive));
+}
+
+.field__error {
+  display: none;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: hsl(var(--destructive));
+  animation: fade-in 0.6s ease-out both;
+}
+
+.field--error .field__error {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .field__input {
+    font-size: 0.875rem;
+  }
+}
+
+/* ---------- Чекбокс (нативный, стилизованный) ---------- */
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+}
+
+.checkbox__input {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: 1px solid hsl(var(--primary));
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.checkbox__input:checked {
+  background: hsl(var(--primary))
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23131316' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+}
+
+.theme-light .checkbox__input:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f2' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.checkbox--top {
+  align-items: flex-start;
+}
+
+.checkbox--top .checkbox__input {
+  margin-top: 2px;
+}
+
+.checkbox__count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ---------- Переключатель (switch) ---------- */
+.switch {
+  position: relative;
+  appearance: none;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background: hsl(var(--input));
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.switch::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: hsl(var(--background));
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s ease;
+}
+
+.switch:checked {
+  background: hsl(var(--primary));
+}
+
+.switch:checked::before {
+  transform: translateX(20px);
+}
+
+/* ---------- Модальное окно (на основе <dialog>) ---------- */
+.modal {
+  width: calc(100% - 32px);
+  max-width: 512px;
+  margin: auto;
+  padding: 24px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  box-shadow: var(--shadow-lg);
+}
+
+.modal[open] {
+  animation: scale-in 0.2s ease-out both;
+}
+
+.modal::backdrop {
+  background: rgb(0 0 0 / 0.8);
+}
+
+/* Модалка с картинкой во всю ширину (каталог) */
+.modal--flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.modal__close:hover {
+  opacity: 1;
+}
+
+.modal__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.modal__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modal__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.modal__text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .modal__header {
+    text-align: left;
+  }
+}
+
+/* ---------- Всплывающее уведомление ---------- */
+.toast-region {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 356px;
+  padding: 16px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--popover));
+  box-shadow: var(--shadow-xl);
+  font-size: 0.875rem;
+  animation: fade-in 0.3s ease-out both;
+}
+
+.toast--error {
+  color: hsl(var(--destructive));
+}
+
+/* ---------- Адаптив общих блоков ----------
+   768px: увеличены боковые отступы контейнера; подвал — 2 колонки
+   вместо 1; нижняя строка подвала — в ряд вместо столбца. */
+@media (min-width: 768px) {
+  .container {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer__bottom {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* 1280px: отступы 30px; подвал — 3 колонки (1.55fr 1fr 1fr). */
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .footer__grid {
+    grid-template-columns: 1.55fr 1fr 1fr;
+  }
+}

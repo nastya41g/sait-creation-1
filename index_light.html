@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <!--
-  BestGames — index.html
-  Главная страница (тёмная тема по умолчанию, переключатель темы в шапке).
+  BestGames — index_light.html
+  Главная страница в фиксированной светлой теме (класс page--light, отличия описаны в css/home.css).
   Чистые HTML + CSS (БЭМ) + небольшой vanilla JS. Стили: public/css/, скрипты: public/js/.
 -->
-<html lang="ru" class="theme-dark">
+<html lang="ru" class="theme-light" data-forced-theme="light">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>BestGames — маркетплейс компьютерных игр</title>
+    <title>BestGames — светлая версия главной</title>
     <meta name="description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7."/>
     <meta name="author" content="BestGames"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <meta property="og:title" content="BestGames — маркетплейс компьютерных игр">
+    <meta property="og:title" content="BestGames — светлая версия главной">
     <meta property="og:description" content="BestGames — маркетплейс компьютерных игр и внутриигровых предметов: новинки, акции каждый месяц, быстрая покупка и поддержка 24/7.">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="1200">
@@ -48,7 +48,7 @@
   </head>
 
 <body>
-<div class="page">
+<div class="page page--light">
   <!-- ===== Первый экран: меню + слайдер + поиск + мини-список «Популярное» ===== -->
   <div class="container hero-layout">
     <div class="hero-layout__nav">
@@ -76,9 +76,9 @@
           <a class="header__link story-link" href="register.html">Регистрация</a>
         </div>
         <div class="header__actions">
-          <button class="icon-btn icon-btn--bordered header__theme" type="button" data-theme-toggle aria-label="Сменить тему">
+          <a class="icon-btn icon-btn--bordered header__theme" href="index.html" aria-label="Перейти к тёмной версии" title="Тёмная версия">
             <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </button>
+          </a>
           <a class="header__cart" href="profile.html" aria-label="Корзина: 0 товаров">0</a>
           <button class="icon-btn header__burger" type="button" data-drawer-open="menu-drawer" aria-controls="menu-drawer" aria-expanded="false" aria-label="Открыть меню">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
@@ -426,7 +426,7 @@
     </div>
     <div class="container footer__bottom">
       <span>© 2026 BestGames</span>
-      <a class="footer__bottom-link" href="index_light.html">Светлая версия главной</a>
+      <a class="footer__bottom-link" href="index.html">Тёмная версия главной</a>
     </div>
   </footer>
 </div>
